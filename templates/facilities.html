@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% set active_page = 'facilities' %}
+
+{% block content %}
+<section class="hero" style="min-height: 60vh;">
+    <div class="hero-content fade-in">
+        <h1 class="hero-title">Campus Facilities</h1>
+        <p class="hero-desc">Experience a world-class learning environment with modern infrastructure, lush green spaces, and advanced laboratories.</p>
+    </div>
+</section>
+
+<section>
+    <div class="grid-3">
+        {% if facilities %}
+            {% for fac in facilities %}
+            <div class="card glass fade-in">
+                <div class="card-icon" style="font-size: 3rem;">{{ fac.icon | default('🏢') }}</div>
+                <h3 class="card-title">{{ fac.name }}</h3>
+                <p class="card-desc">{{ fac.description }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- Fallback -->
+            <div class="card glass fade-in">
+                <div class="card-icon"><i class="fas fa-book-reader"></i></div>
+                <h3 class="card-title">Central Library</h3>
+                <p class="card-desc">Over 45,000+ volumes, digital resources, journals, and a spacious reading hall.</p>
+            </div>
+            <div class="card glass fade-in">
+                <div class="card-icon"><i class="fas fa-desktop"></i></div>
+                <h3 class="card-title">Computer Labs</h3>
+                <p class="card-desc">High-end systems with latest software, high-speed internet, and power backup.</p>
+            </div>
+            <div class="card glass fade-in">
+                <div class="card-icon"><i class="fas fa-robot"></i></div>
+                <h3 class="card-title">AI/ML & IoT Labs</h3>
+                <p class="card-desc">Specialized laboratories equipped with modern hardware for advanced research.</p>
+            </div>
+            <div class="card glass fade-in">
+                <div class="card-icon"><i class="fas fa-wifi"></i></div>
+                <h3 class="card-title">Wi-Fi Campus</h3>
+                <p class="card-desc">24/7 high-speed internet access across the entire 25-acre campus.</p>
+            </div>
+            <div class="card glass fade-in">
+                <div class="card-icon"><i class="fas fa-bed"></i></div>
+                <h3 class="card-title">Girls Hostel</h3>
+                <p class="card-desc">Secure, comfortable accommodation with nutritious food and recreational facilities.</p>
+            </div>
+            <div class="card glass fade-in">
+                <div class="card-icon"><i class="fas fa-bus"></i></div>
+                <h3 class="card-title">Transport</h3>
+                <p class="card-desc">Extensive fleet of buses covering all major routes across Hyderabad and Secunderabad.</p>
+            </div>
+            <div class="card glass fade-in">
+                <div class="card-icon"><i class="fas fa-running"></i></div>
+                <h3 class="card-title">Sports</h3>
+                <p class="card-desc">Indoor and outdoor sports facilities including cricket, basketball, and badminton.</p>
+            </div>
+            <div class="card glass fade-in">
+                <div class="card-icon"><i class="fas fa-utensils"></i></div>
+                <h3 class="card-title">Canteen</h3>
+                <p class="card-desc">Hygienic and spacious cafeteria serving a variety of delicious meals and snacks.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

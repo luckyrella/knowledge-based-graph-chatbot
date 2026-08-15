@@ -1,0 +1,425 @@
+{% extends 'base.html' %}
+{% set active_page = 'about' %}
+
+{% block content %}
+<style>
+    /* Page specific styles for About Page */
+    .about-hero {
+        min-height: 55vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        padding-top: 100px;
+        padding-bottom: 60px;
+        background: linear-gradient(135deg, rgba(2, 12, 27, 0.95) 0%, rgba(10, 25, 47, 0.9) 100%);
+    }
+
+    .badge-code {
+        display: inline-block;
+        background: rgba(79, 195, 247, 0.15);
+        color: var(--secondary-color);
+        border: 1px solid var(--secondary-color);
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-top: 15px;
+        letter-spacing: 1px;
+    }
+
+    .vision-mission-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 40px;
+        border: 1px solid var(--glass-border);
+        position: relative;
+        overflow: hidden;
+        transition: var(--transition);
+        height: 100%;
+    }
+
+    .vision-mission-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--glow);
+        border-color: var(--secondary-color);
+    }
+
+    .vm-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        background: rgba(79, 195, 247, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        color: var(--secondary-color);
+        margin-bottom: 25px;
+    }
+
+    .vm-icon.accent {
+        background: rgba(240, 180, 41, 0.1);
+        color: var(--accent-color);
+    }
+
+    .highlight-card {
+        padding: 35px 25px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        transition: var(--transition);
+    }
+
+    .highlight-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 30px -10px rgba(79, 195, 247, 0.25);
+    }
+
+    .accreditation-badge {
+        background: rgba(17, 34, 64, 0.85);
+        border: 1px solid var(--glass-border);
+        border-radius: 14px;
+        padding: 25px 20px;
+        text-align: center;
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .accreditation-badge:hover {
+        background: rgba(79, 195, 247, 0.1);
+        border-color: var(--secondary-color);
+        transform: translateY(-4px);
+        box-shadow: var(--glow);
+    }
+
+    .accreditation-icon {
+        font-size: 2.5rem;
+        color: var(--accent-color);
+    }
+
+    .accreditation-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #e6f1ff;
+    }
+
+    .accreditation-sub {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .leadership-preview-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .leader-chip {
+        background: var(--card-bg);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        transition: var(--transition);
+    }
+
+    .leader-chip:hover {
+        border-color: var(--secondary-color);
+        transform: translateY(-3px);
+    }
+
+    .leader-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(79, 195, 247, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--secondary-color);
+        font-size: 1.3rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .official-link-bar {
+        text-align: center;
+        padding: 40px 20px;
+        background: rgba(10, 25, 47, 0.9);
+        border-radius: 16px;
+        border: 1px solid var(--glass-border);
+        margin-top: 40px;
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="hero about-hero">
+    <div class="hero-content fade-in">
+        <span class="hero-subtitle">Established 2004</span>
+        <h1 class="hero-title">About SPHN</h1>
+        <p class="hero-desc">
+            22 years of academic excellence with NAAC A Grade. Conferred UGC Autonomous status, Sphoorthy Engineering College is dedicated to nurturing world-class engineers, innovators, and leaders under the aegis of Thoma Educational Society.
+        </p>
+        <div>
+            <span class="badge-code"><i class="fas fa-university" style="margin-right:6px;"></i> TS EAMCET Code: SPHN</span>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="grid-4" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
+        <div class="stat-item fade-in">
+            <div class="stat-number">22+</div>
+            <div class="stat-text">Years of Excellence</div>
+        </div>
+        <div class="stat-item fade-in">
+            <div class="stat-number" style="color: var(--secondary-color);">NAAC A</div>
+            <div class="stat-text">Accredited Grade</div>
+        </div>
+        <div class="stat-item fade-in">
+            <div class="stat-number">960+</div>
+            <div class="stat-text">Seats Intake</div>
+        </div>
+        <div class="stat-item fade-in">
+            <div class="stat-number" style="color: var(--secondary-color);">7</div>
+            <div class="stat-text">Departments</div>
+        </div>
+        <div class="stat-item fade-in">
+            <div class="stat-number">80+</div>
+            <div class="stat-text">Recruiters</div>
+        </div>
+        <div class="stat-item fade-in">
+            <div class="stat-number" style="color: var(--secondary-color);">109+</div>
+            <div class="stat-text">Faculty Members</div>
+        </div>
+    </div>
+</section>
+
+<!-- Overview / About College Details Section -->
+<section style="background: rgba(10,25,47,0.4);">
+    <div class="grid-2 fade-in" style="align-items: center; gap: 40px;">
+        <div>
+            <h2 class="section-title" style="text-align: left; margin-bottom: 25px;">Sphoorthy Engineering College</h2>
+            <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.8; margin-bottom: 20px;">
+                Established in 2004 by the <strong style="color: var(--secondary-color);">Thoma Educational Society</strong>, Sphoorthy Engineering College (UGC Autonomous) has been a beacon of technical education and innovation for over 22 years (2004–2026).
+            </p>
+            <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 20px;">
+                Affiliated to <strong style="color: #e6f1ff;">Osmania University</strong> and approved by <strong style="color: #e6f1ff;">AICTE</strong>, SPHN offers undergraduate B.Tech programs in 7 cutting-edge engineering branches with over 960+ seats, alongside postgraduate M.Tech and MBA programs.
+            </p>
+            <p style="color: var(--text-muted); line-height: 1.7;">
+                <i class="fas fa-map-marker-alt" style="color: var(--accent-color); margin-right: 8px;"></i>
+                Located in Nadargul Village, Near B.N. Reddy Nagar, Saroornagar Mandal, Hyderabad, Telangana 501510.
+            </p>
+        </div>
+        <div class="card glass fade-in" style="padding: 30px;">
+            <h3 style="color: var(--accent-color); font-size: 1.3rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-award"></i> Key Institutional Facts
+            </h3>
+            <ul style="list-style: none; padding: 0; margin: 0; color: var(--text-main);">
+                <li style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">College Name:</span>
+                    <strong>Sphoorthy Engineering College</strong>
+                </li>
+                <li style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Counselling Code:</span>
+                    <strong style="color: var(--secondary-color);">SPHN</strong>
+                </li>
+                <li style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Status:</span>
+                    <strong style="color: var(--accent-color);">UGC Autonomous</strong>
+                </li>
+                <li style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Accreditation:</span>
+                    <strong>NAAC Grade A</strong>
+                </li>
+                <li style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Affiliation:</span>
+                    <strong>Osmania University</strong>
+                </li>
+                <li style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Approval:</span>
+                    <strong>AICTE, New Delhi</strong>
+                </li>
+                <li style="padding: 12px 0; display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Society:</span>
+                    <strong>Thoma Educational Society</strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Vision & Mission Side by Side (grid-2) -->
+<section>
+    <h2 class="section-title fade-in">Vision &amp; Mission</h2>
+    <div class="grid-2">
+        <div class="vision-mission-card fade-in">
+            <div class="vm-icon">
+                <i class="fas fa-eye"></i>
+            </div>
+            <h3 class="card-title" style="font-size: 1.8rem; margin-bottom: 15px;">Our Vision</h3>
+            <p style="color: var(--text-main); font-size: 1.1rem; line-height: 1.8;">
+                To be a leading institution imparting quality education and creating competent professionals with technical competence, human values, and social responsibilities to serve society and industry globally.
+            </p>
+        </div>
+        <div class="vision-mission-card fade-in">
+            <div class="vm-icon accent">
+                <i class="fas fa-bullseye"></i>
+            </div>
+            <h3 class="card-title" style="font-size: 1.8rem; margin-bottom: 15px;">Our Mission</h3>
+            <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.7;">
+                To provide state-of-the-art infrastructure, qualified faculty, industry partnerships, and holistic development to enable students to excel academically, professionally, and ethically in an ever-evolving world.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Key Highlights Section (grid-3 with glass cards) -->
+<section style="background: rgba(10,25,47,0.5);">
+    <h2 class="section-title fade-in">Key Highlights</h2>
+    <div class="grid-3">
+        <div class="card glass highlight-card fade-in">
+            <div class="card-icon"><i class="fas fa-university"></i></div>
+            <h3 class="card-title">Autonomous Status</h3>
+            <p class="card-desc">
+                Conferred UGC Autonomous status, allowing SPHN to design industry-oriented dynamic curricula, adopt modern evaluation methods, and offer fast-track career learning paths.
+            </p>
+        </div>
+        <div class="card glass highlight-card fade-in">
+            <div class="card-icon" style="color: var(--accent-color);"><i class="fas fa-award"></i></div>
+            <h3 class="card-title">NAAC Accreditation</h3>
+            <p class="card-desc">
+                Accredited with Grade A by NAAC, validating our superior academic standards, faculty credentials, research outcome, and campus infrastructure.
+            </p>
+        </div>
+        <div class="card glass highlight-card fade-in">
+            <div class="card-icon"><i class="fas fa-handshake"></i></div>
+            <h3 class="card-title">Industry Partnerships</h3>
+            <p class="card-desc">
+                Strategic MoUs and collaborations with top tech corporations and industry leaders for internships, hands-on projects, workshops, and placement assurance.
+            </p>
+        </div>
+        <div class="card glass highlight-card fade-in">
+            <div class="card-icon" style="color: var(--accent-color);"><i class="fas fa-flask"></i></div>
+            <h3 class="card-title">Research &amp; Development</h3>
+            <p class="card-desc">
+                Dedicated R&amp;D center encouraging student innovation, faculty research publications, patents, prototypes, and interdisciplinary technical initiatives.
+            </p>
+        </div>
+        <div class="card glass highlight-card fade-in">
+            <div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+            <h3 class="card-title">Smart Classrooms</h3>
+            <p class="card-desc">
+                Modern ICT-enabled interactive classrooms, advanced computing laboratories, and high-speed Wi-Fi network enabling blended digital learning environments.
+            </p>
+        </div>
+        <div class="card glass highlight-card fade-in">
+            <div class="card-icon" style="color: var(--accent-color);"><i class="fas fa-bus"></i></div>
+            <h3 class="card-title">Hostel &amp; Transport</h3>
+            <p class="card-desc">
+                Comfortable separate hostels for boys and girls with nutritious food, plus a fleet of comfortable buses connecting the campus across all major twin-city routes.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Accreditations & Recognitions Section -->
+<section>
+    <h2 class="section-title fade-in">Accreditations &amp; Affiliations</h2>
+    <div class="grid-4">
+        <div class="accreditation-badge fade-in">
+            <div class="accreditation-icon"><i class="fas fa-stamp"></i></div>
+            <div>
+                <div class="accreditation-title">AICTE Approved</div>
+                <div class="accreditation-sub">All India Council for Technical Education</div>
+            </div>
+        </div>
+        <div class="accreditation-badge fade-in">
+            <div class="accreditation-icon" style="color: var(--secondary-color);"><i class="fas fa-graduation-cap"></i></div>
+            <div>
+                <div class="accreditation-title">UGC Autonomous</div>
+                <div class="accreditation-sub">University Grants Commission</div>
+            </div>
+        </div>
+        <div class="accreditation-badge fade-in">
+            <div class="accreditation-icon"><i class="fas fa-medal"></i></div>
+            <div>
+                <div class="accreditation-title">NAAC Grade A</div>
+                <div class="accreditation-sub">National Assessment and Accreditation Council</div>
+            </div>
+        </div>
+        <div class="accreditation-badge fade-in">
+            <div class="accreditation-icon" style="color: var(--secondary-color);"><i class="fas fa-landmark"></i></div>
+            <div>
+                <div class="accreditation-title">Osmania University</div>
+                <div class="accreditation-sub">Affiliated Institution</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Key Leadership Overview -->
+<section style="background: rgba(10,25,47,0.5);">
+    <h2 class="section-title fade-in">Leadership</h2>
+    <p class="fade-in" style="text-align: center; color: var(--text-muted); max-width: 600px; margin: 0 auto 30px;">
+        Guided by visionary management and distinguished academicians under Thoma Educational Society.
+    </p>
+    <div class="leadership-preview-grid fade-in">
+        <div class="leader-chip">
+            <div class="leader-avatar">SC</div>
+            <div>
+                <h4 style="color: #e6f1ff; font-size: 1rem; margin-bottom: 2px;">S. Chalama Reddy</h4>
+                <p style="color: var(--secondary-color); font-size: 0.85rem; margin: 0;">Chairman</p>
+            </div>
+        </div>
+        <div class="leader-chip">
+            <div class="leader-avatar" style="color: var(--accent-color); background: rgba(240, 180, 41, 0.15);">SJ</div>
+            <div>
+                <h4 style="color: #e6f1ff; font-size: 1rem; margin-bottom: 2px;">S. Jagan Mohan Reddy</h4>
+                <p style="color: var(--accent-color); font-size: 0.85rem; margin: 0;">Secretary</p>
+            </div>
+        </div>
+        <div class="leader-chip">
+            <div class="leader-avatar">SH</div>
+            <div>
+                <h4 style="color: #e6f1ff; font-size: 1rem; margin-bottom: 2px;">Mr. S. Holydhar Reddy</h4>
+                <p style="color: var(--secondary-color); font-size: 0.85rem; margin: 0;">CEO</p>
+            </div>
+        </div>
+        <div class="leader-chip">
+            <div class="leader-avatar" style="color: var(--accent-color); background: rgba(240, 180, 41, 0.15);">RP</div>
+            <div>
+                <h4 style="color: #e6f1ff; font-size: 1rem; margin-bottom: 2px;">Dr. M.V.S. Ram Prasad</h4>
+                <p style="color: var(--accent-color); font-size: 0.85rem; margin: 0;">Director &amp; Principal</p>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center; margin-top: 30px;" class="fade-in">
+        <a href="/management" class="btn btn-primary">View Leadership Team &rarr;</a>
+    </div>
+</section>
+
+<!-- Bottom Official Link Bar -->
+<section>
+    <div class="official-link-bar fade-in">
+        <h3 style="font-size: 1.5rem; color: #e6f1ff; margin-bottom: 10px;">Explore More on Official Portal</h3>
+        <p style="color: var(--text-muted); margin-bottom: 25px;">
+            For comprehensive institutional details, mandatory disclosures, and official updates, visit the official Sphoorthy Engineering College website.
+        </p>
+        <a href="https://www.sphoorthyengg.ac.in/about-us" target="_blank" rel="noopener noreferrer" class="btn btn-accent">
+            <i class="fas fa-external-link-alt" style="margin-right: 8px;"></i> Visit Official About SPHN Page
+        </a>
+    </div>
+</section>
+
+{% endblock %}

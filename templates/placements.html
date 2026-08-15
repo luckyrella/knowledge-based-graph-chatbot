@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+{% set active_page = 'placements' %}
+
+{% block content %}
+<!-- Hero -->
+<section class="hero" style="min-height: 50vh;">
+    <div class="hero-content fade-in">
+        <span class="hero-subtitle">Career Launchpad</span>
+        <h1 class="hero-title">Training & Placements</h1>
+        <p class="hero-desc">Dedicated placement cell ensuring outstanding career opportunities for students in top-tier MNCs. <strong>80+ recruiting companies</strong> and counting.</p>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="stats-section">
+    <div class="grid-4">
+        <div class="stat-item fade-in">
+            <div class="stat-number">₹12 <span style="font-size: 1.5rem;">LPA</span></div>
+            <div class="stat-text">Highest Package</div>
+        </div>
+        <div class="stat-item fade-in">
+            <div class="stat-number">₹5 <span style="font-size: 1.5rem;">LPA</span></div>
+            <div class="stat-text">Average Package</div>
+        </div>
+        <div class="stat-item fade-in">
+            <div class="stat-number" data-target="372">0</div>
+            <div class="stat-text">Total Offers</div>
+        </div>
+        <div class="stat-item fade-in">
+            <div class="stat-number" data-target="214">0</div>
+            <div class="stat-text">Students Placed</div>
+        </div>
+    </div>
+</section>
+
+<!-- Recruiting Companies — Real logos from SPHN website -->
+<section>
+    <h2 class="section-title fade-in">Recruiting Companies at SPHN</h2>
+    <p style="text-align:center; color:var(--text-muted); margin-bottom: 30px;" class="fade-in">80+ companies visit our campus for placements every year</p>
+
+    {% set recruiters = [
+        {"name": "Wipro", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/1-recruiter-logo-1680200766.png"},
+        {"name": "Infosys", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/2-recruiter-logo-1680200782.png"},
+        {"name": "Capgemini", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/3-recruiter-logo-1680200796.png"},
+        {"name": "Tech Mahindra", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/4-recruiter-logo-1680200968.png"},
+        {"name": "IBM", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/5-recruiter-logo-1680200995.png"},
+        {"name": "Accenture", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/6-recruiter-logo-1680201055.png"},
+        {"name": "TCS", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/7-recruiter-logo-1680201070.png"},
+        {"name": "HCL", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/8-recruiter-logo-1680201083.png"},
+        {"name": "Deloitte", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/9-recruiter-logo-1680776944.png"},
+        {"name": "Hexaware Technologies", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/10-recruiter-logo-1680777044.png"},
+        {"name": "Harman", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/11-recruiter-logo-1680927172.png"},
+        {"name": "CSS Corp", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/12-recruiter-logo-1680927188.png"},
+        {"name": "Infosys BPM", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/13-recruiter-logo-1680927204.png"},
+        {"name": "Aspire Systems", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/14-recruiter-logo-1680927240.png"},
+        {"name": "Zensar", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/15-recruiter-logo-1680927254.png"},
+        {"name": "Amadeus", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/16-recruiter-logo-1680927266.png"},
+        {"name": "Aditi Consulting", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/17-recruiter-logo-1680927282.png"},
+        {"name": "Excelloite", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/18-recruiter-logo-1680927300.png"},
+        {"name": "CollabEra", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/19-recruiter-logo-1680927310.png"},
+        {"name": "Toll Free Pvt Ltd", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/20-recruiter-logo-1680927325.png"},
+        {"name": "Renew Power", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/21-recruiter-logo-1680927335.png"},
+        {"name": "Zendesk", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/22-recruiter-logo-1680927347.png"},
+        {"name": "Vunathi Technologies", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/23-recruiter-logo-1680927357.png"},
+        {"name": "DDN Storage", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/24-recruiter-logo-1680927382.png"},
+        {"name": "IT Minds", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/25-recruiter-logo-1680927400.png"},
+        {"name": "SoftSuave", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/26-recruiter-logo-1680927412.png"},
+        {"name": "NexGen", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/27-recruiter-logo-1680927425.png"},
+        {"name": "Auropro", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/28-recruiter-logo-1680927438.png"},
+        {"name": "Inmobi", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/29-recruiter-logo-1680927450.png"},
+        {"name": "SkillMine", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/30-recruiter-logo-1680927461.png"},
+        {"name": "Yamaha", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/31-recruiter-logo-1680927671.png"},
+        {"name": "[24]7.ai", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/32-recruiter-logo-1680927682.png"},
+        {"name": "MPHasis", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/33-recruiter-logo-1680927694.png"},
+        {"name": "Kore.ai", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/34-recruiter-logo-1680927705.png"},
+        {"name": "ITNow", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/35-recruiter-logo-1680927717.png"},
+        {"name": "Spectrum", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/36-recruiter-logo-1680927729.png"},
+        {"name": "Softtek", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/37-recruiter-logo-1680927739.png"},
+        {"name": "Commscope", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/38-recruiter-logo-1680927752.png"},
+        {"name": "Omega Healthcare", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/39-recruiter-logo-1680927762.png"},
+        {"name": "Intellipaat", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/40-recruiter-logo-1680927777.png"},
+        {"name": "MyCapitol", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/41-recruiter-logo-1680927790.png"},
+        {"name": "Coforge", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/42-recruiter-logo-1680927800.png"},
+        {"name": "Tiger Analytics", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/43-recruiter-logo-1680927813.png"},
+        {"name": "Verzeo", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/44-recruiter-logo-1680927824.png"},
+        {"name": "Savantis", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/45-recruiter-logo-1680927838.png"},
+        {"name": "EPAM Systems", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/46-recruiter-logo-1680927850.png"},
+        {"name": "Suntek", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/47-recruiter-logo-1680927863.png"},
+        {"name": "Concentrix", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/49-recruiter-logo-1680927892.png"},
+        {"name": "iOPEX", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/50-recruiter-logo-1680927905.png"},
+        {"name": "Elementia", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/51-recruiter-logo-1680927915.png"},
+        {"name": "Genpact", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/52-recruiter-logo-1680927926.png"},
+        {"name": "Softex", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/53-recruiter-logo-1680927938.png"},
+        {"name": "BYJU'S", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/54-recruiter-logo-1680927948.png"},
+        {"name": "Palle Technologies", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/55-recruiter-logo-1680927959.png"},
+        {"name": "CodingMart", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/56-recruiter-logo-1696914956.png"},
+        {"name": "Movidu", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/57-recruiter-logo-1696915167.png"},
+        {"name": "Learning Routes", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/58-recruiter-logo-1693995594.png"},
+        {"name": "TechWebLabs", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/60-recruiter-logo-1696915260.png"},
+        {"name": "Hike Edu", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/61-recruiter-logo-1696915017.png"},
+        {"name": "VIBS InfoSol", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/64-recruiter-logo-1696915118.png"},
+        {"name": "Smart Docs", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/65-recruiter-logo-1696915071.png"},
+        {"name": "Headway Data Systems", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/67-recruiter-logo-1701432105.png"},
+        {"name": "Adwiteya Technology", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/68-recruiter-logo-1680927292.png"},
+        {"name": "Cadila Global", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/69-recruiter-logo-1680927692.png"},
+        {"name": "Tele Performance", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/72-recruiter-logo-1727105856.jpeg"},
+        {"name": "Teachnook", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/74-recruiter-logo-1730987748.png"},
+        {"name": "Corizo", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/76-recruiter-logo-1733236044.jpeg"},
+        {"name": "Writer Info Solutions", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/77-recruiter-logo-1734269389.jpeg"},
+        {"name": "Smarted", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/78-recruiter-logo-1736095360.avif"},
+        {"name": "Cogent", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/80-recruiter-logo-1740046503.jpeg"},
+        {"name": "Grad Guru", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/81-recruiter-logo-1742486782.jpeg"},
+        {"name": "Credencer", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/82-recruiter-logo-1745330304.png"},
+        {"name": "Five 9s Solutions", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/84-recruiter-logo-1746007437.png"},
+        {"name": "VNextGen IT Solutions", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/85-recruiter-logo-1748343123.jpeg"},
+        {"name": "TestSeriesPro", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/86-recruiter-logo-1760110780.jpeg"},
+        {"name": "Knowvation Learnings", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/87-recruiter-logo-1764337312.jpg"},
+        {"name": "Cogninode Technologies", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/88-recruiter-logo-1768739330.png"},
+        {"name": "iCube Solutions", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/90-recruiter-logo-1769266935.png"},
+        {"name": "Sun Axis Systems", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/91-recruiter-logo-1769267282.jpeg"},
+        {"name": "Edu Case", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/92-recruiter-logo-1771492354.png"},
+        {"name": "Lyros", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/93-recruiter-logo-1771936755.jpeg"},
+        {"name": "Hummingbird Technologies", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/94-recruiter-logo-1772811972.jpg"},
+        {"name": "KPR Techno Software", "logo": "https://www.sphoorthyengg.ac.in/public/assets/uploads/recruiters/95-recruiter-logo-1773310265.jpeg"}
+    ] %}
+
+    <div class="recruiter-logo-grid fade-in">
+        {% for r in recruiters %}
+        <div class="recruiter-logo-card" title="{{ r.name }}">
+            <img src="{{ r.logo }}" alt="{{ r.name }}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<span>{{ r.name }}</span>';">
+        </div>
+        {% endfor %}
+    </div>
+
+    <div style="text-align:center; margin-top: 30px;">
+        <a href="https://www.sphoorthyengg.ac.in/recruiting-companies" target="_blank" class="btn btn-primary" style="font-size: 0.9rem;">
+            View All on Official Site <i class="fas fa-external-link-alt" style="margin-left:6px;"></i>
+        </a>
+    </div>
+</section>
+
+<!-- Placement Process -->
+<section style="background: rgba(10,25,47,0.5);">
+    <h2 class="section-title fade-in">Placement Process</h2>
+    <div class="placement-timeline fade-in">
+        <div class="timeline-step">
+            <div class="step-num">01</div>
+            <h4>Pre-Placement Training</h4>
+            <p>Aptitude, coding, soft skills, and mock interviews from 2nd year onwards.</p>
+        </div>
+        <div class="timeline-step">
+            <div class="step-num">02</div>
+            <h4>Company Registration</h4>
+            <p>Companies register with T&P cell and share job descriptions and eligibility.</p>
+        </div>
+        <div class="timeline-step">
+            <div class="step-num">03</div>
+            <h4>Written Test / Online Test</h4>
+            <p>Aptitude, logical reasoning, and technical assessments conducted on-campus.</p>
+        </div>
+        <div class="timeline-step">
+            <div class="step-num">04</div>
+            <h4>Technical Interview</h4>
+            <p>Domain knowledge, problem-solving, and project discussions with panelists.</p>
+        </div>
+        <div class="timeline-step">
+            <div class="step-num">05</div>
+            <h4>HR Round & Offer</h4>
+            <p>Final round + offer letter with package details and joining date.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Training Programs -->
+<section>
+    <h2 class="section-title fade-in">Training Programs</h2>
+    <div class="grid-3">
+        <div class="card glass fade-in">
+            <div class="card-icon"><i class="fas fa-laptop-code"></i></div>
+            <h3 class="card-title">Technical Training</h3>
+            <p class="card-desc">Rigorous training in coding (Python, Java, C++), Data Structures, Algorithms, and core subjects. Industry-level projects and hackathons.</p>
+        </div>
+        <div class="card glass fade-in">
+            <div class="card-icon"><i class="fas fa-users"></i></div>
+            <h3 class="card-title">Soft Skills</h3>
+            <p class="card-desc">Communication skills, group discussions, mock interviews, personality development, and presentation skills workshops.</p>
+        </div>
+        <div class="card glass fade-in">
+            <div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+            <h3 class="card-title">Aptitude Training</h3>
+            <p class="card-desc">Quantitative, logical, and verbal reasoning training by industry experts. Regular tests and performance tracking.</p>
+        </div>
+        <div class="card glass fade-in">
+            <div class="card-icon"><i class="fas fa-certificate"></i></div>
+            <h3 class="card-title">Certification Programs</h3>
+            <p class="card-desc">AWS, Azure, Google Cloud, Salesforce, and Oracle certification preparation in collaboration with industry partners.</p>
+        </div>
+        <div class="card glass fade-in">
+            <div class="card-icon"><i class="fas fa-handshake"></i></div>
+            <h3 class="card-title">Industry Internships</h3>
+            <p class="card-desc">Mandatory summer internships and industry projects with partnered companies from 3rd year onwards.</p>
+        </div>
+        <div class="card glass fade-in">
+            <div class="card-icon"><i class="fas fa-brain"></i></div>
+            <h3 class="card-title">Competitive Coding</h3>
+            <p class="card-desc">Regular coding contests on LeetCode, HackerRank, CodeChef, and internal coding challenges with leaderboards.</p>
+        </div>
+    </div>
+</section>
+
+<!-- T&P Contact -->
+<section style="background: rgba(10,25,47,0.5);">
+    <h2 class="section-title fade-in">Training & Placement Cell</h2>
+    <div class="grid-2 fade-in" style="max-width: 800px; margin: 0 auto;">
+        <div class="card glass" style="text-align:center;">
+            <div class="card-icon"><i class="fas fa-user-tie"></i></div>
+            <h3 class="card-title">T&P Officer</h3>
+            <p class="card-desc">
+                <strong>Mr. Ashok Darshanala</strong><br>
+                Training & Placement Officer<br>
+                <i class="fas fa-phone" style="font-size:0.8rem;"></i> +91 93921 19392<br>
+                <i class="fas fa-envelope" style="font-size:0.8rem;"></i> placements@sphoorthyengg.ac.in
+            </p>
+        </div>
+        <div class="card glass" style="text-align:center;">
+            <div class="card-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <h3 class="card-title">T&P Cell Location</h3>
+            <p class="card-desc">
+                Training & Placement Cell<br>
+                2nd Floor, Admin Block<br>
+                Sphoorthy Engineering College<br>
+                Nadargul, Hyderabad – 501510
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Recruiter logo styles -->
+<style>
+.recruiter-logo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.recruiter-logo-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+    transition: var(--transition);
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+.recruiter-logo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(79,195,247,0.2);
+    border-color: rgba(79,195,247,0.3);
+}
+
+.recruiter-logo-card img {
+    max-width: 100%;
+    max-height: 55px;
+    object-fit: contain;
+    filter: none;
+}
+
+.recruiter-logo-card span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+/* Timeline */
+.placement-timeline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.timeline-step {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 24px 20px;
+    flex: 1;
+    min-width: 180px;
+    max-width: 200px;
+    text-align: center;
+    transition: var(--transition);
+    position: relative;
+}
+
+.timeline-step:hover {
+    border-color: var(--secondary-color);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(79,195,247,0.15);
+}
+
+.step-num {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--secondary-color);
+    font-family: var(--font-heading);
+    margin-bottom: 10px;
+    opacity: 0.7;
+}
+
+.timeline-step h4 {
+    color: #e6f1ff;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.timeline-step p {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .recruiter-logo-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 10px;
+    }
+    .recruiter-logo-card { padding: 10px 8px; min-height: 60px; }
+    .recruiter-logo-card img { max-height: 40px; }
+    .timeline-step { min-width: 140px; max-width: 100%; }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,182 @@
+{
+  "faculty": {
+    "computer_science_and_engineering": {
+      "dept_name": "Computer Science and Engineering",
+      "dept_code": "CSE",
+      "hod": "Prof. Kiran B. M.",
+      "staff": [
+        {"name": "Prof. Kiran B. M.", "designation": "Head of Department", "qualification": "M.Tech, Ph.D", "experience": "20 Years"},
+        {"name": "Dr. P. Ram Mohan Rao", "designation": "Associate Professor", "qualification": "M.Tech, Ph.D", "experience": "21 Years"},
+        {"name": "Dr. Kaja Masthan", "designation": "Associate Professor", "qualification": "M.Tech (CSE), Ph.D", "experience": "10 Years"},
+        {"name": "Dr. S. Joy Kumar", "designation": "Assistant Professor", "qualification": "B.Tech, M.Tech, Ph.D", "experience": "14 Years"},
+        {"name": "Mr. A. Venugopal Rao", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": null},
+        {"name": "Mrs. Sowjanya S.", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": "7 Years"},
+        {"name": "Mrs. K. Lavanya", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": "1 Year"},
+        {"name": "Mrs. K. Sneha", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": "2 Years"},
+        {"name": "Mrs. S. Sphoorthy Reddy", "designation": "Assistant Professor", "qualification": "B.Tech (CSE), M.Tech (CSE)", "experience": null},
+        {"name": "Mr. Md. Afzal", "designation": "Assistant Professor", "qualification": "M.Tech, (Ph.D pursuing)", "experience": "11 Years"},
+        {"name": "Mrs. A. Sravanthi", "designation": "Assistant Professor", "qualification": "M.C.A, M.Tech", "experience": "4 Years"},
+        {"name": "Mr. Mohd. Ayazuddin", "designation": "Assistant Professor", "qualification": "M.Tech (SE)", "experience": "12 Years"},
+        {"name": "Mr. T. Shravan Kumar", "designation": "Assistant Professor", "qualification": "B.Tech (CSE), M.Tech (CSE)", "experience": "7 Years"}
+      ]
+    },
+    "cse_aiml": {
+      "dept_name": "CSE - Artificial Intelligence and Machine Learning",
+      "dept_code": "AI&ML",
+      "hod": "Dr. KVSN Ramarao",
+      "staff": [
+        {"name": "Dr. KVSN Ramarao", "designation": "Head of Department", "qualification": "Ph.D. (AI/ML, Australian University)", "experience": "25+ Years"},
+        {"name": "Dr. Shubhashree Sahoo", "designation": "Assistant Professor", "qualification": "M.Tech., Ph.D.", "experience": "8 Years"},
+        {"name": "Mr. Mohammed Afzal", "designation": "Assistant Professor", "qualification": "M.Tech., (pursuing Ph.D.)", "experience": "11 Years"},
+        {"name": "Mr. Mohd Ayazuddin", "designation": "Assistant Professor", "qualification": "M.Tech (SE)", "experience": "12 Years"},
+        {"name": "Mr. Mohd Faisal", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": "8 Years"},
+        {"name": "Mr. Balika Mahesh", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": "8 Years"},
+        {"name": "Mr. Mohammed Farooq", "designation": "Assistant Professor", "qualification": null, "experience": "1 Year"},
+        {"name": "Mrs. L. Swathi", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": "12 Years"},
+        {"name": "Mrs. Revathi Kandula", "designation": "Assistant Professor", "qualification": "M.Tech, (pursuing Ph.D.)", "experience": null},
+        {"name": "Mr. K. Praveen Kumar", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. P. M. Suresh", "designation": "Assistant Professor", "qualification": "M.Tech., (Ph.D.)", "experience": "15 Years"},
+        {"name": "Mrs. Kanchana R.", "designation": "Assistant Professor", "qualification": "M.E.", "experience": "9 Years"},
+        {"name": "Mr. B. Saida", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. T. Balachary", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mrs. K.M.N. Vardhini", "designation": "Assistant Professor", "qualification": "(Ph.D.)", "experience": "8 Years"},
+        {"name": "Ms. Nelloju Priyanka", "designation": "Assistant Professor", "qualification": "B.Tech (CSE), M.Tech (CSE)", "experience": null},
+        {"name": "Mr. K. Mohan Rao", "designation": "Assistant Professor", "qualification": "AMIE, M.Tech (CSE)", "experience": null},
+        {"name": "Mr. Kumar Baradur", "designation": "Assistant Professor", "qualification": "M.Tech (AIML)", "experience": "10 Years"},
+        {"name": "Mrs. Sphoorthy Reddy Surakanti", "designation": "Assistant Professor", "qualification": "B.Tech (CSE), M.Tech (CSE), (pursuing Ph.D.)", "experience": null},
+        {"name": "Ms. Chintakuntla Harisha", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": "2 Years"},
+        {"name": "Ms. Thippana Sreelatha", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": "2 Years"},
+        {"name": "Ms. Sannilla Sowmya", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. Vinod Kumar Sambari", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. Banavath Raju", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": null},
+        {"name": "Mr. Vankdavath Ramu", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Ms. Jayasheela Thotakuri", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. K. Prashanth", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": null},
+        {"name": "Mr. L. Deepak Kishan", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. B. Nikhil Kumar", "designation": "Assistant Professor", "qualification": "B.Tech (CSE), M.Tech (CSE)", "experience": null},
+        {"name": "Mr. Ganesh Munavath", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Dr. Mohd Azeemulla", "designation": "Assistant Professor", "qualification": "Ph.D.", "experience": null},
+        {"name": "Ms. Y. Manisha", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. Venkata Pavan Guptha", "designation": "Assistant Professor", "qualification": null, "experience": null}
+      ]
+    },
+    "cse_data_science": {
+      "dept_name": "CSE - Data Science",
+      "dept_code": "DS",
+      "hod": "Dr. Allam Balaram",
+      "staff": [
+        {"name": "Dr. Allam Balaram", "designation": "Professor & HOD", "qualification": "Ph.D (CSE) – St. Peter's Institute; M.Tech (CSE) – Andhra University", "experience": "19+ Years"},
+        {"name": "Dr. Md. Abdul Azeem", "designation": "Associate Professor", "qualification": "BE (CSE), M.Tech (CSE), Ph.D (CSE)", "experience": "27 Years"},
+        {"name": "Mr. Mohammed Miskeen Ali", "designation": "Assistant Professor", "qualification": "M.Tech, (Ph.D)", "experience": "10 Years"},
+        {"name": "Mr. T. Shravan Kumar", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": "7 Years"},
+        {"name": "Mrs. M. Sreelaxmi", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": "11 Years"},
+        {"name": "Mrs. K. Sneha", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": "2 Years"},
+        {"name": "Mr. M. Yadaiah", "designation": "Assistant Professor", "qualification": "M.Tech (Data Science)", "experience": "10 Years"},
+        {"name": "Mr. M. Srinivasulu", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": null},
+        {"name": "Gurram Sushma", "designation": "Assistant Professor", "qualification": "M.Tech (SE)", "experience": null},
+        {"name": "Ms. Bandari Gayathri", "designation": "Assistant Professor", "qualification": "M.Tech (CSE-DS)", "experience": "11 Years"},
+        {"name": "K. Ramya", "designation": "Assistant Professor", "qualification": "B.Tech, M.Tech", "experience": "5 Years"},
+        {"name": "T. Venkata Surya Kiran", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": null},
+        {"name": "Mrs. Kanakam Sowjanya", "designation": "Assistant Professor", "qualification": "M.Tech, (Ph.D)", "experience": "8 Years"},
+        {"name": "Mrs. K. Srinija", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mrs. K. Bikshapathi", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": null},
+        {"name": "Mrs. Hanna Dorka Parimala Teki", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": "11 Years"},
+        {"name": "Mrs. Arla Priyanka", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": "11 Years"},
+        {"name": "Mr. Mugili Madhu", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": "4 Years"},
+        {"name": "Mr. Tekula Lokesh Reddy", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": "2 Years"},
+        {"name": "Mr. Ravula Lingam", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": null},
+        {"name": "Mrs. Kotra Ramya", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": "2 Years"},
+        {"name": "Mr. Shaik Sadiq", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": "1 Year"},
+        {"name": "K. Trishank", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "experience": null},
+        {"name": "Vijayalakshmi Kadali", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": null},
+        {"name": "Tabassum Roqia Mohammed", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": null},
+        {"name": "Sreelatha Thippana", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": null},
+        {"name": "Madhuri Annu", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": null},
+        {"name": "Srinivas Chinthala", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": null},
+        {"name": "Tippani Shiva Reddy", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": null}
+      ]
+    },
+    "cse_cyber_security": {
+      "dept_name": "CSE - Cyber Security",
+      "dept_code": "CS",
+      "hod": "Mrs. P. Sandhya Rani",
+      "staff": [
+        {"name": "Mrs. P. Sandhya Rani", "designation": "Head of Department / Assistant Professor", "qualification": "M.Tech, (Ph.D)", "experience": "13 Years"},
+        {"name": "Dr. K. Subba Rao", "designation": "Professor", "qualification": "M.Tech, Ph.D", "experience": "35 Years"},
+        {"name": "Mr. Matru Dhanavath", "designation": "Assistant Professor", "qualification": "M.Tech, (Ph.D pursuing)", "experience": "12 Years"},
+        {"name": "Mrs. Kotha Saigeetha", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. Eslavath Lakkiram", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. Ramavath Janu", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. Krishna Bokiri", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Ms. Dhupam Nagabala Tripura Sundari", "designation": "Assistant Professor", "qualification": "B.Tech (CSE), M.Tech (CSE)", "experience": "2 Years"},
+        {"name": "Mr. J. Naresh Kumar", "designation": "Assistant Professor", "qualification": "B.E., M.Tech, (Ph.D)", "experience": "13 Years"},
+        {"name": "Ms. G. Anantha Lakshmi", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Ms. Sadiya Afsheen", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. Kaspa Vinay Kumar", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": "3 Years"},
+        {"name": "Ms. A. Sandhya Rani", "designation": "Assistant Professor", "qualification": "B.E. (CSE), M.Tech (CSE)", "experience": null},
+        {"name": "Mr. T. Venkata Surya Kiran", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Ms. Karne Hephzibah", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Ms. Shivalatha Kurelly", "designation": "Assistant Professor", "qualification": null, "experience": null}
+      ]
+    },
+    "electronics_and_communications": {
+      "dept_name": "Electronics and Communications Engineering",
+      "dept_code": "ECE",
+      "hod": "T. Sandhya",
+      "staff": [
+        {"name": "T. Sandhya", "designation": "Assistant Professor & Head", "qualification": "M.Tech", "experience": null},
+        {"name": "Dr. K. Subba Rao", "designation": "Professor (Chairman, Board of Studies - ECE)", "qualification": "Ph.D.", "experience": null},
+        {"name": "Mrs. Yarram Priya", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": "8.5 Years"},
+        {"name": "Mr. G. Mukesh", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. D. Venkat Ratnam", "designation": "Assistant Professor", "qualification": null, "experience": null}
+      ]
+    },
+    "civil_engineering": {
+      "dept_name": "Civil Engineering",
+      "dept_code": "CIVIL",
+      "hod": "Mr. Ashok Darshanala",
+      "staff": [
+        {"name": "Mr. Ashok Darshanala", "designation": "Associate Professor & Head of Department", "qualification": "B.Tech (Civil), M.Tech (H&WRE), Pursuing Ph.D.", "experience": "12 Years teaching, 10+ Years industry"},
+        {"name": "Dr. S. Kailash Kumar", "designation": "Assistant Professor", "qualification": "M.Tech, Ph.D.", "experience": "4 Years"},
+        {"name": "Mr. N. Ramesh", "designation": "Assistant Professor", "qualification": "M.Tech", "experience": "8 Years"},
+        {"name": "Mr. G. Aditya Sagar", "designation": "Assistant Professor", "qualification": "B.Tech, M.Tech (Civil)", "experience": null},
+        {"name": "Mrs. L. Aparna", "designation": "Assistant Professor", "qualification": null, "experience": null}
+      ]
+    },
+    "freshman_engineering": {
+      "dept_name": "Freshman Engineering",
+      "dept_code": "FE",
+      "hod": "Dr. P. Gayathri Pavani",
+      "staff": [
+        {"name": "Dr. P. Gayathri Pavani", "designation": "Professor & Head of Department", "qualification": "M.Sc., Ph.D.", "experience": "17 Years"},
+        {"name": "Dr. Mohd Ahmed", "designation": "Associate Professor", "qualification": "M.Sc., Ph.D.", "experience": "10 Years"},
+        {"name": "Dr. V L N Srihari Gaddam", "designation": "Associate Professor", "qualification": "M.Sc., M.Phil.", "experience": "17 Years"},
+        {"name": "Pradeep Kumar Shaga", "designation": "Associate Professor", "qualification": "M.Sc., B.Ed.", "experience": "20 Years"},
+        {"name": "Dr. Lakshmi Nath Chadalavada", "designation": "Associate Professor (Management)", "qualification": "MBA, PG.DFM, M.Phil., APSET, Ph.D.", "experience": "27 Years"},
+        {"name": "Mrs. P. Madhavi", "designation": "Associate Professor", "qualification": "M.Sc., Ph.D. (Physics)", "experience": "16 Years"},
+        {"name": "Mr. P. Sunder Raj", "designation": "Assistant Professor", "qualification": "M.Sc. (IT), PGDCA", "experience": "17 Years"},
+        {"name": "Banoth Vinod Kumar", "designation": "Assistant Professor", "qualification": null, "experience": null},
+        {"name": "Mr. Raj Kumar Kalapala", "designation": "Assistant Professor (English)", "qualification": "MA English, B.Ed., APSET", "experience": "6 Years"},
+        {"name": "Mr. Aija Srinivas Reddy", "designation": "Assistant Professor (English)", "qualification": "MA English, M.Phil.", "experience": "28 Years"},
+        {"name": "Akula Swarna Latha", "designation": "Assistant Professor (Mathematics)", "qualification": "M.Sc., M.Phil., TS-SET", "experience": "15 Years"},
+        {"name": "Mr. K. Vijaya Bhaskara Reddy", "designation": "Assistant Professor (Mathematics)", "qualification": "M.Sc., M.A.", "experience": "18 Years"},
+        {"name": "Ms. Ch. Sai Srivani", "designation": "Assistant Professor (Mathematics)", "qualification": "M.Sc, TG-SET", "experience": "Fresher"}
+      ]
+    }
+  },
+  "summary": {
+    "total_departments": 7,
+    "total_faculty": 109,
+    "source_url": "https://www.sphoorthyengg.ac.in/teaching-staff/",
+    "fetched_on": "2026-08-12",
+    "department_counts": {
+      "CSE": 13,
+      "AI&ML": 33,
+      "Data Science": 29,
+      "Cyber Security": 16,
+      "ECE": 5,
+      "Civil": 5,
+      "Freshman Engineering": 13
+    }
+  }
+}

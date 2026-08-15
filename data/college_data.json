@@ -1,0 +1,193 @@
+{
+  "college": {
+    "name": "Sphoorthy Engineering College",
+    "code": "SPHN",
+    "established": 2004,
+    "type": "Private (Autonomous)",
+    "affiliation": "Jawaharlal Nehru Technological University, Hyderabad (JNTUH)",
+    "approval": "AICTE, New Delhi",
+    "accreditation": "NAAC Grade A (2023-2028)",
+    "autonomous": "UGC Autonomous Status (2023-2033)",
+    "recognition": "UGC recognized under sections 2(f) and 12(B)",
+    "ranking": "9th among Private Engineering Colleges in Telangana (Times Engineering Survey 2026)",
+    "campus_area": "25 Acres eco-friendly green campus",
+    "society": "Thoma Educational Society",
+    "address": "Nadargul Village, Near B.N. Reddy Nagar, Saroornagar Mandal, Sagar Road, Ranga Reddy District, Hyderabad, Telangana - 501510",
+    "phone": ["+91 93921 19392", "+91 99666 31091", "+91 93965 59392"],
+    "email": ["admissions@sphoorthyengg.ac.in", "info@sphoorthyengg.ac.in"],
+    "website": "https://www.sphoorthyengg.ac.in"
+  },
+  "management": {
+    "governing_body_chairman": {"name": "Dr. D. N. Reddy", "designation": "Former Vice-Chancellor, JNTUH"},
+    "chairman": {"name": "Sri S. Chalama Reddy"},
+    "secretary": {"name": "Sri S. Jagan Mohan Reddy"},
+    "ceo": {"name": "Mr. S. Holydhar Reddy"},
+    "director": {"name": "Dr. M.V.S. Ram Prasad"},
+    "principal": {"name": "Dr. V. S. Giridhar Akula"}
+  },
+  "departments": [
+    {
+      "id": "cse",
+      "name": "Computer Science and Engineering",
+      "short": "CSE",
+      "hod": "Prof. Kiran B. M.",
+      "intake": 300,
+      "description": "Flagship department offering cutting-edge curriculum in programming, algorithms, databases, AI, cloud computing, and software engineering.",
+      "highlights": ["State-of-the-art computer labs", "Industry-aligned curriculum", "Dedicated placement cell", "Research publications in IEEE & Springer"]
+    },
+    {
+      "id": "cse_aiml",
+      "name": "CSE - Artificial Intelligence & Machine Learning",
+      "short": "CSE (AI & ML)",
+      "hod": "Dr. KVSN Ramarao",
+      "intake": 300,
+      "description": "Specialized branch focusing on machine learning, deep learning, neural networks, NLP, computer vision, and AI applications.",
+      "highlights": ["AI/ML Research Lab", "TensorFlow & PyTorch training", "Industry projects with tech companies", "Kaggle competition participation"]
+    },
+    {
+      "id": "cse_ds",
+      "name": "CSE - Data Science",
+      "short": "CSE (DS)",
+      "hod": "Dr. Allam Balaram",
+      "intake": 180,
+      "description": "Focuses on big data analytics, data mining, statistical modeling, data visualization, and business intelligence.",
+      "highlights": ["Big Data Analytics Lab", "Hadoop & Spark ecosystem training", "Real-world datasets for projects", "Data Science bootcamps"]
+    },
+    {
+      "id": "cse_cs",
+      "name": "CSE - Cyber Security",
+      "short": "CSE (CS)",
+      "hod": "Dr. K. Subba Rao",
+      "intake": 60,
+      "description": "Specializes in network security, ethical hacking, cryptography, digital forensics, and cyber defense strategies.",
+      "highlights": ["Cyber Security Lab", "Ethical hacking workshops", "Capture The Flag (CTF) competitions", "Industry certifications support"]
+    },
+    {
+      "id": "ece",
+      "name": "Electronics and Communication Engineering",
+      "short": "ECE",
+      "hod": "Dr. K. Srinivas Rao",
+      "intake": 30,
+      "description": "Covers electronic circuits, communication systems, VLSI design, embedded systems, signal processing, and IoT.",
+      "highlights": ["Advanced Electronics Lab", "IoT & Embedded Systems Lab", "VLSI Design Tools", "Industry collaborations"]
+    },
+    {
+      "id": "ce",
+      "name": "Civil Engineering",
+      "short": "CE",
+      "hod": "Prof. Civil HOD",
+      "intake": 30,
+      "description": "Focuses on structural engineering, geotechnical engineering, transportation, environmental engineering, and construction management.",
+      "highlights": ["Material Testing Lab", "Surveying equipment", "CAD & BIM training", "Site visit programs"]
+    },
+    {
+      "id": "me",
+      "name": "Mechanical Engineering",
+      "short": "ME",
+      "hod": "Prof. Mech HOD",
+      "intake": 60,
+      "description": "Covers thermodynamics, fluid mechanics, manufacturing, robotics, automobile engineering, and CAD/CAM.",
+      "highlights": ["Advanced Workshop", "CAD/CAM Lab", "3D Printing facility", "Industrial visits"]
+    },
+    {
+      "id": "mba",
+      "name": "Master of Business Administration",
+      "short": "MBA",
+      "hod": "Prof. MBA HOD",
+      "intake": 60,
+      "description": "2-year postgraduate management program covering marketing, finance, HR, operations, and entrepreneurship.",
+      "highlights": ["Case study methodology", "Industry guest lectures", "Summer internships", "Management fests"]
+    }
+  ],
+  "courses": [
+    {"name": "B.Tech", "duration": "4 Years", "level": "Undergraduate", "branches": ["CSE", "CSE (AI & ML)", "CSE (DS)", "CSE (CS)", "ECE", "CE", "ME"], "total_intake": 960},
+    {"name": "M.Tech", "duration": "2 Years", "level": "Postgraduate", "specializations": ["CSE", "AI & Data Science", "Cyber Security"], "intake_per_spec": "18-24 seats"},
+    {"name": "MBA", "duration": "2 Years", "level": "Postgraduate", "intake": 60},
+    {"name": "Lateral Entry B.Tech", "duration": "3 Years (2nd year onwards)", "level": "Undergraduate", "eligibility": "Diploma / B.Sc holders via TG ECET"}
+  ],
+  "fees": {
+    "btech": {"convener_quota": "₹95,000 per annum", "management_quota": "As per TGCHE guidelines"},
+    "mtech": {"fee": "₹57,000 per annum"},
+    "mba": {"fee": "₹45,000 - ₹55,000 per annum"},
+    "hostel": "Additional charges apply",
+    "transport": "Additional charges apply (subsidized for students)"
+  },
+  "admissions": {
+    "btech": {
+      "convener_quota": {
+        "percentage": "70%",
+        "exam": "TG EAPCET (formerly TS EAMCET)",
+        "process": "Online state counseling based on EAPCET rank",
+        "eligibility": "10+2 with PCM, minimum 45% (40% for SC/ST/BC)"
+      },
+      "management_quota": {
+        "percentage": "30%",
+        "process": "Direct admission by college based on 10+2 merit, JEE Main, or EAPCET rank",
+        "eligibility": "10+2 with PCM"
+      },
+      "lateral_entry": {
+        "exam": "TG ECET",
+        "eligibility": "Diploma or B.Sc holders",
+        "seats": "Up to 10% of sanctioned intake"
+      }
+    },
+    "mtech": {
+      "convener_quota": {"percentage": "70%", "exam": "TG PGECET or GATE"},
+      "management_quota": {"percentage": "30%", "process": "Based on B.E./B.Tech aggregate"}
+    },
+    "mba": {
+      "convener_quota": {"percentage": "70%", "exam": "TG ICET", "eligibility": "Graduation with minimum 50% (45% for reserved)"},
+      "management_quota": {"percentage": "30%"}
+    }
+  },
+  "facilities": [
+    {"name": "Computer Labs", "icon": "💻", "description": "State-of-the-art computer centers with latest hardware and software, high-speed internet, and 24/7 access for students."},
+    {"name": "Central Library", "icon": "📚", "description": "Houses 45,000+ volumes, IEEE e-journals digital library, national/international research journal subscriptions, and spacious reading halls."},
+    {"name": "Girls' Hostel", "icon": "🏠", "description": "On-campus spacious and secure hostel with attached dining facility, gym, round-the-clock security, and power backup."},
+    {"name": "Sports Complex", "icon": "🏏", "description": "Outdoor courts for Cricket, Football, Volleyball, Basketball. Indoor facilities for Badminton, Table Tennis, Chess, Carroms. Active Sankalp Sports Club."},
+    {"name": "Wi-Fi Campus", "icon": "📶", "description": "24/7 high-speed Wi-Fi connectivity across the entire 25-acre campus."},
+    {"name": "Canteen & Cafeteria", "icon": "🍽️", "description": "Central cafeteria and hostel dining hall providing hygienic vegetarian and non-vegetarian food at affordable prices."},
+    {"name": "Transport", "icon": "🚌", "description": "Fleet of dedicated college buses covering major routes across Hyderabad and Secunderabad. Free for staff, subsidized for students."},
+    {"name": "AI/ML Research Lab", "icon": "🤖", "description": "Dedicated research laboratory for Artificial Intelligence and Machine Learning projects with GPU workstations."},
+    {"name": "IoT Lab", "icon": "📡", "description": "Internet of Things laboratory with Arduino, Raspberry Pi, sensors, and embedded systems development kits."},
+    {"name": "Seminar Halls", "icon": "🎤", "description": "Multiple air-conditioned seminar halls and auditorium with modern AV equipment for workshops, guest lectures, and events."},
+    {"name": "Health Center", "icon": "🏥", "description": "On-campus health center with first-aid facilities and medical support for students and staff."},
+    {"name": "Yoga Studio", "icon": "🧘", "description": "Dedicated yoga studio for physical and mental wellness of students."},
+    {"name": "Gymnasium", "icon": "💪", "description": "Fully equipped gym facility available for students and staff fitness."},
+    {"name": "Parking Facility", "icon": "🅿️", "description": "Spacious and organized parking area for students, staff, and visitors."},
+    {"name": "Green Initiatives", "icon": "🌿", "description": "Eco-friendly campus with solar panels, rainwater harvesting, and plantation drives."},
+    {"name": "AICTE Idea Lab", "icon": "💡", "description": "AICTE-sponsored innovation lab for students to prototype, build, and test creative ideas and projects."},
+    {"name": "Girls Waiting Hall", "icon": "🏛️", "description": "Comfortable and secure waiting area exclusively for girl students."}
+  ],
+  "placements": {
+    "highest_package": "₹12.0 LPA",
+    "average_package": "₹5.0 LPA",
+    "median_package": "₹3.8 LPA",
+    "students_placed_2024_25": "214+",
+    "job_offers_2024_25": "372+",
+    "companies_visited_2024_25": "27+",
+    "training": ["Campus Recruitment Training (CRT)", "Java & Python workshops", "Data Structures bootcamps", "Soft skills training", "Mock interviews", "Aptitude training"],
+    "top_recruiters": ["Accenture", "Capgemini", "TCS", "Infosys", "Wipro", "IBM", "Tech Mahindra", "Amazon", "Genpact", "Aspire Systems", "HCL", "Collabera", "Aditi Consulting", "Coforge", "MindTree"]
+  },
+  "scholarships": [
+    {"name": "Telangana ePASS Fee Reimbursement", "description": "Government of Telangana tuition fee reimbursement for SC, ST, BC, EBC, and Minority category students.", "eligibility": "Annual family income ≤ ₹1.5 Lakh (rural) / ≤ ₹2.0 Lakh (urban)"},
+    {"name": "Merit Scholarships", "description": "Institutional merit awards for academic toppers in each branch.", "eligibility": "Top rankers in semester examinations"},
+    {"name": "Sports Quota Concession", "description": "Fee concessions for students with state/national level sports achievements.", "eligibility": "State or national level sports certificates"},
+    {"name": "Single Girl Child Support", "description": "Special fee concession for single girl child students.", "eligibility": "Single girl child with relevant documentation"},
+    {"name": "Defense Personnel Ward", "description": "Concessions for children of defense personnel.", "eligibility": "Ward of serving/retired defense personnel"}
+  ],
+  "events": [
+    {"name": "PRAZASTI", "type": "Technical Fest", "description": "Flagship annual national-level technical fest featuring Hackathons, Ideathons, Project Expos, Paper & Poster Presentations, and Coding competitions."},
+    {"name": "SAMISTI", "type": "Cultural Fest", "description": "Annual cultural celebration featuring music, dance, drama, and cultural showcases."},
+    {"name": "Engineers' Day", "type": "Observance", "description": "Celebrated on September 15 with technical activities honoring Sir M. Visvesvaraya."},
+    {"name": "Freshers' Day", "type": "Social Event", "description": "Welcome celebration for newly admitted students."},
+    {"name": "Farewell Day", "type": "Social Event", "description": "Send-off celebration for graduating students."}
+  ],
+  "clubs": ["AI Fusion Club", "Art and Quill (Literary & Fine Arts Club)", "Coders Club - Code Architects", "Creators Club", "Cultural Club - Prathiba Yogyata", "Cyber GenZ Club", "Datanauts Club", "Eco Club", "Fitness Club - Yogyata", "Gamers Club", "Handlers Club - Robo Tech", "Multimedia Club - Trinetra", "NSS Club - Devna", "SeaBytes Club", "SPHN Radio Club", "Sports Club - Sankalp", "Women's Chapter Club - SheInspires"],
+  "academic_system": {
+    "type": "Semester-based Autonomous System",
+    "semesters_per_year": 2,
+    "evaluation": "Continuous Internal (Mid-I, Mid-II, assignments, practicals) + End-Semester Examinations",
+    "curriculum": "Industry-aligned, updated periodically with Board of Studies (BoS) comprising JNTUH nominees and industry experts"
+  }
+}

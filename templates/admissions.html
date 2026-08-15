@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% set active_page = 'admissions' %}
+
+{% block content %}
+<section class="hero" style="min-height: 60vh;">
+    <div class="hero-content fade-in">
+        <h1 class="hero-title">Admissions</h1>
+        <p class="hero-desc">Join Sphoorthy Engineering College and take the first step towards a brilliant career.</p>
+    </div>
+</section>
+
+<section>
+    <h2 class="section-title fade-in">Admission Process</h2>
+    <div class="grid-3">
+        <div class="card fade-in">
+            <h3 class="card-title">B.Tech Programs</h3>
+            <ul style="list-style-type: none;">
+                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--secondary-color); margin-right: 10px;"></i><strong>Category A (70%):</strong> Through TS EAMCET counseling based on merit rank.</li>
+                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--accent-color); margin-right: 10px;"></i><strong>Category B (30%):</strong> Management/NRI quota based on JEE Main / EAMCET / Intermediate marks.</li>
+            </ul>
+        </div>
+        <div class="card fade-in">
+            <h3 class="card-title">Lateral Entry (B.Tech)</h3>
+            <ul style="list-style-type: none;">
+                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--secondary-color); margin-right: 10px;"></i>10% of total intake is available for Diploma holders into 2nd year.</li>
+                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--secondary-color); margin-right: 10px;"></i>Admission through TS ECET counseling.</li>
+            </ul>
+        </div>
+        <div class="card fade-in">
+            <h3 class="card-title">PG Programs</h3>
+            <ul style="list-style-type: none;">
+                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--secondary-color); margin-right: 10px;"></i><strong>MBA:</strong> Through TS ICET counseling.</li>
+                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--secondary-color); margin-right: 10px;"></i><strong>M.Tech:</strong> Through TS PGECET / GATE scores.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section style="background: rgba(10,25,47,0.5);">
+    <h2 class="section-title fade-in">Eligibility & Requirements</h2>
+    <div class="card glass fade-in" style="max-width: 800px; margin: 0 auto;">
+        <h3 class="card-title" style="margin-bottom: 20px;">Document Checklist</h3>
+        <ul style="color: var(--text-muted); line-height: 2;">
+            <li><i class="fas fa-file-alt" style="margin-right: 10px; color: var(--accent-color);"></i> SSC & Intermediate (10+2) Marks Memos</li>
+            <li><i class="fas fa-file-alt" style="margin-right: 10px; color: var(--accent-color);"></i> Entrance Exam Hall Ticket & Rank Card (EAMCET/ICET/ECET)</li>
+            <li><i class="fas fa-file-alt" style="margin-right: 10px; color: var(--accent-color);"></i> Transfer Certificate (TC) & Bonafide Certificates</li>
+            <li><i class="fas fa-file-alt" style="margin-right: 10px; color: var(--accent-color);"></i> Caste/Community Certificate (if applicable)</li>
+            <li><i class="fas fa-file-alt" style="margin-right: 10px; color: var(--accent-color);"></i> Income Certificate (for fee reimbursement)</li>
+            <li><i class="fas fa-file-alt" style="margin-right: 10px; color: var(--accent-color);"></i> Aadhar Card Copy & Passport Size Photographs</li>
+        </ul>
+        <div style="margin-top: 30px; text-align: center;">
+            <a href="/contact" class="btn btn-accent">Contact Admissions Desk</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

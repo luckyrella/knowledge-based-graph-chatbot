@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% set active_page = 'departments' %}
+
+{% block content %}
+<section class="hero" style="min-height: 60vh;">
+    <div class="hero-content fade-in">
+        <h1 class="hero-title">Academic Departments</h1>
+        <p class="hero-desc">Discover our comprehensive range of engineering and management programs designed to shape the innovators of tomorrow.</p>
+    </div>
+</section>
+
+<section>
+    <div class="grid-2">
+        {% if departments %}
+            {% for dept in departments %}
+            <div class="card glass fade-in">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                    <div>
+                        <h3 class="card-title" style="margin-bottom: 5px;">{{ dept.name }}</h3>
+                        <span style="color: var(--secondary-color); font-weight: 600;">{{ dept.code }}</span>
+                    </div>
+                    <div style="background: rgba(240, 180, 41, 0.2); color: var(--accent-color); padding: 5px 15px; border-radius: 20px; font-weight: 600;">
+                        Intake: {{ dept.intake }}
+                    </div>
+                </div>
+                <p class="card-desc" style="margin-bottom: 15px;">{{ dept.description | default('A premier department offering state-of-the-art education and research opportunities.') }}</p>
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="color: var(--text-muted); font-size: 0.9rem;"><strong>HOD:</strong> {{ dept.hod | default('Prof. HOD Name') }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- Fallback if no data -->
+            <div class="card glass fade-in">
+                <h3 class="card-title">Computer Science & Engineering</h3>
+                <p class="card-desc">Intake: 300 | Code: CSE</p>
+            </div>
+            <div class="card glass fade-in">
+                <h3 class="card-title">CSE (AI & ML)</h3>
+                <p class="card-desc">Intake: 300 | Code: CSM</p>
+            </div>
+            <div class="card glass fade-in">
+                <h3 class="card-title">CSE (Data Science)</h3>
+                <p class="card-desc">Intake: 180 | Code: CSD</p>
+            </div>
+            <div class="card glass fade-in">
+                <h3 class="card-title">Electronics & Communication</h3>
+                <p class="card-desc">Intake: 30 | Code: ECE</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sphoorthy Engineering College</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% set active_page = active_page|default('home') %}
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="/" class="nav-logo">
+            <img src="https://www.sphoorthyengg.ac.in/public/assets/img/logo-new.png" alt="SPHN Logo" class="nav-logo-img">
+            <div class="nav-logo-text">
+                <span class="college-name">Sphoorthy Engineering College</span>
+                <span class="college-tag">(UGC Autonomous)</span>
+            </div>
+            <div class="counselling-badge">
+                <span class="badge-label">Counselling Code</span>
+                <span class="badge-code">SPHN</span>
+            </div>
+        </a>
+        <div class="nav-right-actions">
+            <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="/" class="{{ 'active' if active_page == 'home' else '' }}">Home</a></li>
+            <li><a href="/about" class="{{ 'active' if active_page == 'about' else '' }}">About</a></li>
+            <li><a href="/departments" class="{{ 'active' if active_page == 'departments' else '' }}">Departments</a></li>
+            <li><a href="/admissions" class="{{ 'active' if active_page == 'admissions' else '' }}">Admissions</a></li>
+            <li><a href="/placements" class="{{ 'active' if active_page == 'placements' else '' }}">Placements</a></li>
+            <li><a href="/facilities" class="{{ 'active' if active_page == 'facilities' else '' }}">Facilities</a></li>
+            <li><a href="/faculty" class="{{ 'active' if active_page == 'faculty' else '' }}">Faculty</a></li>
+            <li><a href="/clubs" class="{{ 'active' if active_page == 'clubs' else '' }}">Clubs</a></li>
+            <li><a href="/management" class="{{ 'active' if active_page == 'management' else '' }}">Leadership</a></li>
+            <li><a href="/contact" class="{{ 'active' if active_page == 'contact' else '' }}">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="nav-logo" style="margin-bottom: 20px;">
+                    <i class="fas fa-graduation-cap"></i>
+                    Sphoorthy<span>College</span>
+                </div>
+                <p>Empowering students with knowledge, skills, and values since 2004. An autonomous institution approved by AICTE and accredited with NAAC Grade A.</p>
+                <!-- Social Media Links (Official) -->
+                <div class="social-links">
+                    <a href="https://www.facebook.com/SPHN.Official/" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/sphn.official/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@sphoorthyengineeringcolleg2067/videos" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/in/sphoorthy-engineering-college" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="mailto:admissions@sphoorthyengg.ac.in" title="Email Us"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="/about">About SPHN</a></li>
+                    <li><a href="/departments">Departments</a></li>
+                    <li><a href="/admissions">Admissions</a></li>
+                    <li><a href="/placements">Placements</a></li>
+                    <li><a href="/faculty">Faculty</a></li>
+                    <li><a href="/clubs">Student Clubs</a></li>
+                    <li><a href="/management">Leadership</a></li>
+                    <li><a href="https://www.sphoorthyengg.ac.in/photo-gallery" target="_blank">SPHN Gallery</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="https://www.sphoorthyengg.ac.in/examination" target="_blank">Examinations</a></li>
+                    <li><a href="https://www.sphoorthyengg.ac.in/mandatory-disclosures" target="_blank">Mandatory Disclosures</a></li>
+                    <li><a href="http://alumni.sphoorthyengg.ac.in/" target="_blank">Alumni Network</a></li>
+                    <li><a href="https://www.sphoorthyengg.ac.in/e-grievance" target="_blank">E-Grievance</a></li>
+                    <li><a href="https://www.sphoorthyengg.ac.in/accreditation/naac" target="_blank">NAAC</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Nadargul Village, Near B.N. Reddy Nagar, Saroornagar Mandal, Hyderabad, Telangana 501510</p>
+                <p><i class="fas fa-phone"></i> +91 93921 19392</p>
+                <p><i class="fas fa-phone"></i> +91 99666 31091</p>
+                <p><i class="fas fa-envelope"></i> admissions@sphoorthyengg.ac.in</p>
+                <p><i class="fas fa-envelope"></i> info@sphoorthyengg.ac.in</p>
+                <p><i class="fas fa-globe"></i> <a href="https://www.sphoorthyengg.ac.in" target="_blank" style="color:var(--secondary-color)">www.sphoorthyengg.ac.in</a></p>
+            </div>
+        </div>
+        <!-- Google Map -->
+        <div class="footer-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3809.6944344990297!2d78.55157631470162!3d17.2820119881419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcba3c55bb47285%3A0x3b74816d33d740e8!2sSphoorthy%20Engineering%20College%20Hyderabad!5e0!3m2!1sen!2sin!4v1680766908682!5m2!1sen!2sin" width="100%" height="220" style="border:0; border-radius:12px; filter: invert(90%) hue-rotate(180deg);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Sphoorthy Engineering College. All rights reserved. &nbsp;|
+                <a href="https://www.sphoorthyengg.ac.in" target="_blank" style="color:var(--secondary-color)">Official Website</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Chatbot Widget -->
+    <div class="chatbot-widget">
+        <!-- Notification badge -->
+        <span class="chat-badge" id="chatBadge">1</span>
+        <button class="chat-toggle" id="chatToggle" title="Chat with us">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+        <div class="chat-panel" id="chatPanel">
+            <!-- Header -->
+            <div class="chat-header">
+                <div class="chat-title">
+                    <div class="chat-header-avatar">
+                        <img src="{{ url_for('static', filename='bot_avatar.png') }}" alt="Bot">
+                        <span class="header-online-dot"></span>
+                    </div>
+                    <div class="chat-title-text">
+                        <span class="chat-name">Sphoorthy Assistant</span>
+                        <span class="chat-status"><i class="fas fa-circle" style="font-size:0.4rem;color:#4caf50;vertical-align:middle"></i> Online — ready to help</span>
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <button class="hdr-btn" id="clearChat" title="Clear chat"><i class="fas fa-trash-alt"></i></button>
+                    <button class="hdr-btn close-chat" id="closeChat" title="Close"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="chat-messages" id="chatMessages"></div>
+
+            <!-- Scroll to bottom -->
+            <button class="scroll-down-btn" id="scrollDownBtn" title="Scroll to bottom">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+
+            <!-- Quick chips -->
+            <div class="chat-suggestions" id="chatSuggestions"></div>
+
+            <!-- Input -->
+            <div class="chat-input">
+                <textarea id="userInput" placeholder="Ask me anything…" rows="1" autocomplete="off"></textarea>
+                <button class="send-btn" id="sendBtn" title="Send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+{% extends 'base.html' %}
+{% set active_page = 'faculty' %}
+
+{% block content %}
+<!-- Hero -->
+<section class="hero" style="min-height: 42vh;">
+    <div class="hero-content fade-in">
+        <span class="hero-subtitle">Meet Our Team</span>
+        <h1 class="hero-title">Faculty Directory</h1>
+        <p class="hero-desc">Our dedicated team of <strong>109+ faculty members</strong> across 7 departments — qualified, experienced, and committed to student success.</p>
+    </div>
+</section>
+
+<!-- Filter bar -->
+<section style="padding: 20px 0 0;">
+    <div class="faculty-filter fade-in">
+        <button class="filter-btn active" data-dept="all">All Departments</button>
+        <button class="filter-btn" data-dept="cse">💻 CSE</button>
+        <button class="filter-btn" data-dept="aiml">🤖 AI &amp; ML</button>
+        <button class="filter-btn" data-dept="ds">📊 Data Science</button>
+        <button class="filter-btn" data-dept="cs">🔒 Cyber Security</button>
+        <button class="filter-btn" data-dept="ece">📡 ECE</button>
+        <button class="filter-btn" data-dept="civil">🏗️ Civil</button>
+        <button class="filter-btn" data-dept="fe">📘 Freshman</button>
+    </div>
+</section>
+
+{% set departments = [
+  {
+    "id": "cse",
+    "name": "Computer Science &amp; Engineering",
+    "icon": "💻",
+    "hod": "Prof. Kiran B. M.",
+    "count": 13,
+    "staff": [
+      {"name": "Prof. Kiran B. M.", "designation": "Head of Department", "qual": "M.Tech, Ph.D", "exp": "20 yrs"},
+      {"name": "Dr. P. Ram Mohan Rao", "designation": "Associate Professor", "qual": "M.Tech, Ph.D", "exp": "21 yrs"},
+      {"name": "Dr. Kaja Masthan", "designation": "Associate Professor", "qual": "M.Tech (CSE), Ph.D", "exp": "10 yrs"},
+      {"name": "Dr. S. Joy Kumar", "designation": "Assistant Professor", "qual": "B.Tech, M.Tech, Ph.D", "exp": "14 yrs"},
+      {"name": "Mr. A. Venugopal Rao", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "—"},
+      {"name": "Mrs. Sowjanya S.", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "7 yrs"},
+      {"name": "Mrs. K. Lavanya", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "1 yr"},
+      {"name": "Mrs. K. Sneha", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "2 yrs"},
+      {"name": "Mrs. S. Sphoorthy Reddy", "designation": "Assistant Professor", "qual": "B.Tech, M.Tech (CSE)", "exp": "—"},
+      {"name": "Mr. Md. Afzal", "designation": "Assistant Professor", "qual": "M.Tech, (Ph.D pursuing)", "exp": "11 yrs"},
+      {"name": "Mrs. A. Sravanthi", "designation": "Assistant Professor", "qual": "M.C.A, M.Tech", "exp": "4 yrs"},
+      {"name": "Mr. Mohd. Ayazuddin", "designation": "Assistant Professor", "qual": "M.Tech (SE)", "exp": "12 yrs"},
+      {"name": "Mr. T. Shravan Kumar", "designation": "Assistant Professor", "qual": "B.Tech, M.Tech (CSE)", "exp": "7 yrs"}
+    ]
+  },
+  {
+    "id": "aiml",
+    "name": "CSE — AI &amp; Machine Learning",
+    "icon": "🤖",
+    "hod": "Dr. KVSN Ramarao",
+    "count": 33,
+    "staff": [
+      {"name": "Dr. KVSN Ramarao", "designation": "Head of Department", "qual": "Ph.D. (AI/ML)", "exp": "25+ yrs"},
+      {"name": "Dr. Shubhashree Sahoo", "designation": "Assistant Professor", "qual": "M.Tech, Ph.D.", "exp": "8 yrs"},
+      {"name": "Mr. Mohammed Afzal", "designation": "Assistant Professor", "qual": "M.Tech (pursuing Ph.D.)", "exp": "11 yrs"},
+      {"name": "Mr. Mohd Ayazuddin", "designation": "Assistant Professor", "qual": "M.Tech (SE)", "exp": "12 yrs"},
+      {"name": "Mr. Mohd Faisal", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "8 yrs"},
+      {"name": "Mr. Balika Mahesh", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "8 yrs"},
+      {"name": "Mrs. L. Swathi", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "12 yrs"},
+      {"name": "Mr. P. M. Suresh", "designation": "Assistant Professor", "qual": "M.Tech, Ph.D.", "exp": "15 yrs"},
+      {"name": "Mrs. Kanchana R.", "designation": "Assistant Professor", "qual": "M.E.", "exp": "9 yrs"},
+      {"name": "Mrs. K.M.N. Vardhini", "designation": "Assistant Professor", "qual": "Ph.D.", "exp": "8 yrs"},
+      {"name": "Mr. Kumar Baradur", "designation": "Assistant Professor", "qual": "M.Tech (AIML)", "exp": "10 yrs"},
+      {"name": "Mrs. Revathi Kandula", "designation": "Assistant Professor", "qual": "M.Tech, (pursuing Ph.D.)", "exp": "—"},
+      {"name": "Ms. Nelloju Priyanka", "designation": "Assistant Professor", "qual": "B.Tech, M.Tech (CSE)", "exp": "—"},
+      {"name": "Dr. Mohd Azeemulla", "designation": "Assistant Professor", "qual": "Ph.D.", "exp": "—"},
+      {"name": "Ms. Chintakuntla Harisha", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "2 yrs"},
+      {"name": "Ms. Thippana Sreelatha", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "2 yrs"},
+      {"name": "Mr. Mohammed Farooq", "designation": "Assistant Professor", "qual": "—", "exp": "1 yr"},
+      {"name": "Mrs. Sphoorthy Reddy Surakanti", "designation": "Assistant Professor", "qual": "B.Tech, M.Tech, (pursuing Ph.D.)", "exp": "—"},
+      {"name": "Mr. K. Mohan Rao", "designation": "Assistant Professor", "qual": "AMIE, M.Tech (CSE)", "exp": "—"},
+      {"name": "Mr. B. Nikhil Kumar", "designation": "Assistant Professor", "qual": "B.Tech, M.Tech (CSE)", "exp": "—"},
+      {"name": "Mr. K. Prashanth", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "—"},
+      {"name": "Mr. Banavath Raju", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "—"},
+      {"name": "Mr. K. Praveen Kumar", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Ms. Sannilla Sowmya", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mr. Vinod Kumar Sambari", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mr. Vankdavath Ramu", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Ms. Jayasheela Thotakuri", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mr. L. Deepak Kishan", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mr. B. Saida", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mr. T. Balachary", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mr. Ganesh Munavath", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Ms. Y. Manisha", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mr. Venkata Pavan Guptha", "designation": "Assistant Professor", "qual": "—", "exp": "—"}
+    ]
+  },
+  {
+    "id": "ds",
+    "name": "CSE — Data Science",
+    "icon": "📊",
+    "hod": "Dr. Allam Balaram",
+    "count": 29,
+    "staff": [
+      {"name": "Dr. Allam Balaram", "designation": "Professor & HOD", "qual": "Ph.D (CSE), M.Tech (CSE)", "exp": "19+ yrs"},
+      {"name": "Dr. Md. Abdul Azeem", "designation": "Associate Professor", "qual": "BE, M.Tech, Ph.D (CSE)", "exp": "27 yrs"},
+      {"name": "Mr. Mohammed Miskeen Ali", "designation": "Assistant Professor", "qual": "M.Tech, (Ph.D)", "exp": "10 yrs"},
+      {"name": "Mrs. M. Sreelaxmi", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "11 yrs"},
+      {"name": "Ms. Bandari Gayathri", "designation": "Assistant Professor", "qual": "M.Tech (CSE-DS)", "exp": "11 yrs"},
+      {"name": "Mrs. Hanna Dorka Parimala Teki", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "11 yrs"},
+      {"name": "Mrs. Arla Priyanka", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "11 yrs"},
+      {"name": "Mrs. Kanakam Sowjanya", "designation": "Assistant Professor", "qual": "M.Tech, (Ph.D)", "exp": "8 yrs"},
+      {"name": "K. Ramya", "designation": "Assistant Professor", "qual": "B.Tech, M.Tech", "exp": "5 yrs"},
+      {"name": "Mr. M. Yadaiah", "designation": "Assistant Professor", "qual": "M.Tech (Data Science)", "exp": "10 yrs"},
+      {"name": "Mr. T. Shravan Kumar", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "7 yrs"},
+      {"name": "Mrs. K. Sneha", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "2 yrs"},
+      {"name": "Mr. Mugili Madhu", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "4 yrs"},
+      {"name": "Mr. Tekula Lokesh Reddy", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "2 yrs"},
+      {"name": "Mrs. Kotra Ramya", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "2 yrs"},
+      {"name": "Mr. Shaik Sadiq", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "1 yr"},
+      {"name": "Gurram Sushma", "designation": "Assistant Professor", "qual": "M.Tech (SE)", "exp": "—"},
+      {"name": "T. Venkata Surya Kiran", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "—"},
+      {"name": "Mrs. K. Srinija", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mrs. K. Bikshapathi", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "—"},
+      {"name": "Mr. M. Srinivasulu", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "—"},
+      {"name": "Mr. Ravula Lingam", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "—"},
+      {"name": "K. Trishank", "designation": "Assistant Professor", "qual": "M.Tech (CSE)", "exp": "—"},
+      {"name": "Vijayalakshmi Kadali", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "—"},
+      {"name": "Tabassum Roqia Mohammed", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "—"},
+      {"name": "Sreelatha Thippana", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "—"},
+      {"name": "Madhuri Annu", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "—"},
+      {"name": "Srinivas Chinthala", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "—"},
+      {"name": "Tippani Shiva Reddy", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "—"}
+    ]
+  },
+  {
+    "id": "cs",
+    "name": "CSE — Cyber Security",
+    "icon": "🔒",
+    "hod": "Mrs. P. Sandhya Rani",
+    "count": 16,
+    "staff": [
+      {"name": "Mrs. P. Sandhya Rani", "designation": "Head of Department", "qual": "M.Tech, (Ph.D)", "exp": "13 yrs"},
+      {"name": "Dr. K. Subba Rao", "designation": "Professor", "qual": "M.Tech, Ph.D", "exp": "35 yrs"},
+      {"name": "Mr. Matru Dhanavath", "designation": "Assistant Professor", "qual": "M.Tech, (Ph.D pursuing)", "exp": "12 yrs"},
+      {"name": "Mr. J. Naresh Kumar", "designation": "Assistant Professor", "qual": "B.E., M.Tech, (Ph.D)", "exp": "13 yrs"},
+      {"name": "Mr. Kaspa Vinay Kumar", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "3 yrs"},
+      {"name": "Ms. Dhupam Nagabala Tripura Sundari", "designation": "Assistant Professor", "qual": "B.Tech, M.Tech (CSE)", "exp": "2 yrs"},
+      {"name": "Ms. A. Sandhya Rani", "designation": "Assistant Professor", "qual": "B.E. (CSE), M.Tech (CSE)", "exp": "—"},
+      {"name": "Mrs. Kotha Saigeetha", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mr. Eslavath Lakkiram", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mr. Ramavath Janu", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mr. Krishna Bokiri", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Ms. G. Anantha Lakshmi", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Ms. Sadiya Afsheen", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mr. T. Venkata Surya Kiran", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Ms. Karne Hephzibah", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Ms. Shivalatha Kurelly", "designation": "Assistant Professor", "qual": "—", "exp": "—"}
+    ]
+  },
+  {
+    "id": "ece",
+    "name": "Electronics &amp; Communications Engineering",
+    "icon": "📡",
+    "hod": "T. Sandhya",
+    "count": 5,
+    "staff": [
+      {"name": "T. Sandhya", "designation": "Assistant Professor & Head", "qual": "M.Tech", "exp": "—"},
+      {"name": "Dr. K. Subba Rao", "designation": "Professor (BoS Chairman)", "qual": "Ph.D.", "exp": "—"},
+      {"name": "Mrs. Yarram Priya", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "8.5 yrs"},
+      {"name": "Mr. G. Mukesh", "designation": "Assistant Professor", "qual": "—", "exp": "—"},
+      {"name": "Mr. D. Venkat Ratnam", "designation": "Assistant Professor", "qual": "—", "exp": "—"}
+    ]
+  },
+  {
+    "id": "civil",
+    "name": "Civil Engineering",
+    "icon": "🏗️",
+    "hod": "Mr. Ashok Darshanala",
+    "count": 5,
+    "staff": [
+      {"name": "Mr. Ashok Darshanala", "designation": "Associate Professor & HOD", "qual": "B.Tech, M.Tech (H&WRE), Pursuing Ph.D.", "exp": "12 yrs + 10 yrs industry"},
+      {"name": "Dr. S. Kailash Kumar", "designation": "Assistant Professor", "qual": "M.Tech, Ph.D.", "exp": "4 yrs"},
+      {"name": "Mr. N. Ramesh", "designation": "Assistant Professor", "qual": "M.Tech", "exp": "8 yrs"},
+      {"name": "Mr. G. Aditya Sagar", "designation": "Assistant Professor", "qual": "B.Tech, M.Tech (Civil)", "exp": "—"},
+      {"name": "Mrs. L. Aparna", "designation": "Assistant Professor", "qual": "—", "exp": "—"}
+    ]
+  },
+  {
+    "id": "fe",
+    "name": "Freshman Engineering",
+    "icon": "📘",
+    "hod": "Dr. P. Gayathri Pavani",
+    "count": 13,
+    "staff": [
+      {"name": "Dr. P. Gayathri Pavani", "designation": "Professor & Head of Department", "qual": "M.Sc., Ph.D.", "exp": "17 yrs"},
+      {"name": "Dr. Mohd Ahmed", "designation": "Associate Professor", "qual": "M.Sc., Ph.D.", "exp": "10 yrs"},
+      {"name": "Dr. V L N Srihari Gaddam", "designation": "Associate Professor", "qual": "M.Sc., M.Phil.", "exp": "17 yrs"},
+      {"name": "Dr. Lakshmi Nath Chadalavada", "designation": "Associate Professor (Management)", "qual": "MBA, PG.DFM, M.Phil., APSET, Ph.D.", "exp": "27 yrs"},
+      {"name": "Mrs. P. Madhavi", "designation": "Associate Professor", "qual": "M.Sc., Ph.D. (Physics)", "exp": "16 yrs"},
+      {"name": "Pradeep Kumar Shaga", "designation": "Associate Professor", "qual": "M.Sc., B.Ed.", "exp": "20 yrs"},
+      {"name": "Mr. P. Sunder Raj", "designation": "Assistant Professor", "qual": "M.Sc. (IT), PGDCA", "exp": "17 yrs"},
+      {"name": "Mr. Raj Kumar Kalapala", "designation": "Assistant Professor (English)", "qual": "MA English, B.Ed., APSET", "exp": "6 yrs"},
+      {"name": "Mr. Aija Srinivas Reddy", "designation": "Assistant Professor (English)", "qual": "MA English, M.Phil.", "exp": "28 yrs"},
+      {"name": "Akula Swarna Latha", "designation": "Assistant Professor (Maths)", "qual": "M.Sc., M.Phil., TS-SET", "exp": "15 yrs"},
+      {"name": "Mr. K. Vijaya Bhaskara Reddy", "designation": "Assistant Professor (Maths)", "qual": "M.Sc., M.A.", "exp": "18 yrs"},
+      {"name": "Ms. Ch. Sai Srivani", "designation": "Assistant Professor (Maths)", "qual": "M.Sc, TG-SET", "exp": "Fresher"},
+      {"name": "Banoth Vinod Kumar", "designation": "Assistant Professor", "qual": "—", "exp": "—"}
+    ]
+  }
+] %}
+
+{% for dept in departments %}
+<section id="{{ dept.id }}" class="dept-section" data-dept="{{ dept.id }}" style="{% if not loop.first %}padding-top: 10px;{% endif %}">
+    <div class="dept-header fade-in">
+        <div class="dept-header-left">
+            <span class="dept-icon">{{ dept.icon }}</span>
+            <div>
+                <h2>{{ dept.name }}</h2>
+                <p>HOD: <strong>{{ dept.hod }}</strong> &nbsp;|&nbsp; <span class="faculty-count-badge">{{ dept.count }} Faculty</span></p>
+            </div>
+        </div>
+        <a href="https://www.sphoorthyengg.ac.in/teaching-staff/{{ dept.id | replace('aiml','cse---artificial-intelligence-and-machine-learning') | replace('ds','cse---data-science') | replace('cs','cse---cyber-security') | replace('ece','electronics-and-communications-engineering') | replace('civil','civil-engineering') | replace('fe','freshman-engineering') | replace('cse','computer-science-and-engineering') }}" target="_blank" class="btn btn-outline" style="font-size:0.8rem;padding:8px 18px;">Official Page ↗</a>
+    </div>
+    <div class="faculty-table-wrap fade-in">
+        <table class="faculty-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Qualification</th>
+                    <th>Experience</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in dept.staff %}
+                <tr class="{% if f.designation.startswith('Head') or f.designation.startswith('Professor &') %}hod-row{% endif %}">
+                    <td>{{ loop.index }}</td>
+                    <td><strong>{{ f.name }}</strong></td>
+                    <td><span class="desig-badge {% if 'Head' in f.designation or 'HOD' in f.designation %}hod-desig{% elif 'Professor' in f.designation and 'Assistant' not in f.designation %}prof-desig{% endif %}">{{ f.designation }}</span></td>
+                    <td>{{ f.qual }}</td>
+                    <td>{{ f.exp }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endfor %}
+
+<script>
+// Department filter
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.dataset.dept;
+        document.querySelectorAll('.dept-section').forEach(s => {
+            if (target === 'all' || s.dataset.dept === target) {
+                s.style.display = '';
+            } else {
+                s.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+
+<style>
+.faculty-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.filter-btn {
+  padding: 7px 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  background: rgba(255,255,255,0.04);
+  color: rgba(200,220,240,0.8);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-family: var(--font-body);
+  transition: var(--transition);
+}
+.filter-btn:hover, .filter-btn.active {
+  background: rgba(79,195,247,0.15);
+  border-color: var(--secondary-color);
+  color: #fff;
+}
+
+.dept-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.dept-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.dept-icon { font-size: 2.2rem; }
+.dept-header h2 {
+  font-size: 1.4rem;
+  color: #e6f1ff;
+  margin: 0 0 4px;
+}
+.dept-header p { color: var(--text-muted); font-size: 0.85rem; margin: 0; }
+.faculty-count-badge {
+  background: rgba(79,195,247,0.12);
+  border: 1px solid rgba(79,195,247,0.25);
+  color: var(--secondary-color);
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.faculty-table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.faculty-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.faculty-table th {
+  background: rgba(10,30,60,0.9);
+  color: var(--secondary-color);
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border-bottom: 1px solid rgba(79,195,247,0.15);
+}
+.faculty-table td {
+  padding: 11px 16px;
+  color: #c8d8f0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+.faculty-table tbody tr:hover td {
+  background: rgba(79,195,247,0.05);
+}
+.faculty-table .hod-row td {
+  background: rgba(240,180,41,0.04);
+}
+.faculty-table td:first-child { color: rgba(150,175,200,0.4); font-size: 0.75rem; }
+.faculty-table td strong { color: #e6f1ff; }
+
+.desig-badge {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.hod-desig {
+  background: rgba(240,180,41,0.1);
+  border-color: rgba(240,180,41,0.3);
+  color: var(--accent-color);
+}
+.prof-desig {
+  background: rgba(79,195,247,0.1);
+  border-color: rgba(79,195,247,0.25);
+  color: var(--secondary-color);
+}
+
+@media (max-width: 768px) {
+  .dept-header { flex-direction: column; align-items: flex-start; }
+  .faculty-table { font-size: 0.78rem; }
+  .faculty-table th, .faculty-table td { padding: 9px 10px; }
+}
+</style>
+{% endblock %}
