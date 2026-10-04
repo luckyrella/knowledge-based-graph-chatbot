@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section style="padding-top: 120px; min-height: 100vh;">
+    <!-- TODO: Add Admin navbar link for admins -->
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        <h2 class="section-title">Admin Dashboard</h2>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" style="padding: 10px; margin-bottom: 20px; border-radius: 8px; background: rgba(79, 195, 247, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color);">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="grid-4" style="margin-bottom: 40px;">
+            <div class="card glass text-center">
+                <i class="fas fa-project-diagram card-icon"></i>
+                <div class="stat-number">{{ stats.nodes }}</div>
+                <div class="stat-text">Total Nodes</div>
+            </div>
+            <div class="card glass text-center">
+                <i class="fas fa-link card-icon"></i>
+                <div class="stat-number">{{ stats.edges }}</div>
+                <div class="stat-text">Total Edges</div>
+            </div>
+            <div class="card glass text-center">
+                <i class="fas fa-users card-icon"></i>
+                <div class="stat-number">--</div>
+                <div class="stat-text">Total Users</div>
+            </div>
+            <div class="card glass text-center" style="{% if pending_users > 0 %}border-color: var(--accent-color);{% endif %}">
+                <i class="fas fa-user-clock card-icon" style="{% if pending_users > 0 %}color: var(--accent-color);{% endif %}"></i>
+                <div class="stat-number" style="{% if pending_users > 0 %}color: var(--accent-color);{% endif %}">{{ pending_users }}</div>
+                <div class="stat-text">Pending Approvals</div>
+            </div>
+        </div>
+
+        <div class="grid-2" style="gap: 30px;">
+            <div class="card glass">
+                <h3 class="card-title">Quick Actions</h3>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <a href="{{ url_for('admin_bp.users') }}" class="btn btn-primary"><i class="fas fa-users-cog"></i> Manage Users</a>
+                    <a href="{{ url_for('admin_bp.kg_management') }}" class="btn btn-primary"><i class="fas fa-project-diagram"></i> Manage Knowledge Graph</a>
+                    <a href="{{ url_for('admin_bp.analytics') }}" class="btn btn-primary"><i class="fas fa-chart-line"></i> View Analytics</a>
+                </div>
+            </div>
+            
+            <div class="card glass">
+                <h3 class="card-title">Recent Chats</h3>
+                {% if recent_chats %}
+                    <ul style="list-style: none; padding: 0;">
+                        {% for chat in recent_chats %}
+                        <li style="padding: 10px; border-bottom: 1px solid var(--glass-border); margin-bottom: 5px;">
+                            <span style="color: var(--secondary-color);">User:</span> {{ chat.message }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p style="color: var(--text-muted);">No recent chats found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

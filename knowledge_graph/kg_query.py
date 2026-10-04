@@ -23,6 +23,8 @@ class KnowledgeGraphQuery:
             if attrs.get('node_type') == node_type
         ]
 
+    # ── Department queries ────────────────────────────────────────────────────
+
     def query_department(self, dept_name):
         dept_name_lower = dept_name.lower()
         for node_id, d in self._get_nodes_by_type('Department'):
@@ -37,6 +39,8 @@ class KnowledgeGraphQuery:
                 "Available departments: CSE, CSE (AI & ML), CSE (Data Science), "
                 "CSE (Cyber Security), ECE, Civil Engineering, Mechanical Engineering, MBA.")
 
+    # ── Course queries ────────────────────────────────────────────────────────
+
     def query_course(self, course_name):
         course_lower = course_name.lower()
         for node_id, d in self._get_nodes_by_type('Course'):
@@ -48,6 +52,8 @@ class KnowledgeGraphQuery:
                     resp += f"Eligibility: {d['eligibility']}"
                 return resp
         return "I couldn't find information about that course. We offer B.Tech, M.Tech, and MBA."
+
+    # ── Fee queries ───────────────────────────────────────────────────────────
 
     def query_fees(self, course_or_dept=None, dept_name=None):
         fd = self._d('fees')
@@ -84,6 +90,8 @@ class KnowledgeGraphQuery:
                 f"• M.Tech: {mtech.get('fee', 'N/A')}\n"
                 f"• MBA: {mba.get('fee', 'N/A')}")
 
+    # ── Admission queries ─────────────────────────────────────────────────────
+
     def query_admission(self, course=None):
         ad = self._d('admissions')
         if not ad:
@@ -113,21 +121,17 @@ class KnowledgeGraphQuery:
                         f"Eligibility: {cq.get('eligibility', 'Graduation min 50%')}")
 
         # General overview
-        b  = ad.get('btech', {})
-        mt = ad.get('mtech', {})
-        mb = ad.get('mba', {})
         return (f"**Admissions:**\n"
                 f"• B.Tech: TG EAPCET (Convener 70%) or Direct (Management 30%)\n"
                 f"• M.Tech: TG PGECET / GATE\n"
                 f"• MBA: TG ICET")
 
+    # ── Placement queries ─────────────────────────────────────────────────────
+
     def query_placements(self):
         pd = self._d('placements')
         if not pd:
             return "Placement information is currently unavailable."
-
-        training = pd.get('training', [])
-        recruiters = pd.get('top_recruiters', [])
 
         resp = f"**Placements (2024-25):**\n"
         resp += f"• Highest: {pd.get('highest_package', 'N/A')} | Avg: {pd.get('average_package', 'N/A')}\n"
@@ -136,6 +140,8 @@ class KnowledgeGraphQuery:
         if recruiters:
             resp += f"• Top Recruiters: {', '.join(recruiters[:5])}"
         return resp
+
+    # ── Facility queries ──────────────────────────────────────────────────────
 
     def query_facilities(self):
         fac_nodes = self._get_nodes_by_type('Facility')
@@ -147,6 +153,8 @@ class KnowledgeGraphQuery:
             resp += f"• {d.get('name', 'Facility')}\n"
         return resp
 
+    # ── Scholarship queries ───────────────────────────────────────────────────
+
     def query_scholarships(self):
         schol_nodes = self._get_nodes_by_type('Scholarship')
         if not schol_nodes:
@@ -157,6 +165,8 @@ class KnowledgeGraphQuery:
             resp += f"• {d.get('name', '')}: {d.get('description', '')[:80]}\n"
         return resp
 
+    # ── Event queries ─────────────────────────────────────────────────────────
+
     def query_events(self):
         event_nodes = self._get_nodes_by_type('Event')
         if not event_nodes:
@@ -166,6 +176,8 @@ class KnowledgeGraphQuery:
         for _, d in event_nodes:
             resp += f"• {d.get('name', '')} ({d.get('type', '')})\n"
         return resp
+
+    # ── Contact queries ───────────────────────────────────────────────────────
 
     def query_contact(self):
         cd = self._d('college')
@@ -182,6 +194,8 @@ class KnowledgeGraphQuery:
         resp += f"📍 {cd.get('address', 'N/A')}"
         return resp
 
+    # ── College info queries ──────────────────────────────────────────────────
+
     def query_college_info(self):
         cd = self._d('college')
         if not cd:
@@ -192,6 +206,8 @@ class KnowledgeGraphQuery:
         resp += f"{cd.get('affiliation')} | {cd.get('accreditation')}\n"
         resp += f"Campus: {cd.get('campus_area')}"
         return resp
+
+    # ── Management queries ────────────────────────────────────────────────────
 
     def query_management(self):
         md = self._d('management')
@@ -211,6 +227,8 @@ class KnowledgeGraphQuery:
                 resp += f"• {label}: {person.get('name', 'N/A')}\n"
         return resp
 
+    # ── HOD queries ───────────────────────────────────────────────────────────
+
     def query_hod(self, dept):
         dept_lower = dept.lower()
         for _, d in self._get_nodes_by_type('Department'):
@@ -222,6 +240,8 @@ class KnowledgeGraphQuery:
         return ("I couldn't find HOD information for that department. "
                 "Please specify: CSE, ECE, Civil, Mechanical, AI ML, Data Science, Cyber Security, or MBA.")
 
+    # ── Club queries ──────────────────────────────────────────────────────────
+
     def query_clubs(self):
         club_nodes = self._get_nodes_by_type('Club')
         if not club_nodes:
@@ -231,6 +251,192 @@ class KnowledgeGraphQuery:
         for _, d in club_nodes:
             resp += f"• {d.get('name', 'Club')}\n"
         return resp
+
+    # ── NEW: Building / Campus Infrastructure queries ─────────────────────────
+
+    def query_building(self, building_name):
+        """Query information about a specific building or block."""
+        name_lower = building_name.lower()
+        for node_id, d in self._get_nodes_by_type('Building'):
+            if (name_lower in d.get('name', '').lower()
+                    or name_lower in d.get('id', '').lower()
+                    or name_lower in d.get('type', '').lower()):
+                resp = f"**🏢 {d.get('name')}**\n"
+                resp += f"Type: {d.get('type', 'N/A')} | Floors: {d.get('floors', 'N/A')}\n"
+                resp += f"{d.get('description', '')}\n"
+
+                # List rooms in this building
+                rooms = [
+                    (n, self.graph.nodes[n].get('data', {}))
+                    for n in self.graph.successors(node_id)
+                    if self.graph.nodes[n].get('node_type') == 'Room'
+                ]
+                if rooms:
+                    resp += "\n**Rooms:**\n"
+                    for _, rd in rooms:
+                        resp += f"• {rd.get('name', 'Room')} ({rd.get('type', '')}) — Capacity: {rd.get('capacity', 'N/A')}\n"
+
+                return resp
+
+        return ("I couldn't find that building. Available buildings include: "
+                "Main Block, Block A (AI & ML), Block B (DS & CS), Block C (ECE & Mech), "
+                "Block D (Civil & MBA), Central Library, Administrative Block, Auditorium.")
+
+    def query_campus_infrastructure(self):
+        """Overview of all campus buildings and infrastructure."""
+        buildings = self._get_nodes_by_type('Building')
+        if not buildings:
+            return "Campus infrastructure information is currently unavailable."
+
+        resp = "**🏛️ Campus Infrastructure — Sphoorthy Engineering College:**\n\n"
+        total_rooms = 0
+        for node_id, d in buildings:
+            room_count = sum(
+                1 for n in self.graph.successors(node_id)
+                if self.graph.nodes[n].get('node_type') == 'Room'
+            )
+            total_rooms += room_count
+            resp += f"• **{d.get('name')}** — {d.get('type', '')} | {d.get('floors', '?')} floors | {room_count} rooms\n"
+
+        resp += f"\n📊 Total: {len(buildings)} buildings, {total_rooms} rooms"
+        return resp
+
+    # ── NEW: Faculty profile queries ──────────────────────────────────────────
+
+    def query_faculty_profile(self, faculty_name):
+        """Detailed faculty profile with subjects taught, department, qualifications."""
+        name_lower = faculty_name.lower()
+        for node_id, d in self._get_nodes_by_type('Faculty'):
+            if name_lower in d.get('name', '').lower():
+                resp = f"**👨‍🏫 {d.get('name')}**\n"
+                resp += f"Designation: {d.get('designation', 'N/A')}\n"
+                resp += f"Qualification: {d.get('qualification', 'N/A')}\n"
+                resp += f"Experience: {d.get('experience', 'N/A')}\n"
+
+                # Find department
+                for neighbor in self.graph.successors(node_id):
+                    if self.graph.nodes[neighbor].get('node_type') == 'Department':
+                        dept_data = self.graph.nodes[neighbor].get('data', {})
+                        resp += f"Department: {dept_data.get('name', 'N/A')}\n"
+                        break
+
+                # Find subjects taught
+                subjects = [
+                    self.graph.nodes[n].get('data', {}).get('name', 'Unknown')
+                    for n in self.graph.successors(node_id)
+                    if self.graph.nodes[n].get('node_type') == 'Subject'
+                ]
+                if subjects:
+                    resp += f"\n**Subjects Taught:**\n"
+                    for subj in subjects:
+                        resp += f"• {subj}\n"
+
+                # Find research areas
+                research = [
+                    self.graph.nodes[n].get('data', {}).get('name', 'Unknown')
+                    for n in self.graph.successors(node_id)
+                    if self.graph.nodes[n].get('node_type') == 'ResearchArea'
+                ]
+                if research:
+                    resp += f"\n**Research Areas:** {', '.join(research)}"
+
+                return resp
+
+        return ("I couldn't find that faculty member. "
+                "Try using their full name, e.g., 'Dr. KVSN Ramarao' or 'Prof. Kiran B. M.'")
+
+    # ── NEW: Subject queries ──────────────────────────────────────────────────
+
+    def query_subjects_by_department(self, dept_name):
+        """List all subjects for a department, grouped by semester."""
+        dept_lower = dept_name.lower()
+        dept_node = None
+        dept_data = None
+
+        for node_id, d in self._get_nodes_by_type('Department'):
+            if (dept_lower in d.get('name', '').lower()
+                    or dept_lower in d.get('short', '').lower()
+                    or dept_lower == d.get('id', '').lower()):
+                dept_node = node_id
+                dept_data = d
+                break
+
+        if not dept_node:
+            return "I couldn't find that department. Please specify a valid department name."
+
+        # Collect subjects grouped by semester
+        subjects_by_sem = {}
+        for n in self.graph.successors(dept_node):
+            if self.graph.nodes[n].get('node_type') == 'Subject':
+                sd = self.graph.nodes[n].get('data', {})
+                sem = sd.get('semester', 0)
+                if sem not in subjects_by_sem:
+                    subjects_by_sem[sem] = []
+                subjects_by_sem[sem].append(sd)
+
+        if not subjects_by_sem:
+            return f"No subject data available for {dept_data.get('name')}."
+
+        resp = f"**📚 Subjects — {dept_data.get('name')} ({dept_data.get('short')}):**\n\n"
+        for sem in sorted(subjects_by_sem.keys()):
+            resp += f"**Semester {sem}:**\n"
+            for subj in subjects_by_sem[sem]:
+                type_tag = f" [{subj.get('type', 'theory')}]" if subj.get('type') else ""
+                resp += f"• {subj.get('code', '')} — {subj.get('name', '')} ({subj.get('credits', '?')} cr){type_tag}\n"
+            resp += "\n"
+
+        return resp.strip()
+
+    def query_subjects_by_semester(self, dept_name, semester):
+        """Get subjects for a specific department and semester."""
+        dept_lower = dept_name.lower()
+        dept_node = None
+        dept_data = None
+
+        for node_id, d in self._get_nodes_by_type('Department'):
+            if (dept_lower in d.get('name', '').lower()
+                    or dept_lower in d.get('short', '').lower()
+                    or dept_lower == d.get('id', '').lower()):
+                dept_node = node_id
+                dept_data = d
+                break
+
+        if not dept_node:
+            return "I couldn't find that department."
+
+        subjects = []
+        for n in self.graph.successors(dept_node):
+            if self.graph.nodes[n].get('node_type') == 'Subject':
+                sd = self.graph.nodes[n].get('data', {})
+                if sd.get('semester') == semester:
+                    subjects.append(sd)
+
+        if not subjects:
+            return f"No subjects found for {dept_data.get('name')} in Semester {semester}."
+
+        resp = f"**📚 {dept_data.get('name')} — Semester {semester}:**\n"
+        for subj in subjects:
+            type_tag = f" [{subj.get('type', 'theory')}]" if subj.get('type') else ""
+            resp += f"• {subj.get('code', '')} — {subj.get('name', '')} ({subj.get('credits', '?')} cr){type_tag}\n"
+        return resp
+
+    # ── NEW: ER Schema query ──────────────────────────────────────────────────
+
+    def query_er_schema(self):
+        """Returns a text summary of the ER schema."""
+        from .er_schema import export_er_summary
+        summary = export_er_summary()
+        resp = "**📊 Knowledge Graph ER Schema:**\n\n"
+        resp += f"**Entity Types:** {summary['total_entities']}\n"
+        for et in summary['entity_types']:
+            req = ', '.join(et['required_fields']) if et['required_fields'] else 'none'
+            resp += f"• {et['name']} (required: {req})\n"
+        resp += f"\n**Relationship Types:** {summary['total_relationships']}\n"
+        for rt in summary['relationship_types']:
+            resp += f"• {rt['source']} —[{rt['name']}]→ {rt['target']}\n"
+        return resp
+
+    # ── General search ────────────────────────────────────────────────────────
 
     def search_general(self, query):
         """Fallback: search across all node data dicts for keyword matches."""

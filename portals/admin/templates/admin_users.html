@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section style="padding-top: 120px; min-height: 100vh;">
+    <!-- TODO: Add Admin navbar link for admins -->
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 class="section-title" style="margin-bottom: 0;">User Management</h2>
+            <a href="{{ url_for('admin_bp.dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" style="padding: 10px; margin-bottom: 20px; border-radius: 8px; background: rgba(79, 195, 247, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color);">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if pending_users %}
+        <div class="card glass" style="margin-bottom: 40px; border-color: var(--accent-color);">
+            <h3 class="card-title" style="color: var(--accent-color);">Pending Approvals</h3>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--glass-border);">
+                            <th style="padding: 12px; color: var(--secondary-color);">Username</th>
+                            <th style="padding: 12px; color: var(--secondary-color);">Email</th>
+                            <th style="padding: 12px; color: var(--secondary-color);">Role</th>
+                            <th style="padding: 12px; color: var(--secondary-color);">Department</th>
+                            <th style="padding: 12px; color: var(--secondary-color);">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in pending_users %}
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                            <td style="padding: 12px;">{{ user.username }}</td>
+                            <td style="padding: 12px;">{{ user.email }}</td>
+                            <td style="padding: 12px; text-transform: capitalize;">{{ user.role }}</td>
+                            <td style="padding: 12px;">{{ user.department or 'N/A' }}</td>
+                            <td style="padding: 12px; display: flex; gap: 10px;">
+                                <form method="POST" style="display: inline;">
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                    <input type="hidden" name="action" value="approve">
+                                    <button type="submit" class="btn btn-accent" style="padding: 6px 12px; font-size: 0.9rem;">Approve</button>
+                                </form>
+                                <form method="POST" style="display: inline;">
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                    <input type="hidden" name="action" value="reject">
+                                    <button type="submit" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.9rem; color: #ff6b6b; border-color: #ff6b6b;">Reject</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card glass">
+            <h3 class="card-title">All Users</h3>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--glass-border);">
+                            <th style="padding: 12px; color: var(--secondary-color);">Username</th>
+                            <th style="padding: 12px; color: var(--secondary-color);">Email</th>
+                            <th style="padding: 12px; color: var(--secondary-color);">Role</th>
+                            <th style="padding: 12px; color: var(--secondary-color);">Department</th>
+                            <th style="padding: 12px; color: var(--secondary-color);">Status</th>
+                            <th style="padding: 12px; color: var(--secondary-color);">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                            <td style="padding: 12px;">{{ user.username }}</td>
+                            <td style="padding: 12px;">{{ user.email }}</td>
+                            <td style="padding: 12px; text-transform: capitalize;">{{ user.role }}</td>
+                            <td style="padding: 12px;">{{ user.department or 'N/A' }}</td>
+                            <td style="padding: 12px;">
+                                {% if user.is_approved %}
+                                    <span style="color: #51cf66;">Approved</span>
+                                {% else %}
+                                    <span style="color: var(--accent-color);">Pending</span>
+                                {% endif %}
+                                <br>
+                                {% if getattr(user, 'is_active', True) %}
+                                    <span style="color: #51cf66; font-size: 0.8rem;">Active</span>
+                                {% else %}
+                                    <span style="color: #ff6b6b; font-size: 0.8rem;">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 12px;">
+                                {% if user.role != 'admin' %}
+                                <form method="POST" style="display: inline;">
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                    <input type="hidden" name="action" value="toggle_active">
+                                    <button type="submit" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.9rem;">Toggle Active</button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

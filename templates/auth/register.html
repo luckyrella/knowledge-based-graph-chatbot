@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="auth-section" style="padding-top: 120px; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding-bottom: 50px;">
+    <div class="card glass" style="width: 100%; max-width: 500px;">
+        <h2 class="card-title" style="margin-bottom: 10px; text-align: center;">Register</h2>
+        <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+            Note: Admin accounts are created by existing admins.<br>
+            Your account will be activated after admin approval.
+        </p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" style="padding: 10px; margin-bottom: 15px; border-radius: 8px; background: rgba(79, 195, 247, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color);">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('auth_bp.register') }}">
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label for="username" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Username</label>
+                <input type="text" id="username" name="username" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: var(--text-main);">
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label for="email" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Email</label>
+                <input type="email" id="email" name="email" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: var(--text-main);">
+            </div>
+            <div class="grid-2" style="gap: 15px; margin-bottom: 15px;">
+                <div class="form-group">
+                    <label for="password" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Password</label>
+                    <input type="password" id="password" name="password" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: var(--text-main);">
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: var(--text-main);">
+                </div>
+            </div>
+            <div class="grid-2" style="gap: 15px; margin-bottom: 20px;">
+                <div class="form-group">
+                    <label for="role" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Role</label>
+                    <select id="role" name="role" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: var(--bg-color); color: var(--text-main);">
+                        <option value="faculty">Faculty</option>
+                        <option value="hod">HOD</option>
+                        <option value="placement_officer">Placement Officer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="department" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Department (if applicable)</label>
+                    <select id="department" name="department" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: var(--bg-color); color: var(--text-main);">
+                        <option value="">None</option>
+                        <option value="CSE">CSE</option>
+                        <option value="ECE">ECE</option>
+                        <option value="Civil">Civil</option>
+                        <option value="Mechanical">Mechanical</option>
+                        <option value="MBA">MBA</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+        </form>
+        <p style="text-align: center; margin-top: 15px; color: var(--text-muted);">
+            Already have an account? <a href="{{ url_for('auth_bp.login') }}" style="color: var(--secondary-color);">Login here</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

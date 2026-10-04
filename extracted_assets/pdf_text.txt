@@ -1,0 +1,570 @@
+=== PAGE 1 ===
+SELF-HEALING CLOUD INFRASTRUCTURE USING MULTI-AGENT AI FOR
+AUTONOMOUS REMEDIATION
+Presented By:
+Project Review  1
+Project Synopsis Presentation
+Department of Computer Science and Engineering
+Under the Supervision
+Dr.B.M.Kiran
+Head of the Department of CSE
+M.Akitha                   (23N81A05E0)
+A.Pravalika (23N81A05D8)
+K.Sunil                      (23N81A05A7)
+V.Sai Shashank       (23N81A05D4)
+
+
+=== PAGE 2 ===
+OVERVIEW
+ Introduction / Research background
+ Research objectives
+ Existing System 
+ Literature Review Summary Statement
+ Research gap identified
+ Proposed System
+ Roles & Responsibilities
+ Requirements
+ Project Timeline
+* 2 of 12
+
+=== PAGE 3 ===
+INTRODUCTION
+? Continuous Monitoring of cloud applications, network requests, logs, and 
+authentication activities. 
+? Incident Detection using AI agents to identify DDoS, SQL Injection, Brute Force, 
+and Privilege Escalation attacks. 
+? Root Cause Analysis using Multi-Agent AI to analyze incidents and identify their 
+possible source and cause. 
+? LLM & RAG-Based Analysis to retrieve relevant information and support accurate 
+incident decision-making. 
+? Automation & Evaluation to perform predefined responses, generate alerts, verify 
+recovery, and evaluate the effectiveness of the automated process.
+3 of 12*
+
+=== PAGE 4 ===
+RESEARCH OBJECTIVES
+Objective-1
+Objective-2
+Objective-3
+Objective-4
+Analyze detected incidents to identify their possible 
+root cause.
+Continuously monitor cloud applications and detect 
+incidents using AI agents.
+Use LLM and RAG to analyze incidents and provide 
+relevant information for decision-making.
+Automate the incident response process and 
+evaluate the effectiveness of the automation.
+
+=== PAGE 5 ===
+EXISTING SYSTEM
+? Existing System: Traditional cloud monitoring systems detect suspicious activities 
+and generate alerts for attacks. 
+? Technologies/Methods: Rule-based detection, threshold monitoring, logs, network 
+monitoring, and authentication monitoring. 
+? Limitations: Mostly depend on predefined rules and require manual analysis and 
+response. 
+? Problems/Challenges: Difficulty in identifying the root cause, delayed response, 
+and limited automation. 
+? Research Gap: Existing research shows the need for AI-based incident analysis, 
+LLM/RAG support, and automated response for faster and more effective attack 
+handling.
+5 of 12*
+
+=== PAGE 6 ===
+LITERATURE REVIEW SUMMARY STATEMENT
+S.No Title of the 
+paper
+Year of 
+publication 
+and Journal 
+name
+Methodology 
+adopted
+Results 
+obtained
+Key gaps 
+identified
+1 SQL Injection 
+Attack: Detection, 
+Prioritization & 
+Prevention
+2024 – Journal of 
+Information 
+Security and 
+Applications
+Used CNN-LSTM
+and ML for SQL 
+injection detection 
+and prevention.
+Achieved 97% F1-
+score with accurate 
+detection.
+Does not fully 
+handle all 
+advanced SQL 
+injection attacks. 
+2 SQL Injection 
+Detection Using 
+Self-Supervised Pre-
+training and 
+Multimodal 
+Techniques
+2026 – Intelligent 
+Systems with 
+Applications
+Used Self-
+Supervised 
+Learning, CNN 
+and Transformer 
+models.
+Improved SQL 
+injection detection 
+accuracy.
+Depends on 
+multiple data 
+sources and 
+higher 
+computation
+3
+Cloud Database 
+Security: An AI 
+based Approach to 
+Alleviating 
+Advanced SQL 
+Injection Threats
+2026 – IJERT Used AI, ML, 
+Deep Learning, 
+and anomaly 
+detection.
+Improved 
+detection and 
+reduced false 
+positives.
+High 
+computational 
+cost and model 
+maintenance. 
+6
+
+=== PAGE 7 ===
+LITERATURE REVIEW SUMMARY STATEMENT
+S.N
+o
+Title of the 
+paper
+Year of 
+publication 
+and Journal 
+name
+Methodology 
+adopted
+Results 
+obtained
+Key gaps 
+identified
+4 Wordcloud: 
+Detecting Mobile 
+Malware with Deep 
+Learning
+2025 – Egyptian 
+Informatics Journal
+Static analysis, 
+WordCloud
+representation and 
+CNN
+Achieved 99.48% 
+accuracy on 
+50,000 Android 
+samples.
+Mainly focuses 
+on Android and 
+static analysis.
+5 Building Resilient 
+Malware Detection 
+System against 
+Poisoning Attacks
+2026 – Procedia 
+Computer Science
+CNN, LSTM, Bi-
+LSTM and transfer 
+learning
+Transfer learning 
+performed best 
+under different 
+poisoning levels.
+Accuracy 
+decreases with 
+increased 
+poisoned data 
+and class 
+imbalance.
+6
+Advances in 
+Malware Analysis 
+and Detection in 
+Cloud Computing 
+Environments: A 
+Review
+2024 –
+International 
+Journal of Safety 
+and Security 
+Engineering
+Survey of ML, 
+DL, static, 
+dynamic and 
+cloud-based 
+detection
+Cloud-based 
+detection improves 
+scalability and 
+malware analysis. 
+Issues include 
+polymorphic 
+malware, 
+privacy, high cost 
+and real-time 
+detection. 
+7
+
+=== PAGE 8 ===
+LITERATURE REVIEW SUMMARY STATEMENT
+S.No Title of the 
+paper
+Year of 
+publication 
+and Journal 
+name
+Methodology 
+adopted
+Results 
+obtained
+Key gaps 
+identified
+7 Brute-force Attack 
+Mitigation on 
+Remote Access 
+Services via 
+Software-Defined 
+Perimeter
+2025 – Scientific 
+Reports
+Used SDP, SPA, 
+ConnTrack and 
+Snort IDPS with a 
+Docker-based 
+prototype.
+No successful 
+brute-force 
+attacks; 10%+ 
+latency reduction 
+and 48.7% CPU 
+reduction. 
+Scalability, 
+legacy-system 
+integration and 
+adaptation to 
+new attacks need 
+improvement. 
+8 Intercept the Cloud 
+Network From 
+Brute Force and 
+DDoS Attacks via 
+Intrusion Detection 
+and Prevention 
+System
+2021 – IEEE 
+Access
+Used HIDS, NIDS, 
+SIDS, Firewall and 
+Cloudflare to 
+detect and prevent 
+attacks.
+Successfully 
+detected brute-
+force, pattern-
+matching and 
+DDoS attacks and 
+protected the cloud 
+server.
+Needs better 
+algorithms and 
+comparison with 
+tools such as 
+Snort, Suricata 
+and OSSEC.
+9
+Robustness of Cloud 
+Security against 
+Brute-force Attack
+2024 – Advanced 
+Sciences and 
+Technology Journal
+Combined OTP + 
+MD5 for 
+authentication and 
+RC6 encryption 
+for cloud data.
+OTP+MD5 
+increased attack 
+time to about 2 
+minutes, while 
+RC6 made brute-
+force practically 
+infeasible. 
+Mainly focuses 
+on authentication 
+and encryption; 
+broader real-time 
+attack detection 
+is not addressed.
+8
+
+=== PAGE 9 ===
+LITERATURE REVIEW SUMMARY STATEMENT
+S.N
+o
+Title of the 
+paper
+Year of 
+publication 
+and Journal 
+name
+Methodology 
+adopted
+Results 
+obtained
+Key gaps 
+identified
+10
+Analysis of DDoS 
+Attack and Defense 
+System in Cloud 
+Environment
+2026 – Discover 
+Internet of Things
+Used MSIFS 
+feature selection 
+and EnsembleNet
+with LightGBM, 
+CatBoost and 
+ExtraTrees. 
+Achieved 97.31% 
+accuracy with 
+effective DDoS 
+detection. 
+Needs further 
+improvement for 
+dynamic traffic 
+and zero-day 
+attacks. 
+11 Cloud-Based DDoS 
+Detection Using 
+Hybrid Feature 
+Selection with Deep 
+Reinforcement 
+Learning (DRL)
+2025 – Scientific 
+Reports
+Used Boruta, 
+SHAP, feature 
+stability analysis 
+and DRL models 
+TD3, DDPG and 
+A2C.
+TD3 achieved 
+99.12% accuracy 
+with 1.87 ms
+inference latency.)
+Real-world cloud 
+traffic, 
+scalability and 
+computational 
+overhead require 
+further study.
+12
+A Comparative 
+Study of DDoS 
+Attack in Cloud 
+Computing 
+Environment
+2023 – SSRG 
+International 
+Journal of 
+Electronics and 
+Communication 
+Engineering
+Reviewed 41 
+DDoS detection 
+methods using 
+ML, DL, SDN, 
+network and 
+resource-
+management 
+approaches. 
+Compared 
+accuracy, 
+precision, recall 
+and F1-score; 
+SaDE-ELM 
+performed best 
+among the 
+compared 
+methods. 
+More work is 
+needed for real-
+time detection 
+and adaptive 
+defense. 
+9
+
+=== PAGE 10 ===
+CHALLENGES AND GAPS IN CURRENT RESEARCH
+S.No Challenge Description Research Gap
+1 Real-Time Attack Detection Attacks can occur rapidly and 
+require continuous monitoring.
+Need for faster and 
+continuous AI-based 
+attack detection.
+2 Multiple Attack Detection DDoS, SQL Injection, Brute Force, 
+and Privilege Escalation have 
+different attack patterns.
+Need for a single 
+system capable of 
+detecting multiple attack 
+types.
+3 Root Cause Identification Detecting an attack does not always 
+explain its source or cause.
+Need for AI-based 
+incident and root-cause 
+analysis.
+4 Automated Response Existing systems often generate 
+alerts but require manual action.
+Need for automated and 
+predefined responses 
+after attack detection.
+5 Intelligent Analysis Large amounts of logs and security 
+information are difficult to analyze
+manually
+Need for LLM and RAG 
+to support incident 
+analysis and decision-
+making.
+10
+
+=== PAGE 11 ===
+PROPOSED SYSTEM
+? Continuously monitor cloud application activities, network requests, and user 
+authentication. 
+? Detect DDoS, SQL Injection, Brute Force, and Privilege Escalationattacks. 
+? Create an incident and use Multi-Agent AI to analyze the attack and identify its 
+possible root cause. 
+? Use LLM + RAG to retrieve relevant information and support the response decision. 
+? Perform predefined automated actions, verify the result, generate an alert, and 
+record the incident report.
+* 11 of 12
+
+=== PAGE 12 ===
+12
+
+=== PAGE 13 ===
+ROLES & RESPONSIBILITIES
+* 13 of 12
+M.Akitha Cloud setup, monitoring, metrics & incident 
+detection.
+A.Pravalika Multi-Agent AI, log analysis & root-cause agents.
+K.Sunil LLM, RAG, knowledge base & AI 
+recommendations.
+V.Sai Shashank Remediation, verification, dashboard & testing.
+Guide Technical guidance, review, monitoring
+
+=== PAGE 14 ===
+REQUIREMENTS
+Hardware Requirements:
+Requirements
+Hardware Requirements
+Processor: Intel Core i5 or equivalent 
+RAM: Minimum 8 GB 
+Storage: Minimum 10 GB free space 
+Internet/Network: Stable internet 
+connection 
+Other Hardware: Standard 
+laptop/desktop
+Software Requirements:
+Operating System: Windows 10/11 
+Programming Language: Python 
+Frameworks/Libraries: FastAPI, 
+Uvicorn, Requests, Psutil
+AI Technologies: LLM and RAG 
+Database: SQLite / JSON for 
+incident data 
+IDE: Visual Studio Code 
+Cloud/Platform: Docker 
+Testing Tools:Postman / FastAPI
+Swagger UI
+14 of 12*
+
+=== PAGE 15 ===
+REQUIREMENTS
+Functional Requirements:
+Monitor cloud services and system 
+metrics 
+Detect service failures and abnormal 
+conditions 
+Analyze logs and identify possible 
+root causes 
+Retrieve similar incidents using RAG 
+Generate solutions using LLM 
+Perform predefined recovery actions 
+Verify successful recovery 
+Generate incident reports
+Non-Functional Requirements:
+Performance: Quick incident 
+detection and response 
+Security: Secure access and 
+controlled recovery actions 
+Reliability: Continuous monitoring 
+and recovery 
+Scalability: Support additional 
+services and agents 
+Usability: Simple monitoring 
+dashboard 
+Maintainability: Modular and easy-
+to-update architecture 
+15 of 12*
+
+=== PAGE 16 ===
+TIMELINE / PROJECT SCHEDULE
+* 16 of 12
+Phase Activities Month
+SEM-I
+Phase 1 Problem identification & topic finalization AUG
+Phase 2 Literature survey & existing-system study AUG & SEP
+Phase 3 Requirement analysis SEP
+Review paper write up and submit to journals (Oct)
+Phase 4 System design & architecture Sep & Oct
+Phase 5 Implementation / Development Sep & Oct
+Phase 6 Testing & debugging Sep & Oct
+Phase 7 Results & performance evaluation Oct & Nov
+Full paper write up and submit to journals/ IEEE 
+conferences (Dec-26)
+SEM-II
+Phase 8 deploy the project in cloud Jan, Feb-27
+Phase 9 Documentation & final report Feb, Mar-27
+Phase 10 Attending conferences / paper publish (1st Week of Mar)
+Final review & presentation 1st Week of April-27
+
+=== PAGE 17 ===
+* (#)  of 12
+REFERENCES
+1.
+2
+3
+Note: Order of references must match with the Literature review summary order  
+(slide no:11)
+
+=== PAGE 18 ===
+THANK YOU..!
+* (#)  of 12
+

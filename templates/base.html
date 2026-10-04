@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sphoorthy Engineering College</title>
+    <title>{% block title %}Sphoorthy Engineering College{% endblock %}</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     {% set active_page = active_page|default('home') %}
@@ -48,8 +49,33 @@
             <li><a href="/clubs" class="{{ 'active' if active_page == 'clubs' else '' }}">Clubs</a></li>
             <li><a href="/management" class="{{ 'active' if active_page == 'management' else '' }}">Leadership</a></li>
             <li><a href="/contact" class="{{ 'active' if active_page == 'contact' else '' }}">Contact</a></li>
+            {% if current_user.is_authenticated %}
+                {% if current_user.role == 'admin' %}
+                <li><a href="/admin/" class="{{ 'active' if active_page == 'admin' else '' }}" style="color:#f59e0b;font-weight:600;">&#9679; Admin</a></li>
+                {% endif %}
+                <li><a href="/auth/logout" style="color:#ef4444;">Logout ({{ current_user.username }})</a></li>
+            {% else %}
+                <li><a href="/auth/login" class="{{ 'active' if active_page == 'login' else '' }}" style="color:#3b82f6;font-weight:600;">Login</a></li>
+            {% endif %}
         </ul>
     </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div style="position:fixed;top:70px;right:16px;z-index:9999;max-width:360px;">
+            {% for category, message in messages %}
+            <div style="margin-bottom:8px;padding:12px 16px;border-radius:8px;font-size:14px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,0.15);
+                {% if category == 'success' %}background:#d1fae5;color:#065f46;border-left:4px solid #10b981;
+                {% elif category == 'danger' %}background:#fee2e2;color:#991b1b;border-left:4px solid #ef4444;
+                {% elif category == 'warning' %}background:#fef3c7;color:#92400e;border-left:4px solid #f59e0b;
+                {% else %}background:#e0f2fe;color:#0c4a6e;border-left:4px solid #3b82f6;{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
 
     <!-- Main Content -->
     <main>
@@ -168,5 +194,6 @@
     <!-- Scripts -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

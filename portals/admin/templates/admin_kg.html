@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section style="padding-top: 120px; min-height: 100vh; padding-bottom: 50px;">
+    <!-- TODO: Add Admin navbar link for admins -->
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 class="section-title" style="margin-bottom: 0;">Knowledge Graph Management</h2>
+            <a href="{{ url_for('admin_bp.dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" style="padding: 10px; margin-bottom: 20px; border-radius: 8px; background: rgba(79, 195, 247, 0.1); border: 1px solid var(--secondary-color); color: var(--secondary-color);">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="grid-2" style="gap: 30px; margin-bottom: 40px;">
+            <!-- Add Entity Form -->
+            <div class="card glass">
+                <h3 class="card-title">Add New Entity</h3>
+                <form method="POST">
+                    <input type="hidden" name="action" value="add_entity">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label for="entity_type" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Entity Type</label>
+                        <select id="entity_type" name="entity_type" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: var(--bg-color); color: var(--text-main);">
+                            <option value="Department">Department</option>
+                            <option value="Course">Course</option>
+                            <option value="Faculty">Faculty</option>
+                            <option value="Facility">Facility</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label for="entity_name" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Entity Name</label>
+                        <input type="text" id="entity_name" name="entity_name" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: var(--text-main);">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="entity_data" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Data (JSON format)</label>
+                        <textarea id="entity_data" name="entity_data" rows="4" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: var(--text-main); font-family: monospace;"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-accent" style="width: 100%;">Add Entity</button>
+                </form>
+            </div>
+            
+            <!-- Add Relationship Form -->
+            <div class="card glass">
+                <h3 class="card-title">Add Relationship</h3>
+                <form method="POST">
+                    <input type="hidden" name="action" value="add_relationship">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label for="source" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Source Entity</label>
+                        <input type="text" id="source" name="source" required placeholder="e.g. CSE" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: var(--text-main);">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label for="target" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Target Entity</label>
+                        <input type="text" id="target" name="target" required placeholder="e.g. B.Tech" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: var(--text-main);">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="rel_type" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Relationship Type</label>
+                        <select id="rel_type" name="rel_type" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: var(--bg-color); color: var(--text-main);">
+                            <option value="OFFERS">OFFERS</option>
+                            <option value="BELONGS_TO">BELONGS_TO</option>
+                            <option value="HAS_FACILITY">HAS_FACILITY</option>
+                            <option value="HEADED_BY">HEADED_BY</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Add Relationship</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card glass">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 class="card-title" style="margin-bottom: 0;">Entities</h3>
+                <div>
+                    <select id="filter_type" style="padding: 8px 15px; border-radius: 8px; border: 1px solid var(--glass-border); background: var(--bg-color); color: var(--text-main);">
+                        <option value="all">All Types</option>
+                        <option value="Department">Department</option>
+                        <option value="Course">Course</option>
+                        <option value="Faculty">Faculty</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--glass-border);">
+                            <th style="padding: 12px; color: var(--secondary-color);">Type</th>
+                            <th style="padding: 12px; color: var(--secondary-color);">Name</th>
+                            <th style="padding: 12px; color: var(--secondary-color);">Connections</th>
+                            <th style="padding: 12px; color: var(--secondary-color);">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Placeholder rows since Phase 1 doesn't implement read logic -->
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                            <td style="padding: 12px;" colspan="4" class="text-center text-muted">
+                                Real entity list will be populated in Phase 2
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

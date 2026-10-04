@@ -8,3 +8,6 @@ build/
 venv/
 .venv/
 *.log
+instance/
+*.db
+*.sqlite3

@@ -189,5 +189,287 @@
     "semesters_per_year": 2,
     "evaluation": "Continuous Internal (Mid-I, Mid-II, assignments, practicals) + End-Semester Examinations",
     "curriculum": "Industry-aligned, updated periodically with Board of Studies (BoS) comprising JNTUH nominees and industry experts"
+  },
+  "campus_infrastructure": [
+    {
+      "id": "main_block",
+      "name": "Main Block",
+      "type": "Academic",
+      "floors": 4,
+      "description": "Central administrative and academic building housing the principal's office, examination branch, and CSE department.",
+      "departments": ["cse"],
+      "rooms": [
+        {"id": "r_mb_101", "name": "Room 101", "type": "Classroom", "capacity": 60, "floor": 1},
+        {"id": "r_mb_102", "name": "Room 102", "type": "Classroom", "capacity": 60, "floor": 1},
+        {"id": "r_mb_201", "name": "Computer Lab 1", "type": "Lab", "capacity": 40, "floor": 2},
+        {"id": "r_mb_202", "name": "Computer Lab 2", "type": "Lab", "capacity": 40, "floor": 2},
+        {"id": "r_mb_301", "name": "Room 301", "type": "Classroom", "capacity": 60, "floor": 3},
+        {"id": "r_mb_401", "name": "Seminar Hall 1", "type": "Seminar Hall", "capacity": 200, "floor": 4}
+      ]
+    },
+    {
+      "id": "block_a",
+      "name": "Block A (AI & ML Block)",
+      "type": "Academic",
+      "floors": 3,
+      "description": "Houses the CSE (AI & ML) department with dedicated AI/ML research lab and GPU workstations.",
+      "departments": ["cse_aiml"],
+      "rooms": [
+        {"id": "r_ba_101", "name": "AI Lab", "type": "Lab", "capacity": 40, "floor": 1},
+        {"id": "r_ba_102", "name": "Room A-102", "type": "Classroom", "capacity": 60, "floor": 1},
+        {"id": "r_ba_201", "name": "Room A-201", "type": "Classroom", "capacity": 60, "floor": 2},
+        {"id": "r_ba_202", "name": "Room A-202", "type": "Classroom", "capacity": 60, "floor": 2},
+        {"id": "r_ba_301", "name": "ML Research Lab", "type": "Lab", "capacity": 30, "floor": 3}
+      ]
+    },
+    {
+      "id": "block_b",
+      "name": "Block B (Data Science & Cyber Security Block)",
+      "type": "Academic",
+      "floors": 3,
+      "description": "Houses CSE (Data Science) and CSE (Cyber Security) departments with Big Data Analytics and Cyber Security labs.",
+      "departments": ["cse_ds", "cse_cs"],
+      "rooms": [
+        {"id": "r_bb_101", "name": "Big Data Lab", "type": "Lab", "capacity": 40, "floor": 1},
+        {"id": "r_bb_102", "name": "Cyber Security Lab", "type": "Lab", "capacity": 30, "floor": 1},
+        {"id": "r_bb_201", "name": "Room B-201", "type": "Classroom", "capacity": 60, "floor": 2},
+        {"id": "r_bb_202", "name": "Room B-202", "type": "Classroom", "capacity": 60, "floor": 2},
+        {"id": "r_bb_301", "name": "Room B-301", "type": "Classroom", "capacity": 60, "floor": 3}
+      ]
+    },
+    {
+      "id": "block_c",
+      "name": "Block C (ECE & Mechanical Block)",
+      "type": "Academic",
+      "floors": 3,
+      "description": "Houses Electronics and Communication Engineering and Mechanical Engineering departments with specialized labs.",
+      "departments": ["ece", "me"],
+      "rooms": [
+        {"id": "r_bc_101", "name": "Electronics Lab", "type": "Lab", "capacity": 30, "floor": 1},
+        {"id": "r_bc_102", "name": "IoT & Embedded Systems Lab", "type": "Lab", "capacity": 30, "floor": 1},
+        {"id": "r_bc_201", "name": "CAD/CAM Lab", "type": "Lab", "capacity": 30, "floor": 2},
+        {"id": "r_bc_202", "name": "Room C-202", "type": "Classroom", "capacity": 60, "floor": 2},
+        {"id": "r_bc_301", "name": "Workshop", "type": "Lab", "capacity": 40, "floor": 3}
+      ]
+    },
+    {
+      "id": "block_d",
+      "name": "Block D (Civil & MBA Block)",
+      "type": "Academic",
+      "floors": 2,
+      "description": "Houses Civil Engineering and MBA departments with material testing lab and case study rooms.",
+      "departments": ["ce", "mba"],
+      "rooms": [
+        {"id": "r_bd_101", "name": "Material Testing Lab", "type": "Lab", "capacity": 30, "floor": 1},
+        {"id": "r_bd_102", "name": "Surveying Lab", "type": "Lab", "capacity": 30, "floor": 1},
+        {"id": "r_bd_201", "name": "MBA Case Study Room", "type": "Classroom", "capacity": 40, "floor": 2},
+        {"id": "r_bd_202", "name": "MBA Seminar Hall", "type": "Seminar Hall", "capacity": 100, "floor": 2}
+      ]
+    },
+    {
+      "id": "library_block",
+      "name": "Central Library Building",
+      "type": "Library",
+      "floors": 2,
+      "description": "Houses 45,000+ volumes, IEEE e-journals, digital library, and spacious reading halls.",
+      "departments": [],
+      "rooms": [
+        {"id": "r_lb_101", "name": "Reading Hall", "type": "Reading Hall", "capacity": 200, "floor": 1},
+        {"id": "r_lb_102", "name": "Digital Library", "type": "Lab", "capacity": 50, "floor": 1},
+        {"id": "r_lb_201", "name": "Reference Section", "type": "Reading Hall", "capacity": 100, "floor": 2}
+      ]
+    },
+    {
+      "id": "admin_block",
+      "name": "Administrative Block",
+      "type": "Administrative",
+      "floors": 2,
+      "description": "Houses administrative offices including admissions, accounts, examination branch, and principal's office.",
+      "departments": [],
+      "rooms": [
+        {"id": "r_ab_101", "name": "Admissions Office", "type": "Office", "capacity": 10, "floor": 1},
+        {"id": "r_ab_102", "name": "Accounts Office", "type": "Office", "capacity": 10, "floor": 1},
+        {"id": "r_ab_201", "name": "Principal's Office", "type": "Office", "capacity": 5, "floor": 2},
+        {"id": "r_ab_202", "name": "Board Room", "type": "Conference Room", "capacity": 30, "floor": 2}
+      ]
+    },
+    {
+      "id": "auditorium",
+      "name": "College Auditorium",
+      "type": "Auditorium",
+      "floors": 1,
+      "description": "Air-conditioned auditorium for college events, seminars, guest lectures, and convocations.",
+      "departments": [],
+      "rooms": [
+        {"id": "r_aud_101", "name": "Main Auditorium Hall", "type": "Auditorium", "capacity": 500, "floor": 1}
+      ]
+    },
+    {
+      "id": "sports_complex",
+      "name": "Sports Complex",
+      "type": "Sports",
+      "floors": 1,
+      "description": "Outdoor courts for Cricket, Football, Volleyball, Basketball. Indoor facilities for Badminton, Table Tennis, Chess.",
+      "departments": [],
+      "rooms": [
+        {"id": "r_sc_101", "name": "Indoor Sports Hall", "type": "Sports", "capacity": 50, "floor": 1},
+        {"id": "r_sc_102", "name": "Gymnasium", "type": "Gym", "capacity": 30, "floor": 1}
+      ]
+    },
+    {
+      "id": "hostel_block",
+      "name": "Girls' Hostel",
+      "type": "Hostel",
+      "floors": 3,
+      "description": "On-campus secure hostel with dining facility, gym, round-the-clock security, and power backup.",
+      "departments": [],
+      "rooms": []
+    },
+    {
+      "id": "idea_lab",
+      "name": "AICTE Idea Lab",
+      "type": "Innovation",
+      "floors": 1,
+      "description": "AICTE-sponsored innovation lab for students to prototype, build, and test creative ideas and projects.",
+      "departments": [],
+      "rooms": [
+        {"id": "r_il_101", "name": "Prototyping Zone", "type": "Lab", "capacity": 40, "floor": 1},
+        {"id": "r_il_102", "name": "3D Printing Lab", "type": "Lab", "capacity": 20, "floor": 1}
+      ]
+    }
+  ],
+  "curriculum": {
+    "cse": {
+      "program": "B.Tech",
+      "semesters": {
+        "1": [{"code": "MA101", "name": "Engineering Mathematics I", "credits": 4, "type": "theory"}, {"code": "PH101", "name": "Engineering Physics", "credits": 4, "type": "theory"}, {"code": "CS101", "name": "Programming in C", "credits": 3, "type": "theory"}, {"code": "CS101L", "name": "C Programming Lab", "credits": 2, "type": "lab"}, {"code": "EN101", "name": "English Communication", "credits": 2, "type": "theory"}],
+        "2": [{"code": "MA201", "name": "Engineering Mathematics II", "credits": 4, "type": "theory"}, {"code": "CH201", "name": "Engineering Chemistry", "credits": 4, "type": "theory"}, {"code": "CS201", "name": "Data Structures", "credits": 3, "type": "theory"}, {"code": "CS201L", "name": "Data Structures Lab", "credits": 2, "type": "lab"}, {"code": "EC201", "name": "Basic Electronics", "credits": 3, "type": "theory"}],
+        "3": [{"code": "CS301", "name": "Object Oriented Programming (Java)", "credits": 3, "type": "theory"}, {"code": "CS302", "name": "Discrete Mathematics", "credits": 4, "type": "theory"}, {"code": "CS303", "name": "Digital Logic Design", "credits": 3, "type": "theory"}, {"code": "CS301L", "name": "Java Programming Lab", "credits": 2, "type": "lab"}, {"code": "CS304", "name": "Computer Organization", "credits": 3, "type": "theory"}],
+        "4": [{"code": "CS401", "name": "Database Management Systems", "credits": 3, "type": "theory"}, {"code": "CS402", "name": "Operating Systems", "credits": 3, "type": "theory"}, {"code": "CS403", "name": "Design and Analysis of Algorithms", "credits": 3, "type": "theory"}, {"code": "CS401L", "name": "DBMS Lab", "credits": 2, "type": "lab"}, {"code": "CS404", "name": "Software Engineering", "credits": 3, "type": "theory"}],
+        "5": [{"code": "CS501", "name": "Computer Networks", "credits": 3, "type": "theory"}, {"code": "CS502", "name": "Compiler Design", "credits": 3, "type": "theory"}, {"code": "CS503", "name": "Web Technologies", "credits": 3, "type": "theory"}, {"code": "CS501L", "name": "Computer Networks Lab", "credits": 2, "type": "lab"}, {"code": "CS504", "name": "Formal Languages & Automata Theory", "credits": 3, "type": "theory"}],
+        "6": [{"code": "CS601", "name": "Artificial Intelligence", "credits": 3, "type": "theory"}, {"code": "CS602", "name": "Machine Learning", "credits": 3, "type": "theory"}, {"code": "CS603", "name": "Cloud Computing", "credits": 3, "type": "theory"}, {"code": "CS601L", "name": "AI & ML Lab", "credits": 2, "type": "lab"}, {"code": "CSE01", "name": "Professional Elective I", "credits": 3, "type": "elective"}],
+        "7": [{"code": "CS701", "name": "Information Security", "credits": 3, "type": "theory"}, {"code": "CS702", "name": "Big Data Analytics", "credits": 3, "type": "theory"}, {"code": "CSE02", "name": "Professional Elective II", "credits": 3, "type": "elective"}, {"code": "CSE03", "name": "Open Elective", "credits": 3, "type": "elective"}, {"code": "CS703", "name": "Project Phase I", "credits": 4, "type": "project"}],
+        "8": [{"code": "CS801", "name": "Project Phase II", "credits": 10, "type": "project"}, {"code": "CSE04", "name": "Professional Elective III", "credits": 3, "type": "elective"}, {"code": "CS802", "name": "Seminar", "credits": 2, "type": "seminar"}]
+      }
+    },
+    "cse_aiml": {
+      "program": "B.Tech",
+      "semesters": {
+        "3": [{"code": "AI301", "name": "Introduction to AI", "credits": 3, "type": "theory"}, {"code": "AI302", "name": "Python Programming", "credits": 3, "type": "theory"}, {"code": "AI301L", "name": "Python Lab", "credits": 2, "type": "lab"}, {"code": "AI303", "name": "Probability & Statistics", "credits": 4, "type": "theory"}],
+        "4": [{"code": "AI401", "name": "Machine Learning", "credits": 3, "type": "theory"}, {"code": "AI402", "name": "Data Mining", "credits": 3, "type": "theory"}, {"code": "AI401L", "name": "ML Lab", "credits": 2, "type": "lab"}, {"code": "AI403", "name": "Natural Language Processing", "credits": 3, "type": "theory"}],
+        "5": [{"code": "AI501", "name": "Deep Learning", "credits": 3, "type": "theory"}, {"code": "AI502", "name": "Computer Vision", "credits": 3, "type": "theory"}, {"code": "AI501L", "name": "Deep Learning Lab", "credits": 2, "type": "lab"}, {"code": "AI503", "name": "Reinforcement Learning", "credits": 3, "type": "theory"}],
+        "6": [{"code": "AI601", "name": "Neural Networks & Architectures", "credits": 3, "type": "theory"}, {"code": "AI602", "name": "AI Ethics & Society", "credits": 2, "type": "theory"}, {"code": "AI601L", "name": "Neural Networks Lab", "credits": 2, "type": "lab"}, {"code": "AIE01", "name": "AI Elective I", "credits": 3, "type": "elective"}]
+      }
+    },
+    "cse_ds": {
+      "program": "B.Tech",
+      "semesters": {
+        "3": [{"code": "DS301", "name": "Introduction to Data Science", "credits": 3, "type": "theory"}, {"code": "DS302", "name": "Statistical Methods", "credits": 4, "type": "theory"}, {"code": "DS301L", "name": "Data Science Lab", "credits": 2, "type": "lab"}],
+        "4": [{"code": "DS401", "name": "Data Mining & Warehousing", "credits": 3, "type": "theory"}, {"code": "DS402", "name": "Big Data Technologies", "credits": 3, "type": "theory"}, {"code": "DS401L", "name": "Data Mining Lab", "credits": 2, "type": "lab"}],
+        "5": [{"code": "DS501", "name": "Machine Learning for Data Science", "credits": 3, "type": "theory"}, {"code": "DS502", "name": "Data Visualization", "credits": 3, "type": "theory"}, {"code": "DS501L", "name": "ML for DS Lab", "credits": 2, "type": "lab"}],
+        "6": [{"code": "DS601", "name": "Deep Learning for Data Science", "credits": 3, "type": "theory"}, {"code": "DS602", "name": "Business Intelligence", "credits": 3, "type": "theory"}, {"code": "DSE01", "name": "DS Elective I", "credits": 3, "type": "elective"}]
+      }
+    },
+    "cse_cs": {
+      "program": "B.Tech",
+      "semesters": {
+        "3": [{"code": "CY301", "name": "Introduction to Cyber Security", "credits": 3, "type": "theory"}, {"code": "CY302", "name": "Network Security Fundamentals", "credits": 3, "type": "theory"}, {"code": "CY301L", "name": "Cyber Security Lab", "credits": 2, "type": "lab"}],
+        "4": [{"code": "CY401", "name": "Cryptography", "credits": 3, "type": "theory"}, {"code": "CY402", "name": "Ethical Hacking", "credits": 3, "type": "theory"}, {"code": "CY401L", "name": "Ethical Hacking Lab", "credits": 2, "type": "lab"}],
+        "5": [{"code": "CY501", "name": "Digital Forensics", "credits": 3, "type": "theory"}, {"code": "CY502", "name": "Malware Analysis", "credits": 3, "type": "theory"}, {"code": "CY501L", "name": "Digital Forensics Lab", "credits": 2, "type": "lab"}],
+        "6": [{"code": "CY601", "name": "Cloud Security", "credits": 3, "type": "theory"}, {"code": "CY602", "name": "Cyber Defense Strategies", "credits": 3, "type": "theory"}, {"code": "CYE01", "name": "Cyber Security Elective I", "credits": 3, "type": "elective"}]
+      }
+    },
+    "ece": {
+      "program": "B.Tech",
+      "semesters": {
+        "3": [{"code": "EC301", "name": "Electronic Circuits", "credits": 3, "type": "theory"}, {"code": "EC302", "name": "Signals & Systems", "credits": 4, "type": "theory"}, {"code": "EC301L", "name": "Electronics Lab", "credits": 2, "type": "lab"}],
+        "4": [{"code": "EC401", "name": "Communication Systems", "credits": 3, "type": "theory"}, {"code": "EC402", "name": "VLSI Design", "credits": 3, "type": "theory"}, {"code": "EC401L", "name": "Communication Lab", "credits": 2, "type": "lab"}],
+        "5": [{"code": "EC501", "name": "Embedded Systems", "credits": 3, "type": "theory"}, {"code": "EC502", "name": "Digital Signal Processing", "credits": 3, "type": "theory"}, {"code": "EC501L", "name": "Embedded Systems Lab", "credits": 2, "type": "lab"}]
+      }
+    },
+    "ce": {
+      "program": "B.Tech",
+      "semesters": {
+        "3": [{"code": "CE301", "name": "Strength of Materials", "credits": 3, "type": "theory"}, {"code": "CE302", "name": "Surveying", "credits": 3, "type": "theory"}, {"code": "CE301L", "name": "Surveying Lab", "credits": 2, "type": "lab"}],
+        "4": [{"code": "CE401", "name": "Structural Analysis", "credits": 3, "type": "theory"}, {"code": "CE402", "name": "Geotechnical Engineering", "credits": 3, "type": "theory"}, {"code": "CE401L", "name": "Material Testing Lab", "credits": 2, "type": "lab"}],
+        "5": [{"code": "CE501", "name": "Transportation Engineering", "credits": 3, "type": "theory"}, {"code": "CE502", "name": "Environmental Engineering", "credits": 3, "type": "theory"}, {"code": "CE501L", "name": "Environmental Engg Lab", "credits": 2, "type": "lab"}]
+      }
+    },
+    "me": {
+      "program": "B.Tech",
+      "semesters": {
+        "3": [{"code": "ME301", "name": "Thermodynamics", "credits": 3, "type": "theory"}, {"code": "ME302", "name": "Engineering Mechanics", "credits": 4, "type": "theory"}, {"code": "ME301L", "name": "Workshop Practice", "credits": 2, "type": "lab"}],
+        "4": [{"code": "ME401", "name": "Fluid Mechanics", "credits": 3, "type": "theory"}, {"code": "ME402", "name": "Manufacturing Technology", "credits": 3, "type": "theory"}, {"code": "ME401L", "name": "Fluid Mechanics Lab", "credits": 2, "type": "lab"}],
+        "5": [{"code": "ME501", "name": "Heat Transfer", "credits": 3, "type": "theory"}, {"code": "ME502", "name": "CAD/CAM", "credits": 3, "type": "theory"}, {"code": "ME501L", "name": "CAD/CAM Lab", "credits": 2, "type": "lab"}]
+      }
+    },
+    "mba": {
+      "program": "MBA",
+      "semesters": {
+        "1": [{"code": "MB101", "name": "Management Principles", "credits": 3, "type": "theory"}, {"code": "MB102", "name": "Financial Accounting", "credits": 3, "type": "theory"}, {"code": "MB103", "name": "Organizational Behavior", "credits": 3, "type": "theory"}],
+        "2": [{"code": "MB201", "name": "Marketing Management", "credits": 3, "type": "theory"}, {"code": "MB202", "name": "Human Resource Management", "credits": 3, "type": "theory"}, {"code": "MB203", "name": "Operations Management", "credits": 3, "type": "theory"}],
+        "3": [{"code": "MB301", "name": "Strategic Management", "credits": 3, "type": "theory"}, {"code": "MB302", "name": "Business Analytics", "credits": 3, "type": "theory"}, {"code": "MBE01", "name": "MBA Elective I", "credits": 3, "type": "elective"}],
+        "4": [{"code": "MB401", "name": "Entrepreneurship Development", "credits": 3, "type": "theory"}, {"code": "MB402", "name": "Summer Internship Project", "credits": 6, "type": "project"}]
+      }
+    }
+  },
+  "faculty_assignments": {
+    "cse": [
+      {"faculty": "Prof. Kiran B. M.", "subjects": ["CS501", "CS601"]},
+      {"faculty": "Dr. P. Ram Mohan Rao", "subjects": ["CS401", "CS403"]},
+      {"faculty": "Dr. Kaja Masthan", "subjects": ["CS301", "CS304"]},
+      {"faculty": "Dr. S. Joy Kumar", "subjects": ["CS402", "CS502"]},
+      {"faculty": "Mr. A. Venugopal Rao", "subjects": ["CS201", "CS201L"]},
+      {"faculty": "Mrs. Sowjanya S.", "subjects": ["CS503", "CS501L"]},
+      {"faculty": "Mrs. K. Lavanya", "subjects": ["CS101", "CS101L"]},
+      {"faculty": "Mrs. K. Sneha", "subjects": ["CS301L"]},
+      {"faculty": "Mr. Md. Afzal", "subjects": ["CS602", "CS601L"]},
+      {"faculty": "Mrs. A. Sravanthi", "subjects": ["CS404"]},
+      {"faculty": "Mr. Mohd. Ayazuddin", "subjects": ["CS401L"]},
+      {"faculty": "Mr. T. Shravan Kumar", "subjects": ["CS504", "CS701"]}
+    ],
+    "cse_aiml": [
+      {"faculty": "Dr. KVSN Ramarao", "subjects": ["AI501", "AI601"]},
+      {"faculty": "Dr. Shubhashree Sahoo", "subjects": ["AI401", "AI401L"]},
+      {"faculty": "Mr. Mohammed Afzal", "subjects": ["AI301", "AI301L"]},
+      {"faculty": "Mr. Mohd Faisal", "subjects": ["AI402"]},
+      {"faculty": "Mr. Balika Mahesh", "subjects": ["AI302"]},
+      {"faculty": "Mrs. L. Swathi", "subjects": ["AI403"]},
+      {"faculty": "Mr. P. M. Suresh", "subjects": ["AI501L"]},
+      {"faculty": "Mr. Kumar Baradur", "subjects": ["AI502", "AI503"]}
+    ],
+    "cse_ds": [
+      {"faculty": "Dr. Allam Balaram", "subjects": ["DS501", "DS601"]},
+      {"faculty": "Dr. Md. Abdul Azeem", "subjects": ["DS401", "DS402"]},
+      {"faculty": "Mr. Mohammed Miskeen Ali", "subjects": ["DS301", "DS301L"]},
+      {"faculty": "Mr. T. Shravan Kumar", "subjects": ["DS302"]},
+      {"faculty": "Mrs. M. Sreelaxmi", "subjects": ["DS502"]},
+      {"faculty": "Mr. M. Yadaiah", "subjects": ["DS401L", "DS501L"]}
+    ],
+    "cse_cs": [
+      {"faculty": "Mrs. P. Sandhya Rani", "subjects": ["CY301", "CY502"]},
+      {"faculty": "Dr. K. Subba Rao", "subjects": ["CY401", "CY601"]},
+      {"faculty": "Mr. Matru Dhanavath", "subjects": ["CY402", "CY401L"]},
+      {"faculty": "Mr. J. Naresh Kumar", "subjects": ["CY302", "CY301L"]},
+      {"faculty": "Mr. Kaspa Vinay Kumar", "subjects": ["CY501", "CY501L"]}
+    ],
+    "ece": [
+      {"faculty": "T. Sandhya", "subjects": ["EC301", "EC302"]},
+      {"faculty": "Dr. K. Subba Rao", "subjects": ["EC401"]},
+      {"faculty": "Mrs. Yarram Priya", "subjects": ["EC501", "EC501L"]}
+    ],
+    "ce": [
+      {"faculty": "Mr. Ashok Darshanala", "subjects": ["CE301", "CE401"]},
+      {"faculty": "Dr. S. Kailash Kumar", "subjects": ["CE402", "CE401L"]},
+      {"faculty": "Mr. N. Ramesh", "subjects": ["CE302", "CE301L"]}
+    ],
+    "me": [
+      {"faculty": "Prof. Mech HOD", "subjects": ["ME301", "ME401"]},
+      {"faculty": "Prof. Mech HOD", "subjects": ["ME501", "ME501L"]}
+    ],
+    "mba": [
+      {"faculty": "Prof. MBA HOD", "subjects": ["MB101", "MB301"]},
+      {"faculty": "Dr. Lakshmi Nath Chadalavada", "subjects": ["MB102", "MB201"]}
+    ]
   }
 }

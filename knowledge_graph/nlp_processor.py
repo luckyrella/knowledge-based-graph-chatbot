@@ -4,6 +4,7 @@ Enhanced NLP Processor
 - Context carry-forward from previous turn
 - Normalised course aliases (b tech → btech, etc.)
 - Year mention detection (1st/2nd/3rd/4th year → ignored for fees, just context)
+- NEW: building_info, faculty_profile, subject_info intents
 """
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -59,6 +60,21 @@ class NLPProcessor:
             "club_info":        ["student clubs", "extra curricular activities",
                                  "technical club", "sports club", "what clubs are there",
                                  "student activities", "cultural club"],
+            # ── NEW intents ────────────────────────────────────────────────────
+            "building_info":    ["where is the cse block", "what buildings are on campus",
+                                 "which block is aiml in", "main block", "block a",
+                                 "campus buildings", "where is the library building",
+                                 "building details", "which block houses ece",
+                                 "tell me about block b", "how many buildings"],
+            "faculty_profile":  ["tell me about dr kvsn ramarao", "faculty profile of",
+                                 "professor details", "who is prof kiran",
+                                 "what does dr allam balaram teach",
+                                 "faculty info", "teacher profile", "about the professor"],
+            "subject_info":     ["what subjects are in cse 3rd semester",
+                                 "tell me about data structures", "subjects in aiml",
+                                 "what is the syllabus", "cse subjects",
+                                 "semester 4 subjects", "curriculum for data science",
+                                 "list subjects for ece", "what topics are taught"],
         }
 
         self.vectorizer = TfidfVectorizer(ngram_range=(1, 2))
@@ -101,7 +117,6 @@ class NLPProcessor:
         }
 
         # Keyword signals keyed by intent — evaluated IN ORDER (most specific first)
-        # Tuple: (intent, list_of_trigger_words)
         self._keyword_rules = [
             ("farewell",        ["bye", "goodbye", "see you", "take care"]),
             ("thanks",          ["thank you", "thanks", "thank u", "thx"]),
@@ -110,6 +125,10 @@ class NLPProcessor:
             ("placement_info",  ["placement", "package", "salary", "recruiter", "lpa", "ctc", "offer"]),
             ("admission_info",  ["admission", "join", "enroll", "eligibility", "eamcet", "eapcet",
                                   "lateral entry", "apply", "how to get in"]),
+            # NEW: building_info before facility_info (more specific)
+            ("building_info",   ["building", "block a", "block b", "block c", "block d",
+                                  "main block", "which block", "where is the",
+                                  "campus building", "how many buildings"]),
             ("facility_info",   ["hostel", "library", "sports", "gym", "canteen", "wifi",
                                   "transport", "bus", "infrastructure"]),
             ("event_info",      ["event", "fest", "prazasti", "samisti", "hackathon", "cultural"]),
@@ -121,7 +140,13 @@ class NLPProcessor:
             ("club_info",       ["club", "extracurricular", "extra curricular", "society"]),
             # fee AFTER placement/admission so "fee reimbursement" doesn't steal fee
             ("fee_info",        ["fee", "cost", "price", "tuition", "charges", "fees"]),
+            # NEW: subject_info before department_info (more specific)
+            ("subject_info",    ["subject", "syllabus", "curriculum", "semester subject",
+                                  "topics taught", "what is taught"]),
             ("department_info", ["department", "branch", "branches", "dept"]),
+            # NEW: faculty_profile
+            ("faculty_profile", ["faculty profile", "professor", "teacher profile",
+                                  "prof ", "dr ", "tell me about dr", "who teaches"]),
             ("course_info",     ["course", "program", "btech", "mtech", "b.tech", "m.tech",
                                   "ug ", "pg ", "undergraduate", "postgraduate"]),
         ]
@@ -190,10 +215,46 @@ class NLPProcessor:
                 entities['course'] = label
                 break
 
+        # ── Semester number ─────────────────────────────────────────────────
+        sem_match = re.search(r'(?:semester|sem)\s*(\d+)', text_lower)
+        if sem_match:
+            entities['semester'] = int(sem_match.group(1))
+        else:
+            # Match "3rd semester", "4th sem" etc.
+            sem_match2 = re.search(r'(\d+)(?:st|nd|rd|th)\s*(?:semester|sem)', text_lower)
+            if sem_match2:
+                entities['semester'] = int(sem_match2.group(1))
+
         # ── Year mention (informational, stored but not used to filter fees) ─
         year_match = re.search(r'\b([1-4](?:st|nd|rd|th)?\s*year|year\s*[1-4])\b', text_lower)
         if year_match:
             entities['year'] = year_match.group(0)
+
+        # ── Faculty name extraction ─────────────────────────────────────────
+        # Look for patterns like "Dr. Name", "Prof. Name", "Mr./Mrs./Ms. Name"
+        fac_match = re.search(
+            r'(?:dr\.?|prof\.?|mr\.?|mrs\.?|ms\.?)\s+([a-z][a-z\s\.]+)',
+            text_lower
+        )
+        if fac_match:
+            entities['faculty_name'] = fac_match.group(0).strip()
+
+        # ── Building name extraction ────────────────────────────────────────
+        building_patterns = [
+            (r'block\s*[a-d]', None),
+            (r'main\s*block', None),
+            (r'library\s*building', None),
+            (r'admin(?:istrative)?\s*block', None),
+            (r'auditorium', None),
+            (r'sports\s*complex', None),
+            (r'hostel', None),
+            (r'idea\s*lab', None),
+        ]
+        for pattern, _ in building_patterns:
+            m = re.search(pattern, text_lower)
+            if m:
+                entities['building'] = m.group(0).strip()
+                break
 
         # ── Context carry-forward ────────────────────────────────────────────
         # If user didn't mention a dept/course but the last turn had one, inherit it
