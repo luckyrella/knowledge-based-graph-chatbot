@@ -1473,12 +1473,17 @@ footer {
   .footer-grid { grid-template-columns: 1fr; }
   .chat-panel {
     width: 100vw;
-    height: 100vh;
+    height: 100vh; /* Fallback */
+    height: 100dvh; /* Adapts to mobile browser UI and keyboard */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     border-radius: 0;
+  }
+  
+  #userInput {
+    font-size: 16px; /* Prevents iOS auto-zoom on focus */
   }
 }
 
@@ -1910,12 +1915,17 @@ footer {
   
   .chat-panel {
     width: 100vw;
-    height: 100vh;
+    height: 100vh; /* Fallback */
+    height: 100dvh; /* Adapts to keyboard */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     border-radius: 0;
+  }
+  
+  .chat-input input, #userInput {
+    font-size: 16px !important; /* Prevent iOS zoom */
   }
   
   /* Nav logo responsiveness */
