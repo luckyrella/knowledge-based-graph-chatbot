@@ -145,33 +145,21 @@ def create_app():
     def gallery():
         return redirect('https://www.sphoorthyengg.ac.in/photo-gallery')
 
-    # ── API: Knowledge Graph Data (for D3 visualization — Phase 3) ────────────
-    @app.route('/api/graph-data')
-    def graph_data():
-        return app.kg_builder.export_for_visualization(), 200, {'Content-Type': 'application/json'}
+    # ── API: Campus Communication & Resource Hub ──────────────────────────────
+    @app.route('/api/notices', methods=['GET'])
+    def get_notices():
+        from models.notice import Notice
+        notices = Notice.query.order_by(Notice.created_at.desc()).limit(20).all()
+        return jsonify([{'id': n.id, 'title': n.title, 'content': n.content, 'department': n.department, 'date': n.created_at.strftime('%Y-%m-%d')} for n in notices])
 
-    @app.route('/api/graph-stats')
-    def graph_stats():
-        return jsonify(app.kg_builder.get_graph_stats())
+    @app.route('/api/materials', methods=['GET'])
+    def get_materials():
+        from models.material import StudyMaterial
+        materials = StudyMaterial.query.order_by(StudyMaterial.created_at.desc()).limit(20).all()
+        return jsonify([{'id': m.id, 'title': m.title, 'subject': m.subject, 'department': m.department, 'file_path': m.file_path, 'date': m.created_at.strftime('%Y-%m-%d')} for m in materials])
 
-    # ── API: ER Schema ───────────────────────────────────────────────────────
-    @app.route('/api/er-schema')
-    def er_schema():
-        return app.kg_builder.get_er_diagram(), 200, {'Content-Type': 'text/plain'}
+    # Dynamic automated graph synchronization is handled via the admin portal now.
 
-    @app.route('/api/er-summary')
-    def er_summary():
-        from knowledge_graph.er_schema import export_er_summary
-        return jsonify(export_er_summary())
-
-    # ── Page: ER Diagram ─────────────────────────────────────────────────────
-    @app.route('/er-diagram')
-    def er_diagram():
-        return render_template(
-            'er_diagram.html',
-            er_diagram=app.kg_builder.get_er_diagram(),
-            stats=app.kg_builder.get_graph_stats()
-        )
 
     # ── API: Chat ─────────────────────────────────────────────────────────────
     @app.route('/api/chat', methods=['POST'])

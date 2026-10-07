@@ -197,10 +197,22 @@ class NLPProcessor:
         text_lower = re.sub(r'\bm[\s\.]?tech\b', 'mtech', text_lower)
 
         # ── Department (longest match first) ────────────────────────────────
+        import difflib
+        found_dept = False
         for key in sorted(self.dept_mapping, key=len, reverse=True):
             if re.search(r'\b' + re.escape(key) + r'\b', text_lower):
                 entities['department'] = self.dept_mapping[key]
+                found_dept = True
                 break
+                
+        # Objective 2: Fuzzy matching
+        if not found_dept:
+            for word in text_lower.split():
+                if len(word) >= 3:
+                    matches = difflib.get_close_matches(word, self.dept_mapping.keys(), n=1, cutoff=0.8)
+                    if matches:
+                        entities['department'] = self.dept_mapping[matches[0]]
+                        break
 
         # ── Course ──────────────────────────────────────────────────────────
         course_patterns = [

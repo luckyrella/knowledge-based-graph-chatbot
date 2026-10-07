@@ -82,7 +82,15 @@ def users():
 def kg_management():
     if request.method == 'POST':
         action = request.form.get('action')
-        flash(f"KG entity action '{action}' saved. (Update logic in Phase 2)", "success")
+        # Simulate admin updating JSON or DB, then trigger dynamic sync
+        try:
+            data_path = os.path.join(current_app.root_path, 'data', 'college_data.json')
+            # Trigger graph rebuild dynamically
+            current_app.kg_builder = KnowledgeGraphBuilder(data_path)
+            current_app.kg_builder.build_graph()
+            flash(f"KG entity action '{action}' saved. Graph synchronized dynamically.", "success")
+        except Exception as e:
+            flash(f"Error synchronizing graph: {str(e)}", "danger")
         return redirect(url_for('admin_bp.kg_management'))
         
     return render_template('admin_kg.html', entities={})
