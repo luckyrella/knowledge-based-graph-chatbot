@@ -34,14 +34,6 @@
                 <span class="badge-code">SPHN</span>
             </div>
         </a>
-        <div class="nav-right-actions">
-            <button class="theme-toggle" id="themeToggle" title="Toggle theme">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="hamburger" id="hamburger">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
         <ul class="nav-links" id="navLinks">
             <li><a href="/" class="{{ 'active' if active_page == 'home' else '' }}">Home</a></li>
             <li><a href="/student" class="{{ 'active' if active_page == 'student' else '' }}" style="color:#0ea5e9;font-weight:600;"><i class="fas fa-graduation-cap"></i> Student Hub</a></li>
@@ -63,6 +55,14 @@
                 <li><a href="/auth/login" class="{{ 'active' if active_page == 'login' else '' }}" style="color:#3b82f6;font-weight:600;">Login</a></li>
             {% endif %}
         </ul>
+        <div class="nav-right-actions">
+            <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </nav>
 
     <!-- Flash Messages -->
