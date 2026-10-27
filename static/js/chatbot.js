@@ -79,19 +79,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ═══════════════ WELCOME ═══════════════ */
-    function showWelcome() {
+    async function showWelcome() {
+        let noticeAlert = '';
+        try {
+            const nRes = await fetch('/api/notices');
+            const notices = await nRes.json();
+            if (notices && notices.length > 0) {
+                const latest = notices[0];
+                noticeAlert = `
+                <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:8px 12px;margin:8px 0;font-size:0.8rem;text-align:left;color:#1e40af;">
+                    <strong>📢 Active Circular (${notices.length} new):</strong><br/>
+                    <em>"${latest.title}"</em>
+                </div>`;
+            }
+        } catch(e) {}
+
         const html = `
         <div class="welcome-card">
           <img src="/static/bot_avatar.png" class="wc-avatar" alt="Bot">
           <h4>Sphoorthy Assistant 🎓</h4>
-          <p>Hi there! I'm your smart college guide. Ask me anything about admissions, departments, fees, placements, or campus life!</p>
+          <p>Hi there! I'm your smart campus guide. Access lecture notes, view circulars, locate faculty cabins, and ask about admissions or placements!</p>
+          ${noticeAlert}
           <div class="wc-chips">
+            <span class="wc-chip" data-q="Give me notes for Operating Systems">📚 Study Notes</span>
+            <span class="wc-chip" data-q="What are the latest circulars?">📢 Circulars</span>
+            <span class="wc-chip" data-q="Where is Dr. KVSN Ramarao's cabin?">🏢 Find Faculty</span>
             <span class="wc-chip" data-q="Tell me about CSE">💻 CSE Dept</span>
             <span class="wc-chip" data-q="What are the fees?">💰 Fees</span>
             <span class="wc-chip" data-q="Tell me about placements">💼 Placements</span>
-            <span class="wc-chip" data-q="How to get admission?">🎓 Admissions</span>
-            <span class="wc-chip" data-q="What facilities are there?">🏫 Facilities</span>
-            <span class="wc-chip" data-q="Scholarship available?">🎖️ Scholarships</span>
           </div>
         </div>`;
         injectRaw(html);

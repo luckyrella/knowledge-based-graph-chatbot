@@ -5,7 +5,7 @@ Phase 1: Foundation (KG + DB + Auth + Admin Portal)
 """
 import os
 import json
-from flask import Flask, render_template, request, jsonify, redirect, abort
+from flask import Flask, render_template, request, jsonify, redirect, abort, session
 from flask_login import LoginManager, current_user
 from dotenv import load_dotenv
 
@@ -145,6 +145,10 @@ def create_app():
     def gallery():
         return redirect('https://www.sphoorthyengg.ac.in/photo-gallery')
 
+    @app.route('/student')
+    def student_hub():
+        return render_template('student_hub.html')
+
     # ── API: Campus Communication & Resource Hub ──────────────────────────────
     @app.route('/api/notices', methods=['GET'])
     def get_notices():
@@ -155,8 +159,77 @@ def create_app():
     @app.route('/api/materials', methods=['GET'])
     def get_materials():
         from models.material import StudyMaterial
-        materials = StudyMaterial.query.order_by(StudyMaterial.created_at.desc()).limit(20).all()
-        return jsonify([{'id': m.id, 'title': m.title, 'subject': m.subject, 'department': m.department, 'file_path': m.file_path, 'date': m.created_at.strftime('%Y-%m-%d')} for m in materials])
+        query = StudyMaterial.query
+        dept = request.args.get('dept')
+        sem = request.args.get('sem')
+        q = request.args.get('q')
+
+        if dept:
+            query = query.filter(StudyMaterial.department.ilike(f"%{dept}%"))
+        if sem:
+            try:
+                query = query.filter(StudyMaterial.semester == int(sem))
+            except ValueError:
+                pass
+        if q:
+            query = query.filter(
+                (StudyMaterial.title.ilike(f"%{q}%")) | 
+                (StudyMaterial.subject.ilike(f"%{q}%"))
+            )
+
+        materials = query.order_by(StudyMaterial.created_at.desc()).limit(50).all()
+        return jsonify([{
+            'id': m.id, 
+            'title': m.title, 
+            'subject': m.subject, 
+            'department': m.department, 
+            'semester': m.semester,
+            'description': m.description,
+            'file_path': m.file_path, 
+            'date': m.created_at.strftime('%Y-%m-%d') if m.created_at else ''
+        } for m in materials])
+
+    @app.route('/api/upload-material', methods=['POST'])
+    def upload_material():
+        from models.material import StudyMaterial
+        from werkzeug.utils import secure_filename
+        import uuid
+
+        title = request.form.get('title')
+        subject = request.form.get('subject')
+        department = request.form.get('department')
+        semester = request.form.get('semester')
+        description = request.form.get('description', '')
+        file_url = request.form.get('file_url', '')
+
+        if not title or not subject or not department:
+            return jsonify({'status': 'error', 'message': 'Title, subject, and department are required.'}), 400
+
+        file_path = file_url
+        if 'file' in request.files:
+            file = request.files['file']
+            if file and file.filename != '':
+                sec_name = secure_filename(file.filename)
+                unique_name = f"{uuid.uuid4().hex[:8]}_{sec_name}"
+                upload_dir = os.path.join(app.root_path, 'static', 'uploads', 'materials')
+                os.makedirs(upload_dir, exist_ok=True)
+                dest = os.path.join(upload_dir, unique_name)
+                file.save(dest)
+                file_path = f"/static/uploads/materials/{unique_name}"
+
+        uploader_id = current_user.id if current_user.is_authenticated else 1
+        mat = StudyMaterial(
+            title=title,
+            subject=subject,
+            department=department,
+            semester=int(semester) if semester and semester.isdigit() else None,
+            description=description,
+            file_path=file_path if file_path else "#",
+            uploaded_by=uploader_id
+        )
+        db.session.add(mat)
+        db.session.commit()
+        return jsonify({'status': 'ok', 'material_id': mat.id})
 
     # Dynamic automated graph synchronization is handled via the admin portal now.
 
@@ -174,11 +247,28 @@ def create_app():
         import time
         start = time.time()
 
+        # Multi-turn dialogue state management via Flask session
+        if 'chat_context' not in session:
+            session['chat_context'] = {}
+
+        merged_context = {**session['chat_context'], **context}
+
         # NLP → KG Query pipeline
-        nlp_result = nlp_processor.process(message, context)
+        nlp_result = nlp_processor.process(message, merged_context)
         intent = nlp_result['intent']
         entities = nlp_result['entities']
         response = _route_intent(intent, entities, college_data, kg_query)
+
+        # Update dialogue state across turns
+        if 'department' in entities:
+            session['chat_context']['department'] = entities['department']
+            session['chat_context']['lastDept'] = entities['department']
+        if 'course' in entities:
+            session['chat_context']['course'] = entities['course']
+            session['chat_context']['lastCourse'] = entities['course']
+        session['chat_context']['last_intent'] = intent
+        session['chat_context']['lastIntent'] = intent
+        session.modified = True
 
         elapsed_ms = int((time.time() - start) * 1000)
 
@@ -311,6 +401,36 @@ def _route_intent(intent, entities, college_data, kg_query):
                 return kg_query.query_subjects_by_semester(entities['department'], entities['semester'])
             return kg_query.query_subjects_by_department(entities['department'])
         return "Please specify a department. Example: 'What subjects are in CSE?'"
+
+    # ── Study Materials & Notices Intents ──────────────────────────────────
+    elif intent == 'material_info':
+        from models.material import StudyMaterial
+        query = StudyMaterial.query
+        dept = entities.get('department')
+        if dept:
+            query = query.filter(StudyMaterial.department.ilike(f"%{dept}%"))
+        materials = query.order_by(StudyMaterial.created_at.desc()).limit(5).all()
+        if materials:
+            res = "📚 **Found Study Materials & Notes:**\n\n"
+            for m in materials:
+                file_link = m.file_path if m.file_path else f"/static/uploads/materials/{m.id}.pdf"
+                res += f"• **{m.title}** ({m.subject.upper()} - {m.department.upper()})\n  [Download Material]({file_link})\n"
+            res += f"\nYou can also view all resources on the [Student Study Hub](/student)."
+            return res
+        return "📚 You can access and download all lecture notes, PPTs, and unit materials directly on the [Student Study Hub](/student)!"
+
+    elif intent == 'notice_info':
+        from models.notice import Notice
+        notices = Notice.query.order_by(Notice.created_at.desc()).limit(4).all()
+        if notices:
+            res = "📢 **Recent Campus Circulars & Official Notices:**\n\n"
+            for n in notices:
+                d_str = n.created_at.strftime('%d %b %Y') if n.created_at else "Recent"
+                dept_str = f"[{n.department.upper()}] " if n.department else "[Campus] "
+                res += f"• **{dept_str}{n.title}** ({d_str})\n  {n.content[:140]}...\n\n"
+            res += "View the complete notice stream on the [Student Study Hub](/student)."
+            return res
+        return "📢 Check out all official college notifications and exam circulars on the [Student Study Hub](/student)!"
 
     elif intent == 'greeting':
         name = college_data.get('college', {}).get('name', 'our college')

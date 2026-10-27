@@ -313,12 +313,21 @@ class KnowledgeGraphQuery:
                 resp += f"Qualification: {d.get('qualification', 'N/A')}\n"
                 resp += f"Experience: {d.get('experience', 'N/A')}\n"
 
-                # Find department
+                # Find department and building location
+                dept_node_id = None
                 for neighbor in self.graph.successors(node_id):
                     if self.graph.nodes[neighbor].get('node_type') == 'Department':
+                        dept_node_id = neighbor
                         dept_data = self.graph.nodes[neighbor].get('data', {})
                         resp += f"Department: {dept_data.get('name', 'N/A')}\n"
                         break
+
+                if dept_node_id:
+                    for bld_neighbor in self.graph.successors(dept_node_id):
+                        if self.graph.nodes[bld_neighbor].get('node_type') == 'Building':
+                            b_data = self.graph.nodes[bld_neighbor].get('data', {})
+                            resp += f"🏢 Cabin / Office Location: {b_data.get('name', 'Main Block')} (Faculty Cabin Area)\n"
+                            break
 
                 # Find subjects taught
                 subjects = [

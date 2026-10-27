@@ -75,6 +75,13 @@ class NLPProcessor:
                                  "what is the syllabus", "cse subjects",
                                  "semester 4 subjects", "curriculum for data science",
                                  "list subjects for ece", "what topics are taught"],
+            "material_info":    ["give me study materials", "where are notes for operating systems",
+                                 "download database notes", "lecture notes for cse", "unit 2 notes",
+                                 "study material for sem 3", "pdf notes for python", "class notes",
+                                 "study materials", "where can i get notes", "course ppt"],
+            "notice_info":      ["show recent notices", "any new circulars", "college announcements",
+                                 "exam notifications", "latest circular", "department notices",
+                                 "show notices", "what are the circulars", "official notifications"],
         }
 
         self.vectorizer = TfidfVectorizer(ngram_range=(1, 2))
@@ -126,6 +133,10 @@ class NLPProcessor:
             ("admission_info",  ["admission", "join", "enroll", "eligibility", "eamcet", "eapcet",
                                   "lateral entry", "apply", "how to get in"]),
             # NEW: building_info before facility_info (more specific)
+            ("material_info",   ["study material", "materials", "lecture notes", "download notes",
+                                  "unit notes", "class notes", "notes for", "notes", "course ppt"]),
+            ("notice_info",     ["circular", "circulars", "notice", "notices", "announcement",
+                                  "announcements", "notifications", "circular board"]),
             ("building_info",   ["building", "block a", "block b", "block c", "block d",
                                   "main block", "which block", "where is the",
                                   "campus building", "how many buildings"]),
@@ -270,10 +281,14 @@ class NLPProcessor:
 
         # ── Context carry-forward ────────────────────────────────────────────
         # If user didn't mention a dept/course but the last turn had one, inherit it
-        if 'department' not in entities and ctx.get('lastDept'):
-            entities['department'] = ctx['lastDept']
-        if 'course' not in entities and ctx.get('lastCourse'):
-            entities['course'] = ctx['lastCourse']
+        if 'department' not in entities:
+            dept_val = ctx.get('department') or ctx.get('lastDept')
+            if dept_val:
+                entities['department'] = dept_val
+        if 'course' not in entities:
+            course_val = ctx.get('course') or ctx.get('lastCourse')
+            if course_val:
+                entities['course'] = course_val
 
         return entities
 

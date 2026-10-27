@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-10-27 21:54:53",
+  "graph_statistics": {
+    "node_count": 536,
+    "edge_count": 1008,
+    "process_ram_mb": 0.36
+  },
+  "dynamic_sync": {
+    "avg_rebuild_ms": 3.84
+  },
+  "nlp_performance": {
+    "accuracy_percent": 95.65,
+    "avg_latency_ms": 0.227,
+    "throughput_qps": 4414.4
+  },
+  "graph_traversal": {
+    "mean_traversal_ms": 0.053
+  },
+  "end_to_end_http": {
+    "avg_latency_ms": 5.64,
+    "p95_latency_ms": 7.06,
+    "sub_150ms_validated": true
+  }
+}

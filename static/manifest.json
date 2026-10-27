@@ -1,0 +1,23 @@
+{
+  "name": "Sphoorthy Campus Knowledge Hub",
+  "short_name": "SPHN Hub",
+  "description": "Unified Student Study Hub, Circulars, and Knowledge Graph AI Assistant",
+  "start_url": "/student",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#1d4ed8",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://www.sphoorthyengg.ac.in/public/assets/img/logo-new.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://www.sphoorthyengg.ac.in/public/assets/img/logo-new.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
