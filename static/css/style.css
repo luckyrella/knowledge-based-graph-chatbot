@@ -201,7 +201,7 @@
 }
 
 /* ═══════════════════════════════════════════
-   THEME TOGGLE BUTTON
+   THEME TOGGLE BUTTON (DARK / LIGHT PILL)
    ═══════════════════════════════════════════ */
 .nav-right-actions {
   display: flex;
@@ -211,43 +211,95 @@
   margin-left: auto;
 }
 
-.theme-toggle {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid rgba(79, 195, 247, 0.3);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--secondary-color);
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
+.theme-mode-toggle {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  transition: var(--transition);
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(79, 195, 247, 0.28);
+  border-radius: 24px;
+  padding: 3px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.theme-toggle:hover {
-  background: rgba(79, 195, 247, 0.15);
-  transform: rotate(20deg) scale(1.08);
-  box-shadow: 0 0 14px rgba(79, 195, 247, 0.25);
+.theme-mode-toggle:hover {
+  border-color: rgba(79, 195, 247, 0.5);
+  box-shadow: 0 0 12px rgba(79, 195, 247, 0.2);
 }
 
-.theme-toggle i {
-  transition: transform 0.4s cubic-bezier(.22,1,.36,1);
+.theme-pill-opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 18px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+  transition: all 0.25s ease;
 }
 
-[data-theme="light"] .theme-toggle {
-  border: 1px solid rgba(230, 147, 10, 0.3);
-  background: rgba(230, 147, 10, 0.06);
-  color: #e6930a;
+.theme-pill-opt i {
+  font-size: 0.85rem;
+  transition: transform 0.3s ease;
 }
 
-[data-theme="light"] .theme-toggle:hover {
-  background: rgba(230, 147, 10, 0.12);
-  box-shadow: 0 0 14px rgba(230, 147, 10, 0.2);
+/* Dark mode active */
+.dark-opt.active {
+  background: linear-gradient(135deg, rgba(79, 195, 247, 0.25), rgba(30, 58, 138, 0.4));
+  color: #7dd3fc;
+  box-shadow: 0 0 10px rgba(79, 195, 247, 0.35);
+  border: 1px solid rgba(79, 195, 247, 0.4);
+}
+
+.dark-opt.active i {
+  color: #38bdf8;
+  transform: rotate(-10deg);
+}
+
+/* Light mode active */
+.light-opt.active {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.35));
+  color: #f59e0b;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.light-opt.active i {
+  color: #f59e0b;
+  transform: rotate(20deg);
+}
+
+/* Light theme overrides for the toggle pill */
+[data-theme="light"] .theme-mode-toggle {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .theme-mode-toggle:hover {
+  border-color: rgba(217, 119, 6, 0.4);
+  box-shadow: 0 0 10px rgba(217, 119, 6, 0.15);
+}
+
+[data-theme="light"] .theme-pill-opt {
+  color: #64748b;
+}
+
+[data-theme="light"] .light-opt.active {
+  background: #ffffff;
+  color: #d97706;
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.2);
+}
+
+[data-theme="light"] .dark-opt.active {
+  background: #1e293b;
+  color: #93c5fd;
+  border: 1px solid rgba(147, 197, 253, 0.3);
 }
 
 * {
@@ -1884,24 +1936,17 @@ footer {
 /* Responsive */
 @media (max-width: 1250px) and (min-width: 1025px) {
   .navbar {
-    padding: 10px 2%;
+    padding: 10px 2.5%;
   }
   .college-name {
-    font-size: 0.95rem;
-  }
-  .counselling-badge {
-    padding: 2px 6px;
-    margin-left: 4px;
-  }
-  .counselling-badge .badge-label {
-    display: none;
+    font-size: 1rem;
   }
   .nav-links {
-    gap: 8px;
-    margin: 0 8px;
+    gap: 10px;
+    margin: 0 10px;
   }
   .nav-links a {
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     padding: 5px 2px;
   }
 }
@@ -1962,6 +2007,14 @@ footer {
   .section-title { font-size: 1.8rem; }
   .footer-grid { grid-template-columns: 1fr; }
 
+  /* Compact theme toggle for mobile */
+  .theme-pill-opt {
+    padding: 5px 8px;
+  }
+  .theme-opt-text {
+    display: none;
+  }
+
   .chat-panel {
     width: 100vw;
     height: 100vh; /* Fallback */
@@ -1979,15 +2032,11 @@ footer {
 
   /* Nav logo responsiveness */
   .nav-logo { gap: 8px; }
-  .nav-logo-img { height: 36px; }
-  .college-name { font-size: 0.9rem; white-space: normal; line-height: 1.1; max-width: 150px; }
-  .college-tag { font-size: 0.52rem; }
-  .counselling-badge { padding: 2px 6px; margin-left: 4px; }
-  .badge-label { font-size: 0.45rem; display: none; }
-  .badge-code { font-size: 0.85rem; letter-spacing: 1px; }
+  .nav-logo-img { height: 38px; }
+  .college-name { font-size: 0.95rem; white-space: normal; line-height: 1.1; max-width: 180px; }
+  .college-tag { font-size: 0.55rem; }
 }
 
 @media (max-width: 480px) {
-  .college-name { max-width: 110px; font-size: 0.82rem; }
-  .counselling-badge { display: none; } /* Hide counselling code on extra small screens */
+  .college-name { max-width: 140px; font-size: 0.88rem; }
 }

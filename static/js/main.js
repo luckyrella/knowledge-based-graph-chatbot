@@ -82,36 +82,48 @@ document.addEventListener('DOMContentLoaded', () => {
     // ═══════════════ THEME TOGGLE ═══════════════
     const themeToggle = document.getElementById('themeToggle');
     const savedTheme = localStorage.getItem('sphn-theme') || 'dark';
-    
-    // Apply saved theme on load
-    if (savedTheme === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
-        if (themeToggle) themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+
+    function applyTheme(theme) {
+        const darkOpt = themeToggle ? themeToggle.querySelector('.dark-opt') : null;
+        const lightOpt = themeToggle ? themeToggle.querySelector('.light-opt') : null;
+
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('sphn-theme', 'light');
+            if (darkOpt && lightOpt) {
+                darkOpt.classList.remove('active');
+                lightOpt.classList.add('active');
+            }
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('sphn-theme', 'dark');
+            if (darkOpt && lightOpt) {
+                lightOpt.classList.remove('active');
+                darkOpt.classList.add('active');
+            }
+        }
     }
 
+    // Apply saved theme on load
+    applyTheme(savedTheme);
+
     if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const icon = themeToggle.querySelector('i');
-            
-            if (currentTheme === 'light') {
-                // Switch to dark
-                document.documentElement.removeAttribute('data-theme');
-                localStorage.setItem('sphn-theme', 'dark');
-                icon.style.transform = 'rotate(360deg)';
-                setTimeout(() => {
-                    icon.className = 'fas fa-moon';
-                    icon.style.transform = '';
-                }, 200);
+        themeToggle.addEventListener('click', (e) => {
+            const targetOpt = e.target.closest('[data-set-theme]');
+            if (targetOpt) {
+                const requestedTheme = targetOpt.getAttribute('data-set-theme');
+                applyTheme(requestedTheme);
             } else {
-                // Switch to light
-                document.documentElement.setAttribute('data-theme', 'light');
-                localStorage.setItem('sphn-theme', 'light');
-                icon.style.transform = 'rotate(360deg)';
-                setTimeout(() => {
-                    icon.className = 'fas fa-sun';
-                    icon.style.transform = '';
-                }, 200);
+                const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+                applyTheme(isLight ? 'dark' : 'light');
+            }
+        });
+
+        themeToggle.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+                applyTheme(isLight ? 'dark' : 'light');
             }
         });
     }

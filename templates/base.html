@@ -29,10 +29,6 @@
                 <span class="college-name">Sphoorthy Engineering College</span>
                 <span class="college-tag">(UGC Autonomous)</span>
             </div>
-            <div class="counselling-badge">
-                <span class="badge-label">Counselling Code</span>
-                <span class="badge-code">SPHN</span>
-            </div>
         </a>
         <ul class="nav-links" id="navLinks">
             <li><a href="/" class="{{ 'active' if active_page == 'home' else '' }}">Home</a></li>
@@ -56,9 +52,16 @@
             {% endif %}
         </ul>
         <div class="nav-right-actions">
-            <button class="theme-toggle" id="themeToggle" title="Toggle theme">
-                <i class="fas fa-moon"></i>
-            </button>
+            <div class="theme-mode-toggle" id="themeToggle" role="button" tabindex="0" title="Switch Theme (Dark / Light)" aria-label="Toggle dark and light theme">
+                <span class="theme-pill-opt dark-opt active" data-set-theme="dark">
+                    <i class="fas fa-moon"></i>
+                    <span class="theme-opt-text">Dark</span>
+                </span>
+                <span class="theme-pill-opt light-opt" data-set-theme="light">
+                    <i class="fas fa-sun"></i>
+                    <span class="theme-opt-text">Light</span>
+                </span>
+            </div>
             <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
