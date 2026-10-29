@@ -7,8 +7,11 @@ os.makedirs(INSTANCE_DIR, exist_ok=True)
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
     _db_url = os.environ.get('DATABASE_URL')
-    if _db_url and _db_url.startswith('postgres://'):
-        _db_url = _db_url.replace('postgres://', 'postgresql://', 1)
+    if _db_url:
+        if _db_url.startswith('postgres://'):
+            _db_url = _db_url.replace('postgres://', 'postgresql+psycopg://', 1)
+        elif _db_url.startswith('postgresql://') and not _db_url.startswith('postgresql+'):
+            _db_url = _db_url.replace('postgresql://', 'postgresql+psycopg://', 1)
 
     SQLALCHEMY_DATABASE_URI = (
         _db_url or
