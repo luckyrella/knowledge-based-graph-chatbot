@@ -512,7 +512,7 @@ def _route_intent(intent, entities, college_data, kg_query):
             for m in materials:
                 file_link = m.file_path if m.file_path else f"/static/uploads/materials/{m.id}.pdf"
                 sem_str = f" [Sem {m.semester}]" if m.semester else ""
-                res += f"• **{m.title}** ({m.subject} - {m.department.upper()}{sem_str})\n  📥 [Download PDF Document]({file_link})\n\n"
+                res += f"• **{m.title}** ({m.subject} - {m.department.upper()}{sem_str})\n  👁️ [View Notes Online]({file_link}) &nbsp;|&nbsp; 📥 [Download PDF]({file_link})\n\n"
             res += f"You can also explore all 30+ notes on the [Student Study Hub](/student)."
             return res
         return "📚 You can access and download all branch lecture notes directly on the [Student Study Hub](/student)!"
