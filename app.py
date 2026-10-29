@@ -63,6 +63,12 @@ def create_app():
     from portals.admin import admin_bp
     app.register_blueprint(admin_bp)
 
+    from portals.faculty import faculty_bp
+    app.register_blueprint(faculty_bp)
+
+    from portals.hod import hod_bp
+    app.register_blueprint(hod_bp)
+
     # ── Context Processors ────────────────────────────────────────────────────
     @app.context_processor
     def inject_globals():

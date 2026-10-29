@@ -44,11 +44,16 @@
             <li><a href="/contact" class="{{ 'active' if active_page == 'contact' else '' }}">Contact</a></li>
             {% if current_user.is_authenticated %}
                 {% if current_user.role == 'admin' %}
-                <li><a href="/admin/" class="{{ 'active' if active_page == 'admin' else '' }}" style="color:#f59e0b;font-weight:600;">&#9679; Admin</a></li>
+                <li><a href="/admin/" class="{{ 'active' if active_page == 'admin' else '' }}" style="color:#f59e0b;font-weight:600;"><i class="fas fa-shield-alt"></i> Admin</a></li>
+                {% elif current_user.role == 'hod' %}
+                <li><a href="/hod/" class="{{ 'active' if active_page == 'hod' else '' }}" style="color:#10b981;font-weight:600;"><i class="fas fa-user-tie"></i> HOD Portal</a></li>
+                {% elif current_user.role == 'faculty' %}
+                <li><a href="/faculty-portal/" class="{{ 'active' if active_page == 'faculty_portal' else '' }}" style="color:#8b5cf6;font-weight:600;"><i class="fas fa-chalkboard-teacher"></i> Faculty Portal</a></li>
                 {% endif %}
-                <li><a href="/auth/logout" style="color:#ef4444;">Logout ({{ current_user.username }})</a></li>
+                <li><a href="/auth/logout" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i> Logout ({{ current_user.username }})</a></li>
             {% else %}
-                <li><a href="/auth/login" class="{{ 'active' if active_page == 'login' else '' }}" style="color:#3b82f6;font-weight:600;">Login</a></li>
+                <li><a href="/auth/login" class="{{ 'active' if active_page == 'login' else '' }}" style="color:#3b82f6;font-weight:600;"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                <li><a href="/auth/register" class="{{ 'active' if active_page == 'register' else '' }}" style="color:#10b981;font-weight:600;"><i class="fas fa-user-plus"></i> Register</a></li>
             {% endif %}
         </ul>
         <div class="nav-right-actions">

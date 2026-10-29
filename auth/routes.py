@@ -23,7 +23,15 @@ def login():
             login_user(user)
             flash("Logged in successfully.", "success")
             next_page = request.args.get('next')
-            return redirect(next_page or url_for('index'))
+            if next_page:
+                return redirect(next_page)
+            if user.role == 'admin':
+                return redirect(url_for('admin_bp.dashboard'))
+            elif user.role == 'hod':
+                return redirect(url_for('hod_bp.dashboard'))
+            elif user.role == 'faculty':
+                return redirect(url_for('faculty_bp.dashboard'))
+            return redirect(url_for('index'))
         else:
             flash("Invalid username or password.", "danger")
             
