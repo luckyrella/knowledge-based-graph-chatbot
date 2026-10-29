@@ -6,7 +6,7 @@ Phase 1: Foundation (KG + DB + Auth + Admin Portal)
 import os
 import json
 from flask import Flask, render_template, request, jsonify, redirect, abort, session
-from flask_login import LoginManager, current_user
+from flask_login import LoginManager, current_user, login_required
 from dotenv import load_dotenv
 
 # Load environment variables from .env
@@ -152,6 +152,7 @@ def create_app():
         return redirect('https://www.sphoorthyengg.ac.in/photo-gallery')
 
     @app.route('/student')
+    @login_required
     def student_hub():
         return render_template('student_hub.html')
 
@@ -196,6 +197,7 @@ def create_app():
         } for m in materials])
 
     @app.route('/api/upload-material', methods=['POST'])
+    @login_required
     def upload_material():
         from models.material import StudyMaterial
         from werkzeug.utils import secure_filename

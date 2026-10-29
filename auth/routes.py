@@ -31,6 +31,8 @@ def login():
                 return redirect(url_for('hod_bp.dashboard'))
             elif user.role == 'faculty':
                 return redirect(url_for('faculty_bp.dashboard'))
+            elif user.role == 'student':
+                return redirect(url_for('student_hub'))
             return redirect(url_for('index'))
         else:
             flash("Invalid username or password.", "danger")
@@ -59,19 +61,23 @@ def register():
             flash("Username or email already exists.", "danger")
             return redirect(url_for('auth_bp.register'))
             
+        is_approved = True if role == 'student' else False
         new_user = User(
             username=username,
             email=email,
             role=role,
             department=department,
-            is_approved=False
+            is_approved=is_approved
         )
         new_user.set_password(password)
         
         db.session.add(new_user)
         db.session.commit()
         
-        flash("Registration successful. Your account will be activated after admin approval.", "success")
+        if role == 'student':
+            flash("Registration successful! You can now log in to access the Student Hub.", "success")
+        else:
+            flash("Registration successful. Staff accounts will be activated after admin approval.", "success")
         return redirect(url_for('auth_bp.login'))
         
     return render_template('auth/register.html')
