@@ -415,17 +415,41 @@ def _route_intent(intent, entities, college_data, kg_query):
         from models.material import StudyMaterial
         query = StudyMaterial.query
         dept = entities.get('department')
+        sem = entities.get('semester')
+        subj = entities.get('subject')
+
         if dept:
             query = query.filter(StudyMaterial.department.ilike(f"%{dept}%"))
+        if sem:
+            query = query.filter(StudyMaterial.semester == int(sem))
+        if subj:
+            query = query.filter(
+                (StudyMaterial.subject.ilike(f"%{subj}%")) | 
+                (StudyMaterial.title.ilike(f"%{subj}%")) | 
+                (StudyMaterial.description.ilike(f"%{subj}%"))
+            )
+
         materials = query.order_by(StudyMaterial.created_at.desc()).limit(5).all()
+        # Fallback if specific multi-filter returned 0 results
+        if not materials and (dept or subj or sem):
+            query_fb = StudyMaterial.query
+            if subj:
+                materials = query_fb.filter(
+                    (StudyMaterial.subject.ilike(f"%{subj}%")) | 
+                    (StudyMaterial.title.ilike(f"%{subj}%"))
+                ).limit(5).all()
+            if not materials and dept:
+                materials = query_fb.filter(StudyMaterial.department.ilike(f"%{dept}%")).limit(5).all()
+
         if materials:
-            res = "📚 **Found Study Materials & Notes:**\n\n"
+            res = "📚 **Found Verified Academic Lecture Notes & Study Materials:**\n\n"
             for m in materials:
                 file_link = m.file_path if m.file_path else f"/static/uploads/materials/{m.id}.pdf"
-                res += f"• **{m.title}** ({m.subject.upper()} - {m.department.upper()})\n  [Download Material]({file_link})\n"
-            res += f"\nYou can also view all resources on the [Student Study Hub](/student)."
+                sem_str = f" [Sem {m.semester}]" if m.semester else ""
+                res += f"• **{m.title}** ({m.subject} - {m.department.upper()}{sem_str})\n  📥 [Download PDF Document]({file_link})\n\n"
+            res += f"You can also explore all 30+ notes on the [Student Study Hub](/student)."
             return res
-        return "📚 You can access and download all lecture notes, PPTs, and unit materials directly on the [Student Study Hub](/student)!"
+        return "📚 You can access and download all branch lecture notes directly on the [Student Study Hub](/student)!"
 
     elif intent == 'notice_info':
         from models.notice import Notice

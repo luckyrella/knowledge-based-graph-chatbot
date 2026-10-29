@@ -22,7 +22,12 @@ class NLPProcessor:
             "department_info":  ["tell me about cse department", "what are the branches",
                                  "departments in college", "details of ece",
                                  "computer science branch", "which departments are there",
-                                 "show me all departments", "info about aiml"],
+                                 "show me all departments", "info about aiml",
+                                 "info on artificial intelligence", "details of artificial intelligence",
+                                 "civil engineering details", "mechanical engineering details",
+                                 "tell me about civil engineering", "tell me about data science",
+                                 "cyber security branch info", "cse department details",
+                                 "all about ece", "tell me about mechanical branch", "cse department info"],
             "course_info":      ["what courses are offered", "is btech available",
                                  "mtech courses", "tell me about mba", "ug programs",
                                  "pg programs", "which courses does the college offer"],
@@ -167,12 +172,20 @@ class NLPProcessor:
         text_lower = text.lower().strip()
         ctx_intent = (context or {}).get('lastIntent')
 
+        dept_keywords = ["computer science", "artificial intelligence", "data science", "cyber security", 
+                         "civil engineering", "mechanical engineering", "electronics and communication", 
+                         "cse", "ece", "aiml", "civil", "mechanical"]
+        has_dept = any(d in text_lower for d in dept_keywords)
+
         # 1. Short follow-up (≤4 words) — try keywords first, then inherit context
         if len(text_lower.split()) <= 4 and ctx_intent:
             for intent, keywords in self._keyword_rules:
                 for kw in keywords:
                     if kw in text_lower:
                         return intent
+            if has_dept and any(w in text_lower for w in ["info", "detail", "details", "branch", "about", "overview"]):
+                if not any(f in text_lower for f in ["fee", "fees", "cost", "prof", "dr ", "dr.", "faculty", "hod", "who teaches", "subject", "syllabus", "notes"]):
+                    return "department_info"
             # No strong keyword hit → stay on the same topic
             return ctx_intent
 
@@ -181,6 +194,11 @@ class NLPProcessor:
             for kw in keywords:
                 if kw in text_lower:
                     return intent
+
+        # 2.5 Smart Department intent detection
+        if has_dept and any(w in text_lower for w in ["info", "detail", "details", "branch", "tell me about", "overview", "what about"]):
+            if not any(f in text_lower for f in ["fee", "fees", "cost", "prof", "dr ", "dr.", "faculty", "hod", "who teaches", "subject", "syllabus", "notes"]):
+                return "department_info"
 
         # 3. TF-IDF similarity with confidence threshold
         try:
@@ -277,6 +295,65 @@ class NLPProcessor:
             m = re.search(pattern, text_lower)
             if m:
                 entities['building'] = m.group(0).strip()
+                break
+
+        # ── Subject extraction ──────────────────────────────────────────────
+        subject_map = {
+            "operating systems": "Operating Systems",
+            "operating system": "Operating Systems",
+            "os": "Operating Systems",
+            "database management systems": "Database Management Systems",
+            "database management": "Database Management Systems",
+            "database": "Database Management Systems",
+            "dbms": "Database Management Systems",
+            "data structures & algorithms": "Data Structures",
+            "data structures and algorithms": "Data Structures",
+            "data structures": "Data Structures",
+            "data structure": "Data Structures",
+            "dsa": "Data Structures",
+            "design and analysis of algorithms": "Algorithms",
+            "analysis of algorithms": "Algorithms",
+            "algorithms": "Algorithms",
+            "daa": "Algorithms",
+            "computer networks": "Computer Networks",
+            "networks": "Computer Networks",
+            "software engineering": "Software Engineering",
+            "python for data science": "Python for Data Science",
+            "python": "Python for Data Science",
+            "machine learning": "Machine Learning",
+            "ml": "Machine Learning",
+            "deep learning": "Deep Learning",
+            "natural language processing": "Natural Language Processing",
+            "nlp": "Natural Language Processing",
+            "big data analytics": "Big Data Analytics",
+            "big data": "Big Data Analytics",
+            "hadoop": "Big Data Analytics",
+            "spark": "Big Data Analytics",
+            "network security": "Network Security and Cryptography",
+            "cryptography": "Network Security and Cryptography",
+            "cyber forensics": "Cyber Forensics",
+            "incident response": "Cyber Forensics",
+            "electronic devices": "Electronic Devices",
+            "signals and systems": "Signals and Systems",
+            "digital signal processing": "Digital Signal Processing",
+            "dsp": "Digital Signal Processing",
+            "vlsi design": "VLSI Design",
+            "vlsi": "VLSI Design",
+            "building materials": "Building Materials",
+            "surveying": "Building Materials & Surveying",
+            "strength of materials": "Strength of Materials",
+            "structural analysis": "Structural Analysis",
+            "geotechnical engineering": "Geotechnical Engineering",
+            "thermodynamics": "Engineering Thermodynamics",
+            "fluid mechanics": "Fluid Mechanics",
+            "cad/cam": "CAD/CAM",
+            "financial management": "Financial Management",
+            "marketing management": "Marketing Management",
+            "strategic management": "Strategic Management"
+        }
+        for s_alias in sorted(subject_map, key=len, reverse=True):
+            if re.search(r'\b' + re.escape(s_alias) + r'\b', text_lower):
+                entities['subject'] = subject_map[s_alias]
                 break
 
         # ── Context carry-forward ────────────────────────────────────────────

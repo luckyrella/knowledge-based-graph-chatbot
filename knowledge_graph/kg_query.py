@@ -27,14 +27,25 @@ class KnowledgeGraphQuery:
 
     def query_department(self, dept_name):
         dept_name_lower = dept_name.lower()
-        for node_id, d in self._get_nodes_by_type('Department'):
-            if (dept_name_lower in d.get('name', '').lower()
-                    or dept_name_lower in d.get('short', '').lower()
-                    or dept_name_lower == d.get('id', '').lower()):
+        dept_nodes = self._get_nodes_by_type('Department')
+        
+        # 1. Exact match on ID or Short code (e.g. 'ce', 'cse', 'ece', 'me')
+        for node_id, d in dept_nodes:
+            if dept_name_lower == d.get('id', '').lower() or dept_name_lower == d.get('short', '').lower():
                 resp = f"**{d.get('name')} ({d.get('short')})**\n"
                 resp += f"HOD: {d.get('hod', 'N/A')} | Intake: {d.get('intake', 'N/A')} seats\n"
                 resp += f"{d.get('description', '')}"
                 return resp
+
+        # 2. Substring / name match for longer names
+        for node_id, d in dept_nodes:
+            name_lower = d.get('name', '').lower()
+            if (len(dept_name_lower) > 2 and dept_name_lower in name_lower) or dept_name_lower in d.get('short', '').lower():
+                resp = f"**{d.get('name')} ({d.get('short')})**\n"
+                resp += f"HOD: {d.get('hod', 'N/A')} | Intake: {d.get('intake', 'N/A')} seats\n"
+                resp += f"{d.get('description', '')}"
+                return resp
+
         return ("I couldn't find information about that department. "
                 "Available departments: CSE, CSE (AI & ML), CSE (Data Science), "
                 "CSE (Cyber Security), ECE, Civil Engineering, Mechanical Engineering, MBA.")
@@ -231,12 +242,17 @@ class KnowledgeGraphQuery:
 
     def query_hod(self, dept):
         dept_lower = dept.lower()
-        for _, d in self._get_nodes_by_type('Department'):
-            if (dept_lower in d.get('name', '').lower()
-                    or dept_lower in d.get('short', '').lower()
-                    or dept_lower == d.get('id', '').lower()):
-                return (f"The Head of Department (HOD) for **{d.get('name')}** is "
-                        f"**{d.get('hod', 'N/A')}**.")
+        dept_nodes = self._get_nodes_by_type('Department')
+        
+        # 1. Exact match on ID or Short code (e.g. 'ce', 'cse', 'ece')
+        for _, d in dept_nodes:
+            if dept_lower == d.get('id', '').lower() or dept_lower == d.get('short', '').lower():
+                return f"The Head of Department (HOD) for **{d.get('name')}** is **{d.get('hod', 'N/A')}**."
+        
+        # 2. Substring match
+        for _, d in dept_nodes:
+            if (len(dept_lower) > 2 and dept_lower in d.get('name', '').lower()) or dept_lower in d.get('short', '').lower():
+                return f"The Head of Department (HOD) for **{d.get('name')}** is **{d.get('hod', 'N/A')}**."
         return ("I couldn't find HOD information for that department. "
                 "Please specify: CSE, ECE, Civil, Mechanical, AI ML, Data Science, Cyber Security, or MBA.")
 
