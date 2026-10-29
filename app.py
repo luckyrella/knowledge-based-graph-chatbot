@@ -324,8 +324,11 @@ def create_app():
 
 
 def _seed_admin(app):
-    """Create a default admin account on first run."""
+    """Create default accounts, circulars, and study materials on first run."""
     from models import User
+    from models.material import StudyMaterial
+    from models.notice import Notice
+
     if User.query.count() == 0:
         admin = User(
             username='admin',
@@ -336,13 +339,65 @@ def _seed_admin(app):
         )
         admin.set_password('Admin@123')
         db.session.add(admin)
+
+        hod = User(
+            username='hod_demo',
+            email='hod.cse@sphoorthyengg.ac.in',
+            role='hod',
+            department='CSE',
+            is_approved=True,
+            is_active=True
+        )
+        hod.set_password('Hod@123')
+        db.session.add(hod)
+
+        faculty = User(
+            username='faculty_demo',
+            email='faculty.cse@sphoorthyengg.ac.in',
+            role='faculty',
+            department='CSE',
+            is_approved=True,
+            is_active=True
+        )
+        faculty.set_password('Faculty@123')
+        db.session.add(faculty)
         db.session.commit()
-        print("\n" + "=" * 55)
-        print("  Default admin account created!")
-        print("  Username: admin")
-        print("  Password: Admin@123")
-        print("  CHANGE THIS PASSWORD AFTER FIRST LOGIN")
-        print("=" * 55 + "\n")
+        print("  Default admin, HOD, and faculty accounts created!")
+
+    if Notice.query.count() == 0:
+        admin = User.query.filter_by(role='admin').first()
+        admin_id = admin.id if admin else 1
+        notices = [
+            ("Autonomous End Semester Examination Schedule 2026", "The end-semester regular and supplementary theory examinations for B.Tech & MBA will commence from 15th November 2026. Hall tickets available on examination portal.", "All", admin_id),
+            ("Campus Placement Drive: TCS Digital & Infosys", "Online registration is open for eligible 2026 batch candidates from CSE, AIML, DS, CS, and ECE. Minimum CGPA required: 6.5 with no active backlogs.", "All", admin_id),
+            ("Annual Technical Symposium 'TECH-SPHOORTHY 2026'", "Department of Computer Science & Engineering invites project models and research paper presentations for the annual national fest. Exciting cash prizes!", "CSE", admin_id),
+            ("Central Library Extended Study Hours", "The Central Digital and Reference Library will remain open until 8:00 PM on all working days to support exam preparation.", "All", admin_id)
+        ]
+        for title, content, dept, uid in notices:
+            db.session.add(Notice(title=title, content=content, department=dept, posted_by=uid))
+        db.session.commit()
+
+    if StudyMaterial.query.count() == 0:
+        try:
+            from scripts.seed_comprehensive_notes import NOTES_CATALOG
+            admin = User.query.filter_by(role='admin').first()
+            admin_id = admin.id if admin else 1
+            for item in NOTES_CATALOG:
+                web_url = f"/static/uploads/materials/{item['filename']}"
+                mat = StudyMaterial(
+                    title=item["title"],
+                    subject=item["subject"],
+                    department=item["department"],
+                    semester=item["semester"],
+                    description=item["description"],
+                    file_path=web_url,
+                    uploaded_by=admin_id
+                )
+                db.session.add(mat)
+            db.session.commit()
+            print("  Seeded 31 study materials into database.")
+        except Exception as e:
+            print(f"  Note seeder error: {e}")
 
 
 def _route_intent(intent, entities, college_data, kg_query):
