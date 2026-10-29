@@ -374,12 +374,12 @@ def _seed_admin(app):
             ("Central Library Extended Study Hours", "The Central Digital and Reference Library will remain open until 8:00 PM on all working days to support exam preparation.", "All", admin_id)
         ]
         for title, content, dept, uid in notices:
-            db.session.add(Notice(title=title, content=content, department=dept, posted_by=uid))
+            db.session.add(Notice(title=title, content=content, department=dept, author_id=uid, is_approved=True))
         db.session.commit()
 
     if StudyMaterial.query.count() == 0:
         try:
-            from scripts.seed_comprehensive_notes import NOTES_CATALOG
+            from models.materials_catalog import NOTES_CATALOG
             admin = User.query.filter_by(role='admin').first()
             admin_id = admin.id if admin else 1
             for item in NOTES_CATALOG:
