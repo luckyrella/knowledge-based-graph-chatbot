@@ -361,8 +361,19 @@ def _seed_admin(app):
         )
         faculty.set_password('Faculty@123')
         db.session.add(faculty)
+
+        student = User(
+            username='student_demo',
+            email='student@sphoorthyengg.ac.in',
+            role='student',
+            department='CSE',
+            is_approved=True,
+            is_active=True
+        )
+        student.set_password('Student@123')
+        db.session.add(student)
         db.session.commit()
-        print("  Default admin, HOD, and faculty accounts created!")
+        print("  Default admin, HOD, faculty, and student accounts created!")
 
     if Notice.query.count() == 0:
         admin = User.query.filter_by(role='admin').first()
