@@ -104,8 +104,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Apply saved theme on load
-    applyTheme(savedTheme);
+    // Expose toggleTheme globally
+    window.toggleTheme = function() {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        applyTheme(isLight ? 'dark' : 'light');
+    };
+
+    // Dropdown toggle for touch/mobile
+    const dropdownToggle = document.querySelector('.nav-dropdown-toggle');
+    if (dropdownToggle) {
+        dropdownToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            const parent = dropdownToggle.closest('.nav-dropdown');
+            if (parent) parent.classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-dropdown')) {
+                document.querySelectorAll('.nav-dropdown.active').forEach(d => d.classList.remove('active'));
+            }
+        });
+    }
 
     if (themeToggle) {
         themeToggle.addEventListener('click', (e) => {

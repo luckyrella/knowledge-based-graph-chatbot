@@ -33,30 +33,34 @@
         <ul class="nav-links" id="navLinks">
             <li><a href="/" class="{{ 'active' if active_page == 'home' else '' }}">Home</a></li>
             <li><a href="/student" class="{{ 'active' if active_page == 'student' else '' }}" style="color:#0ea5e9;font-weight:600;"><i class="fas fa-graduation-cap"></i> Student Hub</a></li>
-            <li><a href="/about" class="{{ 'active' if active_page == 'about' else '' }}">About</a></li>
             <li><a href="/departments" class="{{ 'active' if active_page == 'departments' else '' }}">Departments</a></li>
             <li><a href="/admissions" class="{{ 'active' if active_page == 'admissions' else '' }}">Admissions</a></li>
             <li><a href="/placements" class="{{ 'active' if active_page == 'placements' else '' }}">Placements</a></li>
-            <li><a href="/facilities" class="{{ 'active' if active_page == 'facilities' else '' }}">Facilities</a></li>
             <li><a href="/faculty" class="{{ 'active' if active_page == 'faculty' else '' }}">Faculty</a></li>
-            <li><a href="/clubs" class="{{ 'active' if active_page == 'clubs' else '' }}">Clubs</a></li>
-            <li><a href="/management" class="{{ 'active' if active_page == 'management' else '' }}">Leadership</a></li>
-            <li><a href="/contact" class="{{ 'active' if active_page == 'contact' else '' }}">Contact</a></li>
+            <li class="nav-dropdown">
+                <a href="javascript:void(0)" class="nav-dropdown-toggle">
+                    Explore <i class="fas fa-chevron-down" style="font-size:0.68rem; margin-left:2px; opacity:0.8;"></i>
+                </a>
+                <ul class="nav-dropdown-menu">
+                    <li><a href="/facilities"><i class="fas fa-building" style="width:16px;"></i> Facilities</a></li>
+                    <li><a href="/clubs"><i class="fas fa-users" style="width:16px;"></i> Clubs</a></li>
+                    <li><a href="/management"><i class="fas fa-user-tie" style="width:16px;"></i> Leadership</a></li>
+                    <li><a href="/about"><i class="fas fa-info-circle" style="width:16px;"></i> About</a></li>
+                    <li><a href="/contact"><i class="fas fa-envelope" style="width:16px;"></i> Contact</a></li>
+                </ul>
+            </li>
             {% if current_user.is_authenticated %}
                 {% if current_user.role == 'admin' %}
-                <li><a href="/admin/" class="{{ 'active' if active_page == 'admin' else '' }}" style="color:#f59e0b;font-weight:600;"><i class="fas fa-shield-alt"></i> Admin</a></li>
+                <li><a href="/admin/" class="{{ 'active' if active_page == 'admin' else '' }}" style="color:#f59e0b;font-weight:600;"><i class="fas fa-shield-alt"></i> Admin Panel</a></li>
                 {% elif current_user.role == 'hod' %}
                 <li><a href="/hod/" class="{{ 'active' if active_page == 'hod' else '' }}" style="color:#10b981;font-weight:600;"><i class="fas fa-user-tie"></i> HOD Portal</a></li>
                 {% elif current_user.role == 'faculty' %}
                 <li><a href="/faculty-portal/" class="{{ 'active' if active_page == 'faculty_portal' else '' }}" style="color:#8b5cf6;font-weight:600;"><i class="fas fa-chalkboard-teacher"></i> Faculty Portal</a></li>
                 {% endif %}
-                <li><a href="/auth/logout" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i> Logout ({{ current_user.username }})</a></li>
-            {% else %}
-                <li><a href="/auth/login" class="{{ 'active' if active_page == 'login' else '' }}" style="color:#3b82f6;font-weight:600;"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-                <li><a href="/auth/register" class="{{ 'active' if active_page == 'register' else '' }}" style="color:#10b981;font-weight:600;"><i class="fas fa-user-plus"></i> Register</a></li>
             {% endif %}
         </ul>
         <div class="nav-right-actions">
+            <!-- Dark / Light Theme Toggle -->
             <div class="theme-mode-toggle" id="themeToggle" role="button" tabindex="0" title="Switch Theme (Dark / Light)" aria-label="Toggle dark and light theme">
                 <span class="theme-pill-opt dark-opt active" data-set-theme="dark">
                     <i class="fas fa-moon"></i>
@@ -67,6 +71,19 @@
                     <span class="theme-opt-text">Light</span>
                 </span>
             </div>
+
+            <!-- Auth Actions (Always visible on the right) -->
+            {% if current_user.is_authenticated %}
+                <a href="/auth/logout" class="nav-logout-pill" title="Logout from account">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            {% else %}
+                <a href="/auth/login" class="nav-login-pill">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            {% endif %}
+
             <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
