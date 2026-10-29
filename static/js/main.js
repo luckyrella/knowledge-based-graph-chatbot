@@ -147,4 +147,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Dynamic unread notices badge for Student Hub
+    const navNoticeBadge = document.getElementById('navNoticeBadge');
+    if (navNoticeBadge) {
+        fetch('/api/notices')
+            .then(res => res.json())
+            .then(notices => {
+                if (Array.isArray(notices) && notices.length > 0) {
+                    navNoticeBadge.textContent = `${notices.length} NEW`;
+                    navNoticeBadge.style.display = 'inline-block';
+                }
+            })
+            .catch(() => {});
+    }
 });

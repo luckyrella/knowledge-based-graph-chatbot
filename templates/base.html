@@ -33,7 +33,7 @@
         <ul class="nav-links" id="navLinks">
             <li><a href="/" class="{{ 'active' if active_page == 'home' else '' }}">Home</a></li>
             {% if current_user.is_authenticated %}
-            <li><a href="/student" class="{{ 'active' if active_page == 'student' else '' }}" style="color:#0ea5e9;font-weight:600;"><i class="fas fa-graduation-cap"></i> Student Hub</a></li>
+            <li><a href="/student" class="{{ 'active' if active_page == 'student' else '' }}" style="color:#0ea5e9;font-weight:600;"><i class="fas fa-graduation-cap"></i> Student Hub <span id="navNoticeBadge" style="background:#ef4444;color:white;font-size:0.65rem;padding:2px 6px;border-radius:10px;margin-left:4px;font-weight:700;display:none;"></span></a></li>
             {% endif %}
             <li><a href="/departments" class="{{ 'active' if active_page == 'departments' else '' }}">Departments</a></li>
             <li><a href="/admissions" class="{{ 'active' if active_page == 'admissions' else '' }}">Admissions</a></li>
@@ -197,6 +197,7 @@
                     </div>
                 </div>
                 <div class="chat-header-actions">
+                    <button class="hdr-btn" id="exportChat" title="Export chat conversation"><i class="fas fa-file-download"></i></button>
                     <button class="hdr-btn" id="clearChat" title="Clear chat"><i class="fas fa-trash-alt"></i></button>
                     <button class="hdr-btn close-chat" id="closeChat" title="Close"><i class="fas fa-times"></i></button>
                 </div>

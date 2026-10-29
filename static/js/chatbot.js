@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn        = document.getElementById('sendBtn');
     const suggestionsBar = document.getElementById('chatSuggestions');
     const clearBtn       = document.getElementById('clearChat');
+    const exportBtn      = document.getElementById('exportChat');
 
     /* ── State ────────────────────────────────────── */
     let ctx = { lastIntent: null, lastDept: null, lastCourse: null };
@@ -75,6 +76,57 @@ document.addEventListener('DOMContentLoaded', () => {
             msgId = 0;
             renderChips('default');
             setTimeout(() => showWelcome(), 300);
+        });
+    }
+
+    /* Export chat transcript */
+    if (exportBtn) {
+        exportBtn.addEventListener('click', () => {
+            const rows = chatMessages.querySelectorAll('.msg-row');
+            if (!rows || rows.length === 0) {
+                alert('No messages in the conversation to export yet.');
+                return;
+            }
+
+            let transcript = `=================================================================\n`;
+            transcript += `   SPHOORTHY ENGINEERING COLLEGE — AI ASSISTANT CHAT LOG\n`;
+            transcript += `   Exported on: ${new Date().toLocaleString()}\n`;
+            transcript += `=================================================================\n\n`;
+
+            let count = 0;
+            rows.forEach(r => {
+                const isUser = r.classList.contains('user-row');
+                const isBot = r.classList.contains('bot-row');
+                if (!isUser && !isBot) return;
+
+                const role = isUser ? 'Student / User' : 'Sphoorthy Assistant';
+                const msgEl = r.querySelector('.message');
+                const metaEl = r.querySelector('.msg-meta');
+                const time = metaEl ? metaEl.textContent.trim() : '';
+                const text = msgEl ? msgEl.innerText.trim() : '';
+
+                if (text) {
+                    transcript += `[${time || 'Recent'}] ${role}:\n${text}\n\n`;
+                    transcript += `-----------------------------------------------------------------\n\n`;
+                    count++;
+                }
+            });
+
+            if (count === 0) {
+                alert('No chat messages found to export.');
+                return;
+            }
+
+            const blob = new Blob([transcript], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const dateStr = new Date().toISOString().slice(0, 10);
+            a.href = url;
+            a.download = `sphoorthy_chat_transcript_${dateStr}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         });
     }
 
