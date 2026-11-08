@@ -205,12 +205,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const intent  = data.intent  || 'general_query';
             const dept    = data.entities?.department || null;
             const course  = data.entities?.course     || null;
+            const graphTrace = data.graph_trace || null;
 
             if (intent  !== 'general_query') ctx.lastIntent = intent;
             if (dept)   ctx.lastDept   = dept;
             if (course) ctx.lastCourse = course;
 
-            addBotBubble(data.response || "I'm sorry, I couldn't find that info.", intent);
+            addBotBubble(data.response || "I'm sorry, I couldn't find that info.", intent, graphTrace);
             renderChips(intent);
         })
         .catch(() => {
@@ -234,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ═══════════════ BOT BUBBLE ═══════════════ */
-    function addBotBubble(rawText, intent) {
+    function addBotBubble(rawText, intent, graphTrace) {
         const id = ++msgId;
         const row = el('div', 'msg-row bot-row');
         row.dataset.id = id;
@@ -258,7 +259,43 @@ document.addEventListener('DOMContentLoaded', () => {
           <button class="fb-btn" title="Helpful" data-id="${id}" data-v="up"><i class="fas fa-thumbs-up"></i></button>
           <button class="fb-btn" title="Not helpful" data-id="${id}" data-v="down"><i class="fas fa-thumbs-down"></i></button>`;
 
-        right.append(bubble, meta, fb);
+        right.append(bubble);
+
+        /* Knowledge Graph Traversal Path Trace Badge */
+        if (graphTrace && graphTrace.steps && graphTrace.steps.length > 0) {
+            const traceContainer = el('div', 'kg-trace-container');
+            const hops = graphTrace.hops || 1;
+
+            let stepsHtml = '';
+            graphTrace.steps.forEach(step => {
+                if (step.kind === 'node') {
+                    const d = step.data;
+                    stepsHtml += `<span class="kg-trace-node" title="${d.type}: ${d.name}"><i class="fas ${d.icon}"></i> ${d.name}</span>`;
+                } else if (step.kind === 'edge') {
+                    const e = step.data;
+                    stepsHtml += `<span class="kg-trace-edge"><i class="fas fa-arrow-right"></i> <small>${e.label}</small> <i class="fas fa-arrow-right"></i></span>`;
+                }
+            });
+
+            traceContainer.innerHTML = `
+                <div class="kg-trace-header" title="Click to view/hide Knowledge Graph Traversal Path">
+                    <span class="kg-trace-badge"><i class="fas fa-project-diagram"></i> KG Traversal Trace &middot; ${hops} Hop${hops > 1 ? 's' : ''}</span>
+                    <i class="fas fa-chevron-down kg-trace-toggle-icon"></i>
+                </div>
+                <div class="kg-trace-chain">
+                    ${stepsHtml}
+                </div>
+            `;
+
+            traceContainer.querySelector('.kg-trace-header').addEventListener('click', () => {
+                traceContainer.classList.toggle('expanded');
+                scroll();
+            });
+
+            right.append(traceContainer);
+        }
+
+        right.append(meta, fb);
         row.append(avatar, right);
         chatMessages.appendChild(row);
         animIn(row, 'left');

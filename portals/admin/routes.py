@@ -1,5 +1,6 @@
 import json
-from flask import render_template, request, flash, redirect, url_for, current_app, Response
+from datetime import datetime
+from flask import render_template, request, flash, redirect, url_for, current_app, Response, jsonify
 from flask_login import login_required
 from . import admin_bp
 from auth.decorators import role_required
@@ -251,4 +252,41 @@ def export_analytics_csv():
         output.getvalue(),
         mimetype="text/csv",
         headers={"Content-Disposition": "attachment;filename=sphoorthy_chatbot_analytics.csv"}
+    )
+
+
+# ── KG Automated Health & Diagnostic Audit ──────────────────────────────────
+@admin_bp.route('/kg-health')
+@login_required
+@role_required('admin')
+def kg_health():
+    from knowledge_graph.kg_auditor import run_graph_audit
+    neo4j_svc = getattr(current_app, 'neo4j_service', None)
+    audit_data = run_graph_audit(current_app.kg_builder.get_graph(), neo4j_svc)
+    return render_template('admin_kg_health.html', audit=audit_data)
+
+
+@admin_bp.route('/api/kg-health')
+@login_required
+@role_required('admin')
+def api_kg_health():
+    from knowledge_graph.kg_auditor import run_graph_audit
+    neo4j_svc = getattr(current_app, 'neo4j_service', None)
+    audit_data = run_graph_audit(current_app.kg_builder.get_graph(), neo4j_svc)
+    return jsonify(audit_data)
+
+
+@admin_bp.route('/api/kg-health/export-report')
+@login_required
+@role_required('admin')
+def export_kg_audit_report():
+    from knowledge_graph.kg_auditor import run_graph_audit
+    neo4j_svc = getattr(current_app, 'neo4j_service', None)
+    audit_data = run_graph_audit(current_app.kg_builder.get_graph(), neo4j_svc)
+    report_json = json.dumps(audit_data, indent=2)
+    filename = f"sphoorthy_kg_health_audit_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    return Response(
+        report_json,
+        mimetype="application/json",
+        headers={"Content-Disposition": f"attachment;filename={filename}"}
     )

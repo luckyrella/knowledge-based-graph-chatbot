@@ -355,7 +355,19 @@ def create_app():
         except Exception:
             pass  # Don't break chat if DB logging fails
 
-        return jsonify({'response': response, 'intent': intent, 'entities': entities})
+        # Generate KG Traversal Path Trace
+        try:
+            from knowledge_graph.kg_tracer import generate_graph_trace
+            graph_trace = generate_graph_trace(app.kg_builder.get_graph(), intent, entities)
+        except Exception:
+            graph_trace = None
+
+        return jsonify({
+            'response': response,
+            'intent': intent,
+            'entities': entities,
+            'graph_trace': graph_trace
+        })
 
     # ── API: Feedback ─────────────────────────────────────────────────────────
     @app.route('/api/feedback', methods=['POST'])

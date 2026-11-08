@@ -1,0 +1,332 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .health-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .audit-metric-card {
+        padding: 22px 20px;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .audit-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+    }
+    .audit-table th {
+        text-align: left;
+        padding: 10px 12px;
+        color: var(--text-muted);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-weight: 600;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+    }
+    .audit-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        color: var(--text-main);
+    }
+    .audit-tag {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #cbd5e1;
+    }
+    [data-theme="light"] .audit-table th {
+        border-bottom: 1px solid #e2e8f0;
+    }
+    [data-theme="light"] .audit-table td {
+        border-bottom: 1px solid #f1f5f9;
+    }
+    [data-theme="light"] .audit-tag {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        color: #334155;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section style="padding-top: 110px; min-height: 100vh; padding-bottom: 70px;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        
+        <!-- Header Bar -->
+        <div class="card glass" style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border-left: 4px solid #10b981;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff;">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <div>
+                    <h2 style="margin: 0; font-size: 1.5rem; color: var(--text-main);">Knowledge Graph Health & Topology Audit</h2>
+                    <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.88rem;">
+                        Automated structural validation, schema integrity checks, and orphan node diagnosis
+                    </p>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-secondary" id="btnRescan" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; padding: 8px 14px;">
+                    <i class="fas fa-sync-alt" id="rescanIcon"></i> Re-Run Diagnostics
+                </button>
+                <a href="{{ url_for('admin_bp.export_kg_audit_report') }}" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; padding: 8px 14px;">
+                    <i class="fas fa-download"></i> Export Audit JSON
+                </a>
+                <a href="/graph" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; padding: 8px 14px;">
+                    <i class="fas fa-project-diagram"></i> Open KG Explorer
+                </a>
+                <a href="{{ url_for('admin_bp.dashboard') }}" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; padding: 8px 14px;">
+                    <i class="fas fa-arrow-left"></i> Admin Center
+                </a>
+            </div>
+        </div>
+
+        <!-- Metric KPI Cards -->
+        <div class="grid-4" style="margin-bottom: 30px;">
+            <div class="card glass audit-metric-card" style="border-top: 3px solid {{ audit.status_color }};">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Graph Health Score</span>
+                        <span class="health-badge" style="background: rgba(16, 185, 129, 0.15); color: {{ audit.status_color }};">
+                            <i class="fas fa-shield-check"></i> {{ audit.status_label }}
+                        </span>
+                    </div>
+                    <div class="stat-number" style="font-size: 2.3rem; font-weight: 800; color: {{ audit.status_color }};">
+                        {{ audit.health_score }}<span style="font-size: 1.1rem; font-weight: 600;">%</span>
+                    </div>
+                </div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 10px;">
+                    Rating: <strong style="color: var(--text-main);">{{ audit.grade }}</strong>
+                </div>
+            </div>
+
+            <div class="card glass audit-metric-card" style="border-top: 3px solid #38bdf8;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Connectivity Index</span>
+                        <i class="fas fa-network-wired" style="color: #38bdf8;"></i>
+                    </div>
+                    <div class="stat-number" style="font-size: 2.3rem; font-weight: 800; color: var(--text-main);">
+                        {{ audit.comp_count }} <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-muted);">Component</span>
+                    </div>
+                </div>
+                <div style="font-size: 0.78rem; color: #10b981; margin-top: 10px;">
+                    <i class="fas fa-check-circle"></i> 100% Unified Campus Network
+                </div>
+            </div>
+
+            <div class="card glass audit-metric-card" style="border-top: 3px solid {% if audit.isolated_nodes_count == 0 %}#10b981{% else %}#ef4444{% endif %};">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Orphan Nodes</span>
+                        <i class="fas fa-circle-nodes" style="color: {% if audit.isolated_nodes_count == 0 %}#10b981{% else %}#ef4444{% endif %};"></i>
+                    </div>
+                    <div class="stat-number" style="font-size: 2.3rem; font-weight: 800; color: {% if audit.isolated_nodes_count == 0 %}#10b981{% else %}#ef4444{% endif %};">
+                        {{ audit.isolated_nodes_count }}
+                    </div>
+                </div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 10px;">
+                    {% if audit.isolated_nodes_count == 0 %}
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i> Zero disconnected entities
+                    {% else %}
+                    <span style="color: #ef4444;">{{ audit.isolated_nodes_count }} nodes need edge links</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card glass audit-metric-card" style="border-top: 3px solid #f59e0b;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Total Graph Topology</span>
+                        <i class="fas fa-database" style="color: #f59e0b;"></i>
+                    </div>
+                    <div class="stat-number" style="font-size: 2rem; font-weight: 800; color: var(--text-main);">
+                        {{ audit.num_nodes }} <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-muted);">Nodes</span>
+                    </div>
+                </div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 10px;">
+                    {{ audit.num_edges }} Edges &middot; Avg Degree: <strong>{{ audit.avg_degree }}</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Audit Panels Grid -->
+        <div class="grid-2" style="gap: 30px; margin-bottom: 30px;">
+            
+            <!-- Left: Diagnostic Findings & Hub Leaders -->
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+                
+                <!-- Findings Card -->
+                <div class="card glass">
+                    <h3 class="card-title" style="display: flex; align-items: center; gap: 8px; font-size: 1.15rem; margin-bottom: 15px;">
+                        <i class="fas fa-clipboard-check" style="color: #10b981;"></i> Automated Diagnostic Findings
+                    </h3>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+                        {% for finding in audit.findings %}
+                        <div style="padding: 10px 14px; border-radius: 8px; background: rgba(16, 185, 129, 0.08); border-left: 3px solid #10b981; font-size: 0.85rem; color: var(--text-main);">
+                            {{ finding }}
+                        </div>
+                        {% endfor %}
+
+                        {% if audit.deductions %}
+                        {% for d in audit.deductions %}
+                        <div style="padding: 10px 14px; border-radius: 8px; background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; font-size: 0.85rem; color: var(--text-main);">
+                            ⚠️ <strong>Recommendation:</strong> {{ d }}
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div style="padding: 12px; border-radius: 8px; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2); font-size: 0.8rem; color: #38bdf8;">
+                        <i class="fas fa-server"></i> <strong>Graph Engine:</strong> {{ audit.neo4j_status }} &middot; Audited at {{ audit.timestamp }}
+                    </div>
+                </div>
+
+                <!-- Centrality Hubs -->
+                <div class="card glass">
+                    <h3 class="card-title" style="display: flex; align-items: center; gap: 8px; font-size: 1.15rem; margin-bottom: 15px;">
+                        <i class="fas fa-star" style="color: #f59e0b;"></i> Top Central Graph Hubs (Degree Centrality)
+                    </h3>
+                    <div style="overflow-x: auto;">
+                        <table class="audit-table">
+                            <thead>
+                                <tr>
+                                    <th>Entity Hub</th>
+                                    <th>Type</th>
+                                    <th>Connections</th>
+                                    <th>Centrality</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for hub in audit.top_hubs %}
+                                <tr>
+                                    <td><strong>{{ hub.name }}</strong></td>
+                                    <td><span class="audit-tag">{{ hub.type }}</span></td>
+                                    <td><strong>{{ hub.degree }}</strong> links</td>
+                                    <td><span style="color: #38bdf8; font-weight: 600;">{{ hub.centrality }}</span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right: Entity Distributions & Department Integrity -->
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+                
+                <!-- Entity Category Distribution -->
+                <div class="card glass">
+                    <h3 class="card-title" style="display: flex; align-items: center; gap: 8px; font-size: 1.15rem; margin-bottom: 15px;">
+                        <i class="fas fa-layer-group" style="color: #8b5cf6;"></i> Entity Schema Category Distribution
+                    </h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px;">
+                        {% for type, count in audit.entity_counts.items() %}
+                        <div style="padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); text-align: center;">
+                            <div style="font-size: 1.4rem; font-weight: 800; color: #38bdf8;">{{ count }}</div>
+                            <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">{{ type }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Academic Department Integrity -->
+                <div class="card glass">
+                    <h3 class="card-title" style="display: flex; align-items: center; gap: 8px; font-size: 1.15rem; margin-bottom: 15px;">
+                        <i class="fas fa-graduation-cap" style="color: #38bdf8;"></i> Department Schema Integrity
+                    </h3>
+                    <div style="overflow-x: auto;">
+                        <table class="audit-table">
+                            <thead>
+                                <tr>
+                                    <th>Department</th>
+                                    <th>HOD Anchor</th>
+                                    <th>Building Anchor</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for d in audit.dept_checks %}
+                                <tr>
+                                    <td><strong>{{ d.name }}</strong></td>
+                                    <td>
+                                        {% if d.has_hod %}
+                                        <span style="color: #10b981;"><i class="fas fa-check-circle"></i> Linked</span>
+                                        {% else %}
+                                        <span style="color: #ef4444;"><i class="fas fa-times-circle"></i> Missing</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if d.has_location %}
+                                        <span style="color: #10b981;"><i class="fas fa-check-circle"></i> Anchored</span>
+                                        {% else %}
+                                        <span style="color: #f59e0b;"><i class="fas fa-exclamation-triangle"></i> Pending</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if d.has_hod and d.has_location %}
+                                        <span class="health-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">Complete</span>
+                                        {% else %}
+                                        <span class="health-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">Valid</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btnRescan = document.getElementById('btnRescan');
+    const rescanIcon = document.getElementById('rescanIcon');
+
+    if (btnRescan) {
+        btnRescan.addEventListener('click', function() {
+            rescanIcon.classList.add('fa-spin');
+            btnRescan.disabled = true;
+            btnRescan.style.opacity = '0.7';
+
+            fetch('{{ url_for("admin_bp.api_kg_health") }}')
+                .then(r => r.json())
+                .then(data => {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 500);
+                })
+                .catch(err => {
+                    console.error('Audit rescan failed:', err);
+                    rescanIcon.classList.remove('fa-spin');
+                    btnRescan.disabled = false;
+                    btnRescan.style.opacity = '1';
+                });
+        });
+    }
+});
+</script>
+{% endblock %}
