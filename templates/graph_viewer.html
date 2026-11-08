@@ -294,8 +294,9 @@
                 <option value="ECE">⚡ ECE Cluster</option>
                 <option value="CIVIL">🏗️ Civil Engineering</option>
                 <option value="MECH">⚙️ Mechanical Engg</option>
+                <option value="FE">📚 Freshman Engineering (H&S)</option>
                 <option value="INFRA">🏢 Campus Buildings & Labs</option>
-                <option value="ALL">🌌 Full Galaxy (All 422 Nodes)</option>
+                <option value="ALL">🌌 Full Galaxy (All Nodes Connected)</option>
             </select>
             <button class="kg-btn" id="btnPhysics" title="Toggle physics movement"><i class="fas fa-atom"></i> Freeze</button>
             <button class="kg-btn" id="btnResetView" title="Center graph"><i class="fas fa-expand"></i> Fit View</button>
@@ -311,6 +312,7 @@
         <span class="kg-scope-pill" data-view="DS">Data Science</span>
         <span class="kg-scope-pill" data-view="CS">Cyber Security</span>
         <span class="kg-scope-pill" data-view="ECE">ECE</span>
+        <span class="kg-scope-pill" data-view="FE">Freshman Engg (H&S)</span>
         <span class="kg-scope-pill" data-view="INFRA">Buildings & Infrastructure</span>
         <span class="kg-scope-pill" data-view="ALL">All Nodes</span>
     </div>
@@ -401,7 +403,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Helper: Filter a connected subgraph based on view mode
     function filterSubgraph(mode) {
         if (mode === 'ALL') {
-            return { nodes: allNodes, edges: allEdges };
+            // Guarantee zero orphan nodes: every node must have at least one link
+            const connectedSet = new Set();
+            allEdges.forEach(e => { connectedSet.add(e.from); connectedSet.add(e.to); });
+            const patchedEdges = [...allEdges];
+            allNodes.forEach(n => {
+                if (!connectedSet.has(n.id) && n.id !== 'college') {
+                    patchedEdges.push({
+                        id: `patch_${n.id}`,
+                        from: 'college',
+                        to: n.id,
+                        label: 'affiliated_to',
+                        arrows: 'to',
+                        font: { size: 9, color: '#64748b' }
+                    });
+                }
+            });
+            return { nodes: allNodes, edges: patchedEdges };
         }
 
         if (mode === 'CORE') {
@@ -422,11 +440,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return { nodes: subNodes, edges: subEdges };
         }
 
-        // Department-specific cluster (e.g. CSE, AIML, DS, CS, ECE, CIVIL, MECH)
+        // Department-specific cluster (e.g. CSE, AIML, DS, CS, ECE, CIVIL, MECH, FE)
         const deptKey = mode.toLowerCase();
         // 1. Find the department root node
         const deptNode = allNodes.find(n => n.group === 'Department' && (
-            n.id.toLowerCase().includes(deptKey) || (n.label && n.label.toLowerCase().includes(deptKey))
+            n.id.toLowerCase().includes(deptKey) || 
+            (n.label && n.label.toLowerCase().includes(deptKey)) ||
+            (deptKey === 'fe' && (n.id.includes('fe') || (n.label && n.label.includes('Freshman'))))
         ));
 
         if (!deptNode) {

@@ -218,7 +218,21 @@ class Neo4jService:
                     "college_id": c_id
                 })
 
+            # Ensure Freshman Engineering (Humanities & Sciences) Department exists
+            session.run("""
+                MERGE (dept:Department {id: 'fe'})
+                SET dept.name = 'Freshman Engineering (Humanities & Sciences)',
+                    dept.short = 'FE',
+                    dept.intake = 1200,
+                    dept.hod = 'Dr. P. Gayathri Pavani',
+                    dept.description = 'Humanities & Sciences department catering to 1st year B.Tech students.'
+                WITH dept
+                MATCH (c:College {id: $college_id})
+                MERGE (c)-[:HAS_DEPARTMENT]->(dept)
+            """, {"college_id": c_id})
+
             # 3. Faculty Members (from faculty_data.json and college_data.json)
+
             faculty_map = f_data.get("faculty", {})
             for dept_code, f_list in faculty_map.items():
                 for f_item in f_list:

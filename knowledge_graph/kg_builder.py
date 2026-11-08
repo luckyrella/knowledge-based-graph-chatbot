@@ -188,17 +188,38 @@ class KnowledgeGraphBuilder:
         for fac_key, fac_details in faculty_info.items():
             dept_id = fac_key_to_dept.get(fac_key, fac_key)
             dept_node = f"dept_{dept_id}"
-            
+
+            # Ensure department node exists (e.g. Freshman Engineering / H&S)
+            if dept_node not in self.graph:
+                dept_name = fac_details.get("department_name", "Freshman Engineering (Humanities & Sciences)")
+                dept_data = {
+                    "id": dept_id,
+                    "name": dept_name,
+                    "short": "FE / H&S",
+                    "hod": fac_details.get("hod", "Dr. P. Gayathri Pavani"),
+                    "intake": 1200,
+                    "description": "Department of Humanities and Sciences / Freshman Engineering catering to 1st year B.Tech foundational courses."
+                }
+                self._safe_add_node(dept_node, "Department", dept_data)
+                if "college" in self.graph:
+                    self._safe_add_edge("college", dept_node, "has_department")
+                hod_node = f"hod_{dept_id}"
+                self._safe_add_node(hod_node, "HOD", {"name": dept_data["hod"], "department": dept_name})
+                self._safe_add_edge(dept_node, hod_node, "has_hod")
+                if "building_main" in self.graph:
+                    self._safe_add_edge(dept_node, "building_main", "housed_in")
+
             for staff in fac_details.get("staff", []):
                 fac_id = f"fac_{id(staff)}"
                 staff_data = staff.copy()
                 staff_data["department_id"] = dept_id
                 self._safe_add_node(fac_id, "Faculty", staff_data)
                 faculty_name_map[staff["name"]] = fac_id
-                
+
                 if dept_node in self.graph:
                     self._safe_add_edge(fac_id, dept_node, "belongs_to")
                     self._safe_add_edge(dept_node, fac_id, "has_faculty")
+
                     
                 # Extract ResearchArea from qualifications
                 qual = staff.get("qualification") or ""
