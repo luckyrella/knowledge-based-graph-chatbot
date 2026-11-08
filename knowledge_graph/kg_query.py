@@ -321,54 +321,86 @@ class KnowledgeGraphQuery:
 
     def query_faculty_profile(self, faculty_name):
         """Detailed faculty profile with subjects taught, department, qualifications."""
-        name_lower = faculty_name.lower()
-        for node_id, d in self._get_nodes_by_type('Faculty'):
-            if name_lower in d.get('name', '').lower():
-                resp = f"**👨‍🏫 {d.get('name')}**\n"
-                resp += f"Designation: {d.get('designation', 'N/A')}\n"
-                resp += f"Qualification: {d.get('qualification', 'N/A')}\n"
-                resp += f"Experience: {d.get('experience', 'N/A')}\n"
+        import re
+        raw_lower = faculty_name.lower().strip()
+        name_clean = re.sub(r'\b(dr|prof|professor|mr|mrs|ms)\b\.?', '', raw_lower).strip()
+        search_words = [w for w in name_clean.split() if len(w) >= 3]
 
-                # Find department and building location
-                dept_node_id = None
-                for neighbor in self.graph.successors(node_id):
+        candidates = list(self._get_nodes_by_type('Faculty')) + list(self._get_nodes_by_type('HOD'))
+
+        best_match = None
+        for node_id, d in candidates:
+            cand_name = d.get('name', '').lower()
+            if raw_lower in cand_name or (name_clean and name_clean in cand_name):
+                best_match = (node_id, d)
+                break
+            if search_words and all(w in cand_name for w in search_words):
+                best_match = (node_id, d)
+                break
+
+        if not best_match and search_words:
+            for node_id, d in candidates:
+                cand_name = d.get('name', '').lower()
+                if any(w in cand_name for w in search_words):
+                    best_match = (node_id, d)
+                    break
+
+        if best_match:
+            node_id, d = best_match
+            resp = f"**👨‍🏫 {d.get('name')}**\n"
+            resp += f"Designation: {d.get('designation', 'Faculty')}\n"
+            if d.get('qualification'):
+                resp += f"Qualification: {d.get('qualification')}\n"
+            if d.get('experience'):
+                resp += f"Experience: {d.get('experience')}\n"
+
+            # Find department and building location
+            dept_node_id = None
+            for neighbor in self.graph.successors(node_id):
+                if self.graph.nodes[neighbor].get('node_type') == 'Department':
+                    dept_node_id = neighbor
+                    dept_data = self.graph.nodes[neighbor].get('data', {})
+                    resp += f"Department: {dept_data.get('name', 'N/A')}\n"
+                    break
+            if not dept_node_id:
+                for neighbor in self.graph.predecessors(node_id):
                     if self.graph.nodes[neighbor].get('node_type') == 'Department':
                         dept_node_id = neighbor
                         dept_data = self.graph.nodes[neighbor].get('data', {})
                         resp += f"Department: {dept_data.get('name', 'N/A')}\n"
                         break
 
-                if dept_node_id:
-                    for bld_neighbor in self.graph.successors(dept_node_id):
-                        if self.graph.nodes[bld_neighbor].get('node_type') == 'Building':
-                            b_data = self.graph.nodes[bld_neighbor].get('data', {})
-                            resp += f"🏢 Cabin / Office Location: {b_data.get('name', 'Main Block')} (Faculty Cabin Area)\n"
-                            break
+            if dept_node_id:
+                for bld_neighbor in self.graph.successors(dept_node_id):
+                    if self.graph.nodes[bld_neighbor].get('node_type') == 'Building':
+                        b_data = self.graph.nodes[bld_neighbor].get('data', {})
+                        resp += f"🏢 Cabin / Office Location: {b_data.get('name', 'Main Block')} (Faculty Cabin Area)\n"
+                        break
 
-                # Find subjects taught
-                subjects = [
-                    self.graph.nodes[n].get('data', {}).get('name', 'Unknown')
-                    for n in self.graph.successors(node_id)
-                    if self.graph.nodes[n].get('node_type') == 'Subject'
-                ]
-                if subjects:
-                    resp += f"\n**Subjects Taught:**\n"
-                    for subj in subjects:
-                        resp += f"• {subj}\n"
+            # Find subjects taught
+            subjects = [
+                self.graph.nodes[n].get('data', {}).get('name', 'Unknown')
+                for n in self.graph.successors(node_id)
+                if self.graph.nodes[n].get('node_type') == 'Subject'
+            ]
+            if subjects:
+                resp += f"\n**Subjects Taught:**\n"
+                for subj in subjects:
+                    resp += f"• {subj}\n"
 
-                # Find research areas
-                research = [
-                    self.graph.nodes[n].get('data', {}).get('name', 'Unknown')
-                    for n in self.graph.successors(node_id)
-                    if self.graph.nodes[n].get('node_type') == 'ResearchArea'
-                ]
-                if research:
-                    resp += f"\n**Research Areas:** {', '.join(research)}"
+            # Find research areas
+            research = [
+                self.graph.nodes[n].get('data', {}).get('name', 'Unknown')
+                for n in self.graph.successors(node_id)
+                if self.graph.nodes[n].get('node_type') == 'ResearchArea'
+            ]
+            if research:
+                resp += f"\n**Research Areas:** {', '.join(research)}"
 
-                return resp
+            return resp
 
         return ("I couldn't find that faculty member. "
-                "Try using their full name, e.g., 'Dr. KVSN Ramarao' or 'Prof. Kiran B. M.'")
+                "Try searching by part of their name, e.g., 'Ramarao' or 'Kiran'.")
 
     # ── NEW: Subject queries ──────────────────────────────────────────────────
 

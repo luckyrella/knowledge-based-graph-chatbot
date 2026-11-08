@@ -14,15 +14,18 @@ import re
 class NLPProcessor:
     def __init__(self):
         self.intent_examples = {
-            "greeting":         ["hi", "hello", "hey", "good morning", "good afternoon",
-                                 "hii", "hello there", "hi there"],
+            "greeting":         ["hi", "hello", "hey", "good morning", "good afternoon", "good evening",
+                                 "hii", "hiii", "hello there", "hi there", "yo", "yo!", "sup", "wassup",
+                                 "what's up", "whats up", "howdy", "hola", "namaste", "how are you",
+                                 "how r u", "how are u", "how do you do", "hows it going", "gm", "gn"],
             "bot_identity":     ["who are you", "what is your name", "whats your name",
                                  "what's your name", "who made you", "tell me about yourself",
                                  "who created you", "what can you do", "introduce yourself",
-                                 "who is ari", "what is ari", "ari"],
-            "farewell":         ["bye", "goodbye", "see you", "see ya", "take care", "later"],
+                                 "who is ari", "what is ari", "ari", "who r u", "what are you",
+                                 "what is your role", "help me", "what can you help with"],
+            "farewell":         ["bye", "goodbye", "see you", "see ya", "take care", "later", "cya", "have a nice day"],
             "thanks":           ["thank you", "thanks", "thanks a lot", "thank u", "thx",
-                                 "great thanks", "appreciate it"],
+                                 "great thanks", "appreciate it", "tysm", "thank you so much"],
             "department_info":  ["tell me about cse department", "what are the branches",
                                  "departments in college", "details of ece",
                                  "computer science branch", "which departments are there",
@@ -31,66 +34,88 @@ class NLPProcessor:
                                  "civil engineering details", "mechanical engineering details",
                                  "tell me about civil engineering", "tell me about data science",
                                  "cyber security branch info", "cse department details",
-                                 "all about ece", "tell me about mechanical branch", "cse department info"],
+                                 "all about ece", "tell me about mechanical branch", "cse department info",
+                                 "branches available", "engineering streams", "what branches do you have",
+                                 "difference between cse and aiml", "which is best branch"],
             "course_info":      ["what courses are offered", "is btech available",
                                  "mtech courses", "tell me about mba", "ug programs",
-                                 "pg programs", "which courses does the college offer"],
+                                 "pg programs", "which courses does the college offer",
+                                 "degree programs", "undergraduate courses", "postgraduate degrees",
+                                 "what can i study", "duration of btech"],
             "fee_info":         ["what is the fee structure", "btech fees", "fees for btech",
                                  "how much does mba cost", "hostel fee", "management quota fees",
                                  "fee details", "annual fee", "tuition fee", "how much is the fee",
-                                 "fee for cse", "fee for ece", "fees", "cost of course"],
+                                 "fee for cse", "fee for ece", "fees", "cost of course", "fee per year",
+                                 "how much to pay", "college fees", "bus fee", "transport fee",
+                                 "convener fee", "management seat fee"],
             "admission_info":   ["how to get admission", "admission process",
                                  "eamcet rank required", "lateral entry eligibility",
                                  "management quota admission", "how to apply", "eligibility criteria",
-                                 "how to join", "enrollment process", "tg eapcet", "eamcet"],
+                                 "how to join", "enrollment process", "tg eapcet", "eamcet",
+                                 "cutoff rank", "rank needed for cse", "counseling code",
+                                 "eapcet cutoff", "admission procedure", "spot admissions"],
             "placement_info":   ["how are the placements", "highest package", "average salary",
                                  "top recruiters", "companies visiting", "placement statistics",
-                                 "job offers", "placement record", "who recruits"],
+                                 "job offers", "placement record", "who recruits", "campus placement",
+                                 "placement percentage", "maximum package", "average ctc", "highest ctc",
+                                 "companies hiring", "placement drive"],
             "facility_info":    ["what facilities are there", "is there a hostel",
                                  "library details", "sports facilities", "campus infrastructure",
-                                 "gym", "canteen", "wifi", "transport", "lab facilities"],
+                                 "gym", "canteen", "wifi", "transport", "lab facilities", "food",
+                                 "mess food", "hostel rooms", "cricket ground", "bus routes"],
             "scholarship_info": ["any scholarships available", "fee reimbursement",
                                  "sports quota concession", "financial aid",
-                                 "epass scholarship", "merit scholarship"],
+                                 "epass scholarship", "merit scholarship", "telangana epass",
+                                 "fee concession", "scholarship criteria"],
             "event_info":       ["college events", "technical fest", "cultural fest",
                                  "prazasti", "samisti", "annual fest", "hackathon",
-                                 "what events are held"],
+                                 "what events are held", "workshops", "tech fest", "annual day"],
             "contact_info":     ["where is the college located", "contact number",
                                  "email address", "college address", "phone number",
-                                 "how to reach", "location", "directions"],
+                                 "how to reach", "location", "directions", "college map",
+                                 "helpline", "admission office phone", "principal email"],
             "college_info":     ["tell me about the college", "is it autonomous",
                                  "naac grade", "college code", "establishment year",
-                                 "about sphoorthy", "overview of college", "founded when"],
+                                 "about sphoorthy", "overview of college", "founded when",
+                                 "accreditation", "aicte approval", "jntuh affiliated",
+                                 "why sphoorthy", "sphn code", "autonomous status"],
             "management_info":  ["who is the principal", "chairman of college",
                                  "director", "management details", "who manages the college",
-                                 "principal name", "who is ceo"],
+                                 "principal name", "who is ceo", "secretary", "leadership"],
             "hod_info":         ["who is the hod of cse", "ece hod", "head of department",
-                                 "hod name", "who heads the department"],
+                                 "hod name", "who heads the department", "hod cabin", "aiml hod",
+                                 "who is the head of cse", "cse hod name"],
             "club_info":        ["student clubs", "extra curricular activities",
                                  "technical club", "sports club", "what clubs are there",
-                                 "student activities", "cultural club"],
+                                 "student activities", "cultural club", "datanauts", "coders club",
+                                 "ieee student chapter", "gdsc", "robotics club"],
             # ── NEW intents ────────────────────────────────────────────────────
             "building_info":    ["where is the cse block", "what buildings are on campus",
                                  "which block is aiml in", "main block", "block a",
                                  "campus buildings", "where is the library building",
                                  "building details", "which block houses ece",
-                                 "tell me about block b", "how many buildings"],
+                                 "tell me about block b", "how many buildings", "ramanujan block",
+                                 "visvesvaraya block", "seminar hall", "auditorium location"],
             "faculty_profile":  ["tell me about dr kvsn ramarao", "faculty profile of",
                                  "professor details", "who is prof kiran",
-                                 "what does dr allam balaram teach",
-                                 "faculty info", "teacher profile", "about the professor"],
+                                 "what does dr allam balaram teach", "faculty list",
+                                 "faculty info", "teacher profile", "about the professor",
+                                 "who teaches cse", "cse professors", "faculty qualification"],
             "subject_info":     ["what subjects are in cse 3rd semester",
                                  "tell me about data structures", "subjects in aiml",
                                  "what is the syllabus", "cse subjects",
                                  "semester 4 subjects", "curriculum for data science",
-                                 "list subjects for ece", "what topics are taught"],
+                                 "list subjects for ece", "what topics are taught",
+                                 "machine learning subject", "operating systems syllabus"],
             "material_info":    ["give me study materials", "where are notes for operating systems",
                                  "download database notes", "lecture notes for cse", "unit 2 notes",
                                  "study material for sem 3", "pdf notes for python", "class notes",
-                                 "study materials", "where can i get notes", "course ppt"],
+                                 "study materials", "where can i get notes", "course ppt",
+                                 "lecture slides", "unit wise notes", "previous papers"],
             "notice_info":      ["show recent notices", "any new circulars", "college announcements",
                                  "exam notifications", "latest circular", "department notices",
-                                 "show notices", "what are the circulars", "official notifications"],
+                                 "show notices", "what are the circulars", "official notifications",
+                                 "exam timetable", "holiday notice", "autonomous circulars"],
         }
 
         self.vectorizer = TfidfVectorizer(ngram_range=(1, 2))
@@ -190,10 +215,13 @@ class NLPProcessor:
         self._keyword_rules = [
             ("bot_identity",    ["who are you", "what is your name", "whats your name",
                                   "what's your name", "who r u", "your name", "about yourself",
-                                  "who made you", "who created you", "who is ari", "what is ari", "about ari"]),
-            ("farewell",        ["bye", "goodbye", "see you", "take care"]),
-            ("thanks",          ["thank you", "thanks", "thank u", "thx"]),
-            ("greeting",        ["hello", "hi ", "hey ", "hii"]),
+                                  "who made you", "who created you", "who is ari", "what is ari", "about ari",
+                                  "what can you do", "introduce yourself", "who are u"]),
+            ("farewell",        ["bye", "goodbye", "see you", "see ya", "take care", "later", "cya"]),
+            ("thanks",          ["thank you", "thanks", "thank u", "thx", "tysm", "appreciate it"]),
+            ("greeting",        ["hello", "hey", "hi", "yo", "sup", "wassup", "what's up", "whats up",
+                                  "howdy", "hola", "namaste", "good morning", "good afternoon", "good evening",
+                                  "how are you", "how r u", "how are u"]),
             ("scholarship_info",["scholarship", "epass", "fee reimbursement", "financial aid"]),
             ("placement_info",  ["placement", "package", "salary", "recruiter", "lpa", "ctc", "offer"]),
             ("admission_info",  ["admission", "join", "enroll", "eligibility", "eamcet", "eapcet",
@@ -233,6 +261,21 @@ class NLPProcessor:
         text_lower = text.lower().strip()
         ctx_intent = (context or {}).get('lastIntent')
 
+        # Fast matching for casual greetings, slang, and bot identity
+        casual_greetings = {"hi", "hii", "hiii", "hey", "heyy", "heyyy", "hello", "yo", "sup",
+                            "wassup", "whatsup", "hola", "howdy", "namaste", "namaskar",
+                            "gm", "morning", "afternoon", "evening"}
+        tokens = [t.strip("!.,?~ ") for t in text_lower.split() if t.strip("!.,?~ ")]
+
+        if len(tokens) <= 2 and any(t in casual_greetings for t in tokens):
+            return "greeting"
+
+        if any(p in text_lower for p in ["how are you", "how r u", "how are u", "how do you do", "hows it going", "what's up", "whats up"]):
+            return "greeting"
+
+        if any(p in text_lower for p in ["who are you", "who r u", "who is this", "what is your name", "whats your name", "what's your name", "who made you", "what can you do", "introduce yourself"]):
+            return "bot_identity"
+
         dept_keywords = ["computer science", "artificial intelligence", "data science", "cyber security", 
                          "civil engineering", "mechanical engineering", "electronics and communication", 
                          "cse", "ece", "aiml", "civil", "mechanical"]
@@ -242,7 +285,10 @@ class NLPProcessor:
         if len(text_lower.split()) <= 4 and ctx_intent:
             for intent, keywords in self._keyword_rules:
                 for kw in keywords:
-                    if kw in text_lower:
+                    if len(kw) <= 3:
+                        if re.search(r'\b' + re.escape(kw) + r'\b', text_lower):
+                            return intent
+                    elif kw in text_lower:
                         return intent
             if has_dept and any(w in text_lower for w in ["info", "detail", "details", "branch", "about", "overview"]):
                 if not any(f in text_lower for f in ["fee", "fees", "cost", "prof", "dr ", "dr.", "faculty", "hod", "who teaches", "subject", "syllabus", "notes"]):
@@ -253,7 +299,10 @@ class NLPProcessor:
         # 2. Keyword rules in priority order (longer texts)
         for intent, keywords in self._keyword_rules:
             for kw in keywords:
-                if kw in text_lower:
+                if len(kw) <= 3:
+                    if re.search(r'\b' + re.escape(kw) + r'\b', text_lower):
+                        return intent
+                elif kw in text_lower:
                     return intent
 
         # 2.5 Smart Department intent detection
