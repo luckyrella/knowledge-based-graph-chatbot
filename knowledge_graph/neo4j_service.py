@@ -34,6 +34,21 @@ NODE_COLOR_MAP = {
     "Recruiter": {"background": "#6366f1", "border": "#4f46e5", "highlight": "#818cf8"}     # Indigo
 }
 
+NODE_SIZE_MAP = {
+    "College": 38,
+    "Department": 26,
+    "Building": 22,
+    "Course": 20,
+    "Faculty": 16,
+    "Recruiter": 16,
+    "Club": 15,
+    "Event": 15,
+    "Lab": 13,
+    "Subject": 11,
+    "Room": 10
+}
+
+
 
 class Neo4jService:
     """Manages connections, Cypher queries, and data ingestion with Neo4j."""
@@ -424,11 +439,29 @@ class Neo4jService:
                 n_type = data.get("node_type", "Entity")
                 name = data.get("data", {}).get("name", str(node_id))
                 colors = NODE_COLOR_MAP.get(n_type, {"background": "#64748b", "border": "#475569", "highlight": "#94a3b8"})
+                size = NODE_SIZE_MAP.get(n_type, 14)
+
+                # Format label: major hubs get full bold labels; leaf nodes get clean concise labels
+                is_hub = n_type in ["College", "Department", "Building", "Course"]
+                if is_hub:
+                    display_label = name
+                    font_cfg = {"size": 13, "color": "#ffffff", "face": "Inter, sans-serif", "strokeWidth": 3, "strokeColor": "#0b1120"}
+                elif n_type in ["Faculty", "Recruiter"]:
+                    display_label = name if len(name) <= 18 else name[:16] + ".."
+                    font_cfg = {"size": 11, "color": "#e2e8f0", "face": "Inter, sans-serif", "strokeWidth": 2, "strokeColor": "#0b1120"}
+                else:
+                    # Subjects, rooms, labs: clean concise labels to prevent overlap
+                    display_label = name if len(name) <= 14 else name[:12] + ".."
+                    font_cfg = {"size": 9, "color": "#94a3b8", "face": "Inter, sans-serif", "strokeWidth": 2, "strokeColor": "#0b1120"}
+
                 nodes.append({
                     "id": str(node_id),
-                    "label": name,
+                    "label": display_label,
+                    "full_name": name,
                     "group": n_type,
+                    "size": size,
                     "color": colors,
+                    "font": font_cfg,
                     "title": f"<b>{n_type}</b>: {name}<br>{json.dumps(data.get('data', {}), indent=2)}"
                 })
 
@@ -440,7 +473,7 @@ class Neo4jService:
                     "to": str(v),
                     "label": rel,
                     "arrows": "to",
-                    "font": {"size": 10, "color": "#94a3b8"}
+                    "font": {"size": 9, "color": "#64748b", "strokeWidth": 2, "strokeColor": "#0b1120"}
                 })
                 edge_id += 1
 
@@ -451,5 +484,6 @@ class Neo4jService:
                 "total_nodes": len(nodes),
                 "total_edges": len(edges)
             }
+
 
         return {"source": "none", "nodes": [], "edges": [], "total_nodes": 0, "total_edges": 0}
