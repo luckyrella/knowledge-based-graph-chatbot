@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             let transcript = `=================================================================\n`;
-            transcript += `   SPHOORTHY ENGINEERING COLLEGE — AI ASSISTANT CHAT LOG\n`;
+            transcript += `   SPHOORTHY ENGINEERING COLLEGE — ARI (CAMPUS AI) CHAT LOG\n`;
             transcript += `   Exported on: ${new Date().toLocaleString()}\n`;
             transcript += `=================================================================\n\n`;
 
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isBot = r.classList.contains('bot-row');
                 if (!isUser && !isBot) return;
 
-                const role = isUser ? 'Student / User' : 'Sphoorthy Assistant';
+                const role = isUser ? 'Student / User' : 'Ari (Campus Assistant)';
                 const msgEl = r.querySelector('.message');
                 const metaEl = r.querySelector('.msg-meta');
                 const time = metaEl ? metaEl.textContent.trim() : '';
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const a = document.createElement('a');
             const dateStr = new Date().toISOString().slice(0, 10);
             a.href = url;
-            a.download = `sphoorthy_chat_transcript_${dateStr}.txt`;
+            a.download = `ari_chat_transcript_${dateStr}.txt`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -148,9 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const html = `
         <div class="welcome-card">
-          <img src="/static/bot_avatar.png" class="wc-avatar" alt="Bot">
-          <h4>Sphoorthy Assistant 🎓</h4>
-          <p>Hi there! I'm your smart campus guide. Access lecture notes, view circulars, locate faculty cabins, and ask about admissions or placements!</p>
+          <img src="/static/bot_avatar.png" class="wc-avatar" alt="Ari">
+          <h4>Ari &middot; Campus Assistant 🎓</h4>
+          <p>Hi there! I'm <strong>Ari</strong>, your smart campus AI guide. Access lecture notes, view circulars, locate faculty cabins, and ask about admissions or placements!</p>
           ${noticeAlert}
           <div class="wc-chips">
             <span class="wc-chip" data-q="Give me notes for Operating Systems">📚 Study Notes</span>
@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         /* Meta */
         const meta = el('div', 'msg-meta bot-meta');
-        meta.innerHTML = `<i class="fas fa-robot" style="font-size:0.6rem;margin-right:3px"></i> Sphoorthy Assistant &middot; ${timeStr()}`;
+        meta.innerHTML = `<i class="fas fa-robot" style="font-size:0.6rem;margin-right:3px"></i> Ari &middot; ${timeStr()}`;
 
         /* Feedback */
         const fb = el('div', 'msg-feedback');
@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ind.innerHTML = '<span></span><span></span><span></span>';
 
         const label = el('span', 'typing-label');
-        label.textContent = 'Sphoorthy is typing…';
+        label.textContent = 'Ari is typing…';
 
         const wrap = el('div', 'typing-wrap');
         wrap.append(ind, label);

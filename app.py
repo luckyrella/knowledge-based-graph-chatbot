@@ -592,9 +592,21 @@ def _route_intent(intent, entities, college_data, kg_query):
             return res
         return "📢 Check out all official college notifications and exam circulars on the [Student Study Hub](/student)!"
 
+    elif intent == 'bot_identity':
+        return (
+            "👋 Hi! I'm **Ari**, your intelligent AI Campus Assistant for Sphoorthy Engineering College!\n\n"
+            "Here is what I can help you with:\n"
+            "• 📚 Finding lecture notes & study materials\n"
+            "• 🏢 Locating faculty cabins & department blocks\n"
+            "• 📢 Checking official circulars & notices\n"
+            "• 🎓 Admissions, courses, fee structures & placements\n"
+            "• 🧠 Exploring the campus Knowledge Graph\n\n"
+            "Feel free to ask me anything about the campus!"
+        )
+
     elif intent == 'greeting':
-        name = college_data.get('college', {}).get('name', 'our college')
-        return f"Hello! Welcome to **{name}**!\nHow can I help you today?"
+        name = college_data.get('college', {}).get('name', 'Sphoorthy Engineering College')
+        return f"Hello! I am **Ari**, your AI Campus Assistant for **{name}**!\nHow can I help you today?"
 
     elif intent == 'farewell':
         return "Goodbye! Feel free to come back anytime. Have a great day!"

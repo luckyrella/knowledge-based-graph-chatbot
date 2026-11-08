@@ -16,6 +16,10 @@ class NLPProcessor:
         self.intent_examples = {
             "greeting":         ["hi", "hello", "hey", "good morning", "good afternoon",
                                  "hii", "hello there", "hi there"],
+            "bot_identity":     ["who are you", "what is your name", "whats your name",
+                                 "what's your name", "who made you", "tell me about yourself",
+                                 "who created you", "what can you do", "introduce yourself",
+                                 "who is ari", "what is ari", "ari"],
             "farewell":         ["bye", "goodbye", "see you", "see ya", "take care", "later"],
             "thanks":           ["thank you", "thanks", "thanks a lot", "thank u", "thx",
                                  "great thanks", "appreciate it"],
@@ -184,6 +188,9 @@ class NLPProcessor:
 
         # Keyword signals keyed by intent — evaluated IN ORDER (most specific first)
         self._keyword_rules = [
+            ("bot_identity",    ["who are you", "what is your name", "whats your name",
+                                  "what's your name", "who r u", "your name", "about yourself",
+                                  "who made you", "who created you", "who is ari", "what is ari", "about ari"]),
             ("farewell",        ["bye", "goodbye", "see you", "take care"]),
             ("thanks",          ["thank you", "thanks", "thank u", "thx"]),
             ("greeting",        ["hello", "hi ", "hey ", "hii"]),
