@@ -19,6 +19,7 @@ from knowledge_graph.kg_builder import KnowledgeGraphBuilder
 from knowledge_graph.kg_query import KnowledgeGraphQuery
 from knowledge_graph.nlp_processor import NLPProcessor
 from knowledge_graph.neo4j_service import Neo4jService
+from auth.decorators import role_required
 from flask_wtf.csrf import CSRFProtect
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -192,19 +193,24 @@ def create_app():
     def student_hub():
         return render_template('student_hub.html')
 
-    # ── Interactive Knowledge Graph Explorer (Neo4j / Vis.js) ────────────────
+    # ── Interactive Knowledge Graph Explorer (Admin Only — Neo4j / Vis.js) ───
     @app.route('/graph')
+    @login_required
+    @role_required('admin')
     def graph_viewer():
         return render_template('graph_viewer.html', active_page='graph')
 
     @app.route('/api/kg/graph-data')
+    @login_required
+    @role_required('admin')
     def get_kg_graph_data():
-        limit = request.args.get('limit', 350, type=int)
+        limit = request.args.get('limit', 500, type=int)
         data = neo4j_service.get_graph_visual_data(
             fallback_nx_graph=app.kg_builder.get_graph(),
             limit=limit
         )
         return jsonify(data)
+
 
 
     # ── API: Campus Communication & Resource Hub ──────────────────────────────
