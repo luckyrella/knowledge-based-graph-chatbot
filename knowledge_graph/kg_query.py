@@ -445,6 +445,83 @@ class KnowledgeGraphQuery:
             resp += f"• {subj.get('code', '')} — {subj.get('name', '')} ({subj.get('credits', '?')} cr){type_tag}\n"
         return resp
 
+    def query_subject_details(self, subject_query):
+        """Query detailed information about a specific subject from the Knowledge Graph."""
+        if not subject_query:
+            return "Please provide a subject name or code to look up."
+
+        q_lower = subject_query.strip().lower()
+        subject_nodes = self._get_nodes_by_type('Subject')
+        matched_node = None
+        matched_data = None
+
+        # 1. Exact code match
+        for node_id, sd in subject_nodes:
+            code = sd.get('code', '').lower()
+            if code and (q_lower == code or q_lower == f"subj_{code}"):
+                matched_node = node_id
+                matched_data = sd
+                break
+
+        # 2. Exact or substring name match
+        if not matched_node:
+            for node_id, sd in subject_nodes:
+                name = sd.get('name', '').lower()
+                if q_lower == name or (len(q_lower) >= 4 and q_lower in name) or (len(name) >= 4 and name in q_lower):
+                    matched_node = node_id
+                    matched_data = sd
+                    break
+
+        # 3. Fuzzy match fallback
+        if not matched_node:
+            import difflib
+            all_names = {sd.get('name', '').lower(): (node_id, sd) for node_id, sd in subject_nodes if sd.get('name')}
+            matches = difflib.get_close_matches(q_lower, all_names.keys(), n=1, cutoff=0.65)
+            if matches:
+                matched_node, matched_data = all_names[matches[0]]
+
+        if not matched_node:
+            return f"I couldn't find subject details for '{subject_query}' in the Knowledge Graph. Try asking about Computer Networks, Operating Systems, Machine Learning, or Database Management Systems."
+
+        # Fetch Relational Graph Connections
+        # A. Department
+        dept_id = matched_data.get('department_id', '')
+        dept_node = f"dept_{dept_id}"
+        dept_name = self.graph.nodes[dept_node]['data'].get('name') if self.graph.has_node(dept_node) else dept_id.upper()
+
+        # B. Faculty teaching this subject (in-edges with relationship 'teaches')
+        faculty_list = []
+        for u, v, e in self.graph.in_edges(matched_node, data=True):
+            if e.get('relationship') == 'teaches' and self.graph.nodes[u].get('node_type') == 'Faculty':
+                fac_d = self.graph.nodes[u].get('data', {})
+                faculty_list.append(f"{fac_d.get('name')} ({fac_d.get('designation', 'Faculty')})")
+
+        # C. Labs linked
+        lab_list = []
+        for u, v, e in self.graph.out_edges(matched_node, data=True):
+            if e.get('relationship') == 'uses_lab':
+                lab_d = self.graph.nodes[v].get('data', {})
+                lab_list.append(lab_d.get('name', 'Lab'))
+
+        # Format Response
+        code = matched_data.get('code', 'N/A')
+        name = matched_data.get('name', subject_query)
+        credits = matched_data.get('credits', 'N/A')
+        sem = matched_data.get('semester', 'N/A')
+        stype = matched_data.get('type', 'theory').capitalize()
+
+        resp = f"📖 **{name} ({code})**\n\n"
+        resp += f"• **Department:** {dept_name}\n"
+        resp += f"• **Curriculum:** Semester {sem} &middot; {credits} Credits &middot; {stype} Course\n"
+
+        if faculty_list:
+            resp += f"• **Faculty In-Charge:** {', '.join(faculty_list)}\n"
+        if lab_list:
+            resp += f"• **Laboratory Assigned:** {', '.join(lab_list)}\n"
+
+        resp += f"\n💡 Verified textbook notes and study modules for **{name}** are available on the [Student Study Hub](/student)!"
+        return resp
+
     # ── NEW: ER Schema query ──────────────────────────────────────────────────
 
     def query_er_schema(self):

@@ -18,6 +18,10 @@ from models import db, User
 from knowledge_graph.kg_builder import KnowledgeGraphBuilder
 from knowledge_graph.kg_query import KnowledgeGraphQuery
 from knowledge_graph.nlp_processor import NLPProcessor
+from knowledge_graph.neo4j_service import Neo4jService
+from flask_wtf.csrf import CSRFProtect
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 
 def create_app():
@@ -26,6 +30,28 @@ def create_app():
 
     # ── Database ─────────────────────────────────────────────────────────────
     init_db(app)
+
+    # ── Production Security: CSRF & Rate Limiting ────────────────────────────
+    csrf = CSRFProtect()
+    csrf.init_app(app)
+    app.csrf = csrf
+
+    limiter = Limiter(
+        get_remote_address,
+        app=app,
+        default_limits=[app.config.get('RATELIMIT_DEFAULT', '300 per hour; 60 per minute')],
+        storage_uri=app.config.get('RATELIMIT_STORAGE_URI', 'memory://')
+    )
+    app.limiter = limiter
+
+    # ── Security Response Headers ────────────────────────────────────────────
+    @app.after_request
+    def add_security_headers(response):
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+        response.headers['X-XSS-Protection'] = '1; mode=block'
+        response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+        return response
 
     # ── Flask-Login ──────────────────────────────────────────────────────────
     login_manager = LoginManager()
@@ -38,7 +64,7 @@ def create_app():
     def load_user(user_id):
         return db.session.get(User, int(user_id))
 
-    # ── Knowledge Graph ──────────────────────────────────────────────────────
+    # ── Knowledge Graph (Dual-Engine: Neo4j Cloud + NetworkX Fallback) ───────
     data_path = os.path.join(app.root_path, 'data', 'college_data.json')
     kg_builder = KnowledgeGraphBuilder(data_path)
     kg_builder.build_graph()
@@ -46,10 +72,20 @@ def create_app():
     kg_query = KnowledgeGraphQuery(graph)
     nlp_processor = NLPProcessor()
 
-    # Store on app for access from blueprints
+    # Initialize Neo4j Service
+    neo4j_service = Neo4jService(
+        uri=app.config.get('NEO4J_URI'),
+        user=app.config.get('NEO4J_USERNAME', 'neo4j'),
+        password=app.config.get('NEO4J_PASSWORD'),
+        database=app.config.get('NEO4J_DATABASE', 'neo4j')
+    )
+
+    # Store on app for global access from blueprints
     app.kg_builder = kg_builder
     app.kg_query = kg_query
     app.nlp_processor = nlp_processor
+    app.neo4j_service = neo4j_service
+
 
     # Load raw college data for templates
     with open(data_path, 'r', encoding='utf-8') as f:
@@ -156,6 +192,21 @@ def create_app():
     def student_hub():
         return render_template('student_hub.html')
 
+    # ── Interactive Knowledge Graph Explorer (Neo4j / Vis.js) ────────────────
+    @app.route('/graph')
+    def graph_viewer():
+        return render_template('graph_viewer.html', active_page='graph')
+
+    @app.route('/api/kg/graph-data')
+    def get_kg_graph_data():
+        limit = request.args.get('limit', 350, type=int)
+        data = neo4j_service.get_graph_visual_data(
+            fallback_nx_graph=app.kg_builder.get_graph(),
+            limit=limit
+        )
+        return jsonify(data)
+
+
     # ── API: Campus Communication & Resource Hub ──────────────────────────────
     @app.route('/api/notices', methods=['GET'])
     def get_notices():
@@ -244,6 +295,8 @@ def create_app():
 
     # ── API: Chat ─────────────────────────────────────────────────────────────
     @app.route('/api/chat', methods=['POST'])
+    @limiter.limit("60 per minute")
+    @csrf.exempt
     def chat():
         data = request.json
         message = data.get('message', '').strip()
@@ -300,6 +353,7 @@ def create_app():
 
     # ── API: Feedback ─────────────────────────────────────────────────────────
     @app.route('/api/feedback', methods=['POST'])
+    @csrf.exempt
     def feedback():
         data = request.json
         try:
@@ -470,11 +524,13 @@ def _route_intent(intent, entities, college_data, kg_query):
         return "Please specify a faculty member's name. Example: 'Tell me about Dr. KVSN Ramarao'"
 
     elif intent == 'subject_info':
+        if 'subject' in entities:
+            return kg_query.query_subject_details(entities['subject'])
         if 'department' in entities:
             if 'semester' in entities:
                 return kg_query.query_subjects_by_semester(entities['department'], entities['semester'])
             return kg_query.query_subjects_by_department(entities['department'])
-        return "Please specify a department. Example: 'What subjects are in CSE?'"
+        return "Please specify a department or subject name. Example: 'What subjects are in CSE?' or 'Tell me about Operating Systems'"
 
     # ── Study Materials & Notices Intents ──────────────────────────────────
     elif intent == 'material_info':

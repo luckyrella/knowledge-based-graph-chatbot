@@ -16,6 +16,7 @@
         {% endwith %}
 
         <form method="POST" action="{{ url_for('auth_bp.login') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() if csrf_token else '' }}">
             <div class="form-group" style="margin-bottom: 15px;">
                 <label for="username" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Username or Email</label>
                 <input type="text" id="username" name="username" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: var(--text-main);">

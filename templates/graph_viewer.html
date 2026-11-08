@@ -1,0 +1,505 @@
+{% extends "base.html" %}
+
+{% block title %}Interactive Knowledge Graph — {{ college.name }}{% endblock %}
+
+{% block extra_css %}
+<!-- Vis.js Network CSS -->
+<link rel="stylesheet" href="https://unpkg.com/vis-network/standalone/umd/vis-network.min.css" />
+<style>
+.kg-viewer-container {
+    padding-top: 80px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #0b1120;
+    color: #f8fafc;
+    position: relative;
+    overflow: hidden;
+}
+
+.kg-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 20;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.kg-toolbar-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #38bdf8;
+}
+
+.kg-toolbar-title i {
+    color: #10b981;
+}
+
+.kg-badge {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid #10b981;
+    color: #34d399;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 9999px;
+}
+
+.kg-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.kg-search-input {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 7px 14px;
+    color: #fff;
+    font-size: 0.88rem;
+    outline: none;
+    min-width: 200px;
+}
+
+.kg-search-input:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.kg-select {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 7px 12px;
+    color: #fff;
+    font-size: 0.88rem;
+    outline: none;
+    cursor: pointer;
+}
+
+.kg-btn {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 7px 12px;
+    color: #cbd5e1;
+    font-size: 0.88rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.kg-btn:hover {
+    background: #334155;
+    color: #fff;
+}
+
+.kg-btn-primary {
+    background: #0284c7;
+    border-color: #0284c7;
+    color: #fff;
+}
+.kg-btn-primary:hover {
+    background: #0369a1;
+}
+
+#networkCanvas {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
+}
+
+/* Floating Legend */
+.kg-legend {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px 16px;
+    z-index: 15;
+    font-size: 0.78rem;
+    max-width: 280px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.kg-legend-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kg-legend-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.kg-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.kg-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Inspector Drawer */
+.kg-inspector {
+    position: absolute;
+    top: 135px;
+    right: 20px;
+    width: 320px;
+    max-height: calc(100vh - 165px);
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    z-index: 25;
+    overflow-y: auto;
+    display: none;
+    transition: all 0.3s ease;
+}
+
+.kg-inspector.open {
+    display: block;
+}
+
+.kg-inspector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+}
+
+.kg-inspector-close {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.kg-inspector-close:hover { color: #fff; }
+
+.kg-prop-row {
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+}
+.kg-prop-key {
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+.kg-prop-val {
+    color: #f1f5f9;
+    word-break: break-word;
+    margin-top: 2px;
+}
+
+/* Loading Overlay */
+#kgLoading {
+    position: absolute;
+    inset: 0;
+    background: rgba(11, 17, 32, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    gap: 15px;
+}
+.kg-spinner {
+    width: 45px;
+    height: 45px;
+    border: 3px solid rgba(56, 189, 248, 0.2);
+    border-top-color: #38bdf8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="kg-viewer-container">
+    <!-- Toolbar -->
+    <div class="kg-toolbar">
+        <div class="kg-toolbar-title">
+            <i class="fas fa-project-diagram"></i>
+            <span>Knowledge Graph Explorer</span>
+            <span class="kg-badge" id="sourceBadge">Loading...</span>
+        </div>
+
+        <div class="kg-controls">
+            <input type="text" id="nodeSearch" class="kg-search-input" placeholder="🔍 Search faculty, dept, subject..." />
+            <select id="typeFilter" class="kg-select">
+                <option value="ALL">All Entity Types</option>
+                <option value="Department">Departments</option>
+                <option value="Faculty">Faculty Members</option>
+                <option value="Subject">Subjects & Courses</option>
+                <option value="Building">Campus Buildings</option>
+                <option value="Room">Rooms & Labs</option>
+                <option value="Recruiter">Top Recruiters</option>
+            </select>
+            <button class="kg-btn" id="btnPhysics" title="Toggle physics simulation"><i class="fas fa-atom"></i> Physics</button>
+            <button class="kg-btn" id="btnResetView" title="Center graph"><i class="fas fa-compress-arrows-alt"></i> Fit View</button>
+            <a href="/admin/kg" class="kg-btn kg-btn-primary" title="Manage Graph Entities"><i class="fas fa-cog"></i> Admin Edit</a>
+        </div>
+    </div>
+
+    <!-- Network Canvas -->
+    <div id="networkCanvas"></div>
+
+    <!-- Loading Spinner -->
+    <div id="kgLoading">
+        <div class="kg-spinner"></div>
+        <div style="font-weight: 600; color: #94a3b8;">Loading Knowledge Graph Topography...</div>
+    </div>
+
+    <!-- Floating Legend -->
+    <div class="kg-legend">
+        <div class="kg-legend-title">Entity Legend</div>
+        <div class="kg-legend-grid">
+            <div class="kg-legend-item"><span class="kg-dot" style="background: #8b5cf6;"></span> Department</div>
+            <div class="kg-legend-item"><span class="kg-dot" style="background: #0284c7;"></span> Faculty</div>
+            <div class="kg-legend-item"><span class="kg-dot" style="background: #10b981;"></span> Subject</div>
+            <div class="kg-legend-item"><span class="kg-dot" style="background: #f59e0b;"></span> Course</div>
+            <div class="kg-legend-item"><span class="kg-dot" style="background: #ea580c;"></span> Building</div>
+            <div class="kg-legend-item"><span class="kg-dot" style="background: #6366f1;"></span> Recruiter</div>
+        </div>
+    </div>
+
+    <!-- Inspector Drawer -->
+    <div class="kg-inspector" id="nodeInspector">
+        <div class="kg-inspector-header">
+            <div>
+                <span class="kg-badge" id="inspType" style="margin-bottom: 6px; display: inline-block;">Node</span>
+                <h3 id="inspTitle" style="margin: 0; font-size: 1.1rem; color: #fff;">Title</h3>
+            </div>
+            <button class="kg-inspector-close" id="inspClose">&times;</button>
+        </div>
+        <div id="inspBody">
+            <!-- Dynamic Properties -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Vis.js Network JS -->
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let network = null;
+    let rawNodes = [];
+    let rawEdges = [];
+    let nodesDataSet = null;
+    let edgesDataSet = null;
+    let physicsEnabled = true;
+
+    const container = document.getElementById('networkCanvas');
+    const loading = document.getElementById('kgLoading');
+    const sourceBadge = document.getElementById('sourceBadge');
+    const inspector = document.getElementById('nodeInspector');
+    const inspTitle = document.getElementById('inspTitle');
+    const inspType = document.getElementById('inspType');
+    const inspBody = document.getElementById('inspBody');
+    const inspClose = document.getElementById('inspClose');
+    const nodeSearch = document.getElementById('nodeSearch');
+    const typeFilter = document.getElementById('typeFilter');
+    const btnPhysics = document.getElementById('btnPhysics');
+    const btnResetView = document.getElementById('btnResetView');
+
+    // Fetch live graph from API
+    fetch('/api/kg/graph-data')
+        .then(res => res.json())
+        .then(data => {
+            rawNodes = data.nodes || [];
+            rawEdges = data.edges || [];
+
+            sourceBadge.textContent = data.source === 'neo4j' 
+                ? '⚡ Neo4j Cloud' 
+                : '🧠 In-Memory Graph';
+            sourceBadge.style.borderColor = data.source === 'neo4j' ? '#38bdf8' : '#10b981';
+            sourceBadge.style.color = data.source === 'neo4j' ? '#38bdf8' : '#34d399';
+
+            initNetwork();
+            loading.style.display = 'none';
+        })
+        .catch(err => {
+            console.error('Failed to load graph data', err);
+            loading.innerHTML = '<div style="color: #ef4444;">Failed to load graph data. Please refresh.</div>';
+        });
+
+    function initNetwork() {
+        nodesDataSet = new vis.DataSet(rawNodes);
+        edgesDataSet = new vis.DataSet(rawEdges);
+
+        const options = {
+            nodes: {
+                shape: 'dot',
+                size: 16,
+                font: {
+                    size: 12,
+                    color: '#ffffff',
+                    face: 'Inter, system-ui, sans-serif'
+                },
+                borderWidth: 2,
+                shadow: {
+                    enabled: true,
+                    color: 'rgba(0,0,0,0.5)',
+                    size: 6
+                }
+            },
+            edges: {
+                width: 1.2,
+                color: {
+                    color: 'rgba(148, 163, 184, 0.35)',
+                    highlight: '#38bdf8',
+                    hover: '#38bdf8'
+                },
+                smooth: {
+                    type: 'continuous',
+                    roundness: 0.2
+                }
+            },
+            physics: {
+                enabled: true,
+                solver: 'forceAtlas2Based',
+                forceAtlas2Based: {
+                    gravitationalConstant: -38,
+                    centralGravity: 0.008,
+                    springLength: 95,
+                    springConstant: 0.06
+                },
+                stabilization: {
+                    iterations: 150
+                }
+            },
+            interaction: {
+                hover: true,
+                tooltipDelay: 100,
+                hideEdgesOnDrag: true
+            }
+        };
+
+        network = new vis.Network(container, { nodes: nodesDataSet, edges: edgesDataSet }, options);
+
+        // Click event on node
+        network.on('click', function(params) {
+            if (params.nodes.length > 0) {
+                const nodeId = params.nodes[0];
+                const node = nodesDataSet.get(nodeId);
+                showInspector(node);
+            } else {
+                inspector.classList.remove('open');
+            }
+        });
+    }
+
+    function showInspector(node) {
+        if (!node) return;
+        inspTitle.textContent = node.label || node.id;
+        inspType.textContent = node.group || 'Entity';
+
+        let html = '';
+        if (node.title) {
+            // Parse title or display
+            html += `<div class="kg-prop-row"><div class="kg-prop-key">Node ID</div><div class="kg-prop-val">${node.id}</div></div>`;
+            html += `<div class="kg-prop-row"><div class="kg-prop-key">Category</div><div class="kg-prop-val">${node.group}</div></div>`;
+        }
+
+        // Find connected neighbors
+        const connectedEdges = edgesDataSet.get({
+            filter: e => e.from === node.id || e.to === node.id
+        });
+
+        if (connectedEdges.length > 0) {
+            html += `<div style="margin-top: 15px; font-weight: 700; color: #38bdf8; font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">Connected Relationships (${connectedEdges.length}):</div>`;
+            connectedEdges.slice(0, 10).forEach(e => {
+                const isOut = e.from === node.id;
+                const otherId = isOut ? e.to : e.from;
+                const otherNode = nodesDataSet.get(otherId);
+                const otherLabel = otherNode ? otherNode.label : otherId;
+                const dir = isOut ? '→' : '←';
+                html += `<div style="font-size: 0.78rem; padding: 4px 0; color: #cbd5e1;">
+                    <span style="color: #94a3b8;">${dir} [${e.label}]</span> <b>${otherLabel}</b>
+                </div>`;
+            });
+        }
+
+        inspBody.innerHTML = html;
+        inspector.classList.add('open');
+    }
+
+    inspClose.addEventListener('click', () => inspector.classList.remove('open'));
+
+    // Filter by type
+    typeFilter.addEventListener('change', function(e) {
+        const val = e.target.value;
+        if (val === 'ALL') {
+            nodesDataSet.clear();
+            nodesDataSet.add(rawNodes);
+        } else {
+            const filtered = rawNodes.filter(n => n.group === val);
+            nodesDataSet.clear();
+            nodesDataSet.add(filtered);
+        }
+        network.fit();
+    });
+
+    // Search bar
+    nodeSearch.addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase().trim();
+        if (!query) return;
+
+        const match = rawNodes.find(n => (n.label && n.label.toLowerCase().includes(query)) || n.id.toLowerCase().includes(query));
+        if (match && network) {
+            network.focus(match.id, {
+                scale: 1.4,
+                animation: { duration: 600, easingFunction: 'easeInOutQuad' }
+            });
+            network.selectNodes([match.id]);
+            showInspector(match);
+        }
+    });
+
+    // Toggle physics
+    btnPhysics.addEventListener('click', function() {
+        physicsEnabled = !physicsEnabled;
+        network.setOptions({ physics: { enabled: physicsEnabled } });
+        btnPhysics.style.background = physicsEnabled ? '#334155' : '#ef4444';
+    });
+
+    // Fit view
+    btnResetView.addEventListener('click', function() {
+        if (network) network.fit({ animation: { duration: 500 } });
+    });
+});
+</script>
+{% endblock %}

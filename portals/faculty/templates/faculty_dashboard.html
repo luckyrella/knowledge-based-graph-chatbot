@@ -35,22 +35,135 @@
         {% endwith %}
 
         <!-- Quick Stats -->
-        <div class="grid-3" style="gap: 20px; margin-bottom: 35px;">
+        <div class="grid-4" style="gap: 20px; margin-bottom: 35px;">
             <div class="card glass text-center">
                 <i class="fas fa-file-upload card-icon" style="color: #3b82f6;"></i>
                 <div class="stat-number">{{ my_materials|length }}</div>
                 <div class="stat-text">Materials Uploaded</div>
             </div>
             <div class="card glass text-center">
+                <i class="fas fa-project-diagram card-icon" style="color: #a855f7;"></i>
+                <div class="stat-number">{{ assigned_subjects|length }}</div>
+                <div class="stat-text">My KG Assigned Subjects</div>
+            </div>
+            <div class="card glass text-center">
                 <i class="fas fa-book-reader card-icon" style="color: #10b981;"></i>
                 <div class="stat-number">{{ dept_subjects|length }}</div>
-                <div class="stat-text">KG Linked Subjects</div>
+                <div class="stat-text">KG Linked Dept Subjects</div>
             </div>
             <div class="card glass text-center">
                 <i class="fas fa-bullhorn card-icon" style="color: #f59e0b;"></i>
                 <div class="stat-number">{{ dept_notices|length }}</div>
                 <div class="stat-text">Active Department Circulars</div>
             </div>
+        </div>
+
+        <!-- 🏛️ Knowledge Graph Academic Allocations (Ontology-Linked) -->
+        <div class="card glass" style="margin-bottom: 35px; border-top: 3px solid #8b5cf6; position: relative;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid var(--glass-border); padding-bottom: 16px;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                        <h3 class="card-title" style="margin: 0; font-size: 1.25rem;">
+                            <i class="fas fa-network-wired" style="color: #8b5cf6;"></i> My Knowledge Graph Academic Allocations
+                        </h3>
+                        <span class="badge" style="background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.35); padding: 2px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 600;">
+                            Live NetworkX DiGraph
+                        </span>
+                    </div>
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.86rem;">
+                        Verified relational mappings extracted via formal ontology constraints (<code>Faculty -[teaches]-> Subject</code> and <code>Subject -[uses_lab]-> Lab</code>).
+                    </p>
+                </div>
+                
+                <!-- Faculty Profile Switcher (For Demo & Multi-Faculty View) -->
+                <div style="display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.03); padding: 6px 12px; border-radius: 8px; border: 1px solid var(--glass-border);">
+                    <label style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted); margin: 0; white-space: nowrap;">
+                        <i class="fas fa-user-friends"></i> Faculty Profile:
+                    </label>
+                    <select onchange="window.location.href='?faculty_name=' + encodeURIComponent(this.value)" style="padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); font-size: 0.85rem; outline: none; cursor: pointer;">
+                        {% for f in dept_faculty_list %}
+                        <option value="{{ f.name }}" {% if active_faculty and active_faculty.name == f.name %}selected{% endif %}>
+                            {{ f.name }} ({{ f.assigned_count }} teaching)
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- Active Faculty Profile Details -->
+            {% if active_faculty %}
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; background: rgba(139, 92, 246, 0.05); padding: 14px 18px; border-radius: 10px; border: 1px solid rgba(139, 92, 246, 0.2); margin-bottom: 22px;">
+                <div>
+                    <h4 style="margin: 0 0 4px; font-size: 1.1rem; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+                        {{ active_faculty.name }}
+                        <span style="font-size: 0.78rem; font-weight: 500; color: #a855f7; background: rgba(168, 85, 247, 0.15); padding: 2px 8px; border-radius: 4px;">
+                            {{ active_faculty.designation or 'Faculty' }}
+                        </span>
+                    </h4>
+                    <p style="margin: 0; font-size: 0.84rem; color: var(--text-muted);">
+                        <strong>Qualification:</strong> {{ active_faculty.qualification or 'M.Tech / Ph.D' }} &nbsp;&bull;&nbsp; 
+                        <strong>Experience:</strong> {{ active_faculty.experience or '10+ Years' }} &nbsp;&bull;&nbsp;
+                        <strong>Department:</strong> {{ dept }}
+                    </p>
+                </div>
+                {% if active_faculty.research_areas %}
+                <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                    <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;"><i class="fas fa-microscope"></i> Research:</span>
+                    {% for ra in active_faculty.research_areas %}
+                    <span style="font-size: 0.76rem; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 2px 8px; border-radius: 12px;">
+                        {{ ra }}
+                    </span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Assigned Subjects Grid -->
+            {% if assigned_subjects %}
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;">
+                {% for s in assigned_subjects %}
+                <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-family: monospace; font-weight: 700; font-size: 0.8rem; background: rgba(59, 130, 246, 0.15); color: #60a5fa; padding: 3px 8px; border-radius: 5px;">
+                                {{ s.code }}
+                            </span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">
+                                Sem {{ s.semester or 'All' }} &middot; {{ s.credits or 3 }} Credits
+                            </span>
+                        </div>
+                        <h4 style="margin: 0 0 8px; font-size: 1.02rem; color: var(--text-main); line-height: 1.35;">
+                            {{ s.name }}
+                        </h4>
+                        {% if s.labs %}
+                        <div style="font-size: 0.82rem; color: #34d399; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-flask"></i> <strong>KG Linked Lab:</strong> {{ s.labs|join(', ') }}
+                        </div>
+                        {% endif %}
+                        <div style="font-size: 0.78rem; color: var(--text-muted);">
+                            <span style="text-transform: capitalize;">{{ s.type or 'theory' }}</span> curriculum module
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                        <button type="button" class="btn" onclick="fillSubjectForm('{{ s.name }}', '{{ s.semester or '' }}')" style="padding: 6px 12px; font-size: 0.8rem; background: rgba(37, 99, 235, 0.15); color: #60a5fa; border: 1px solid rgba(37, 99, 235, 0.3); border-radius: 6px; cursor: pointer;" title="Auto-fill upload form for this subject">
+                            <i class="fas fa-file-upload"></i> Upload Notes
+                        </button>
+                        <button type="button" class="btn" onclick="quickTestBot('Tell me about {{ s.name }}')" style="padding: 6px 12px; font-size: 0.8rem; background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 6px; cursor: pointer;" title="Ask AI Assistant about this subject">
+                            <i class="fas fa-robot"></i> Test in Chatbot
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div style="padding: 25px; text-align: center; color: var(--text-muted);">
+                <i class="fas fa-info-circle" style="font-size: 1.8rem; margin-bottom: 8px; color: #94a3b8;"></i>
+                <p style="margin: 0; font-size: 0.92rem;">No explicit subject assignments linked to this faculty member in the Knowledge Graph.</p>
+                <p style="margin: 4px 0 0; font-size: 0.82rem;">Use the faculty dropdown above to view assignments for other faculty members in {{ dept }}.</p>
+            </div>
+            {% endif %}
         </div>
 
         <!-- Main Workspace -->
@@ -177,4 +290,48 @@
 
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function fillSubjectForm(subjectName, sem) {
+        const subjInput = document.querySelector('input[name="subject"]');
+        const semSelect = document.querySelector('select[name="semester"]');
+        const titleInput = document.querySelector('input[name="title"]');
+
+        if (subjInput) {
+            subjInput.value = subjectName;
+            subjInput.focus();
+        }
+        if (semSelect && sem) {
+            semSelect.value = sem;
+        }
+        if (titleInput && (!titleInput.value || titleInput.value.trim() === '')) {
+            titleInput.value = `Unit 1 - ${subjectName} Core Notes`;
+        }
+
+        if (subjInput) {
+            subjInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    function quickTestBot(prompt) {
+        const chatPanel = document.getElementById('chatPanel');
+        const chatToggle = document.getElementById('chatToggle');
+        
+        if (chatPanel && !chatPanel.classList.contains('active') && chatToggle) {
+            chatToggle.click();
+        }
+
+        setTimeout(() => {
+            const input = document.getElementById('userInput');
+            const sendBtn = document.getElementById('sendBtn');
+            if (input && sendBtn) {
+                input.value = prompt;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                sendBtn.click();
+            }
+        }, 300);
+    }
+</script>
 {% endblock %}

@@ -128,6 +128,60 @@ class NLPProcessor:
             "mba": "mba",
         }
 
+        self.subject_map = {
+            "operating systems": "Operating Systems",
+            "operating system": "Operating Systems",
+            "os": "Operating Systems",
+            "database management systems": "Database Management Systems",
+            "database management": "Database Management Systems",
+            "database": "Database Management Systems",
+            "dbms": "Database Management Systems",
+            "data structures & algorithms": "Data Structures",
+            "data structures and algorithms": "Data Structures",
+            "data structures": "Data Structures",
+            "data structure": "Data Structures",
+            "dsa": "Data Structures",
+            "design and analysis of algorithms": "Algorithms",
+            "analysis of algorithms": "Algorithms",
+            "algorithms": "Algorithms",
+            "daa": "Algorithms",
+            "computer networks": "Computer Networks",
+            "networks": "Computer Networks",
+            "software engineering": "Software Engineering",
+            "python for data science": "Python for Data Science",
+            "python": "Python for Data Science",
+            "machine learning": "Machine Learning",
+            "ml": "Machine Learning",
+            "deep learning": "Deep Learning",
+            "natural language processing": "Natural Language Processing",
+            "nlp": "Natural Language Processing",
+            "big data analytics": "Big Data Analytics",
+            "big data": "Big Data Analytics",
+            "hadoop": "Big Data Analytics",
+            "spark": "Big Data Analytics",
+            "network security": "Network Security and Cryptography",
+            "cryptography": "Network Security and Cryptography",
+            "cyber forensics": "Cyber Forensics",
+            "incident response": "Cyber Forensics",
+            "electronic devices": "Electronic Devices",
+            "signals and systems": "Signals and Systems",
+            "digital signal processing": "Digital Signal Processing",
+            "dsp": "Digital Signal Processing",
+            "vlsi design": "VLSI Design",
+            "vlsi": "VLSI Design",
+            "building materials": "Building Materials",
+            "surveying": "Building Materials & Surveying",
+            "strength of materials": "Strength of Materials",
+            "structural analysis": "Structural Analysis",
+            "geotechnical engineering": "Geotechnical Engineering",
+            "thermodynamics": "Engineering Thermodynamics",
+            "fluid mechanics": "Fluid Mechanics",
+            "cad/cam": "CAD/CAM",
+            "financial management": "Financial Management",
+            "marketing management": "Marketing Management",
+            "strategic management": "Strategic Management"
+        }
+
         # Keyword signals keyed by intent — evaluated IN ORDER (most specific first)
         self._keyword_rules = [
             ("farewell",        ["bye", "goodbye", "see you", "take care"]),
@@ -199,6 +253,12 @@ class NLPProcessor:
         if has_dept and any(w in text_lower for w in ["info", "detail", "details", "branch", "tell me about", "overview", "what about"]):
             if not any(f in text_lower for f in ["fee", "fees", "cost", "prof", "dr ", "dr.", "faculty", "hod", "who teaches", "subject", "syllabus", "notes"]):
                 return "department_info"
+
+        # 2.6 Smart Subject intent detection: if query mentions a subject name or alias
+        if not any(k in text_lower for k in ["fee", "fees", "cost", "prof ", "dr ", "notes", "study material", "download"]):
+            for s_alias in sorted(self.subject_map, key=len, reverse=True):
+                if re.search(r'\b' + re.escape(s_alias) + r'\b', text_lower):
+                    return "subject_info"
 
         # 3. TF-IDF similarity with confidence threshold
         try:
@@ -298,62 +358,9 @@ class NLPProcessor:
                 break
 
         # ── Subject extraction ──────────────────────────────────────────────
-        subject_map = {
-            "operating systems": "Operating Systems",
-            "operating system": "Operating Systems",
-            "os": "Operating Systems",
-            "database management systems": "Database Management Systems",
-            "database management": "Database Management Systems",
-            "database": "Database Management Systems",
-            "dbms": "Database Management Systems",
-            "data structures & algorithms": "Data Structures",
-            "data structures and algorithms": "Data Structures",
-            "data structures": "Data Structures",
-            "data structure": "Data Structures",
-            "dsa": "Data Structures",
-            "design and analysis of algorithms": "Algorithms",
-            "analysis of algorithms": "Algorithms",
-            "algorithms": "Algorithms",
-            "daa": "Algorithms",
-            "computer networks": "Computer Networks",
-            "networks": "Computer Networks",
-            "software engineering": "Software Engineering",
-            "python for data science": "Python for Data Science",
-            "python": "Python for Data Science",
-            "machine learning": "Machine Learning",
-            "ml": "Machine Learning",
-            "deep learning": "Deep Learning",
-            "natural language processing": "Natural Language Processing",
-            "nlp": "Natural Language Processing",
-            "big data analytics": "Big Data Analytics",
-            "big data": "Big Data Analytics",
-            "hadoop": "Big Data Analytics",
-            "spark": "Big Data Analytics",
-            "network security": "Network Security and Cryptography",
-            "cryptography": "Network Security and Cryptography",
-            "cyber forensics": "Cyber Forensics",
-            "incident response": "Cyber Forensics",
-            "electronic devices": "Electronic Devices",
-            "signals and systems": "Signals and Systems",
-            "digital signal processing": "Digital Signal Processing",
-            "dsp": "Digital Signal Processing",
-            "vlsi design": "VLSI Design",
-            "vlsi": "VLSI Design",
-            "building materials": "Building Materials",
-            "surveying": "Building Materials & Surveying",
-            "strength of materials": "Strength of Materials",
-            "structural analysis": "Structural Analysis",
-            "geotechnical engineering": "Geotechnical Engineering",
-            "thermodynamics": "Engineering Thermodynamics",
-            "fluid mechanics": "Fluid Mechanics",
-            "cad/cam": "CAD/CAM",
-            "financial management": "Financial Management",
-            "marketing management": "Marketing Management",
-            "strategic management": "Strategic Management"
-        }
-        for s_alias in sorted(subject_map, key=len, reverse=True):
+        for s_alias in sorted(self.subject_map, key=len, reverse=True):
             if re.search(r'\b' + re.escape(s_alias) + r'\b', text_lower):
-                entities['subject'] = subject_map[s_alias]
+                entities['subject'] = self.subject_map[s_alias]
                 break
 
         # ── Context carry-forward ────────────────────────────────────────────

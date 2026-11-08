@@ -19,3 +19,14 @@ class Config:
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+
+    # ── Neo4j Cloud / Local Graph Database Configuration ──────────────────────
+    NEO4J_URI = os.environ.get('NEO4J_URI') # e.g. neo4j+s://xxxx.databases.neo4j.io
+    NEO4J_USERNAME = os.environ.get('NEO4J_USERNAME', 'neo4j')
+    NEO4J_PASSWORD = os.environ.get('NEO4J_PASSWORD')
+    NEO4J_DATABASE = os.environ.get('NEO4J_DATABASE', 'neo4j')
+
+    # ── Rate Limiting (Production Security) ──────────────────────────────────
+    RATELIMIT_DEFAULT = os.environ.get('RATELIMIT_DEFAULT', '300 per hour; 60 per minute')
+    RATELIMIT_STORAGE_URI = os.environ.get('REDIS_URL', 'memory://')
+

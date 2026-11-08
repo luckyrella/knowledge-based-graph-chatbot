@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1473.7239999999997 656.1" width="1473.7239999999997" height="656.1" style="--bg:#18181B;--fg:#F4F4F5;--line:#71717A;--muted:#A1A1AA;--surface:#27272A;--border:#3F3F46;background:var(--bg)">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+  text { font-family: 'Inter', system-ui, sans-serif; }
+  svg {
+    /* Derived from --bg and --fg (overridable via --line, --accent, etc.) */
+    --_text:          var(--fg);
+    --_text-sec:      var(--muted, color-mix(in srgb, var(--fg) 60%, var(--bg)));
+    --_text-muted:    var(--muted, color-mix(in srgb, var(--fg) 40%, var(--bg)));
+    --_text-faint:    color-mix(in srgb, var(--fg) 25%, var(--bg));
+    --_line:          var(--line, color-mix(in srgb, var(--fg) 50%, var(--bg)));
+    --_arrow:         var(--accent, color-mix(in srgb, var(--fg) 85%, var(--bg)));
+    --_node-fill:     var(--surface, color-mix(in srgb, var(--fg) 3%, var(--bg)));
+    --_node-stroke:   var(--border, color-mix(in srgb, var(--fg) 20%, var(--bg)));
+    --_group-fill:    var(--bg);
+    --_group-hdr:     color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --_inner-stroke:  color-mix(in srgb, var(--fg) 12%, var(--bg));
+    --_key-badge:     color-mix(in srgb, var(--fg) 10%, var(--bg));
+  }
+</style>
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="5" refX="7" refY="2.5" orient="auto">
+    <polygon points="0 0, 8 2.5, 0 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+  <marker id="arrowhead-start" markerWidth="8" markerHeight="5" refX="1" refY="2.5" orient="auto-start-reverse">
+    <polygon points="8 0, 0 2.5, 8 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+</defs>
+<g class="subgraph" data-id="CoreServices" data-label="Core Services">
+  <rect x="40" y="328.5" width="500.3209999999999" height="113.80000000000001" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="40" y="328.5" width="500.3209999999999" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="52" y="342.5" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">Core Services</text>
+</g>
+<g class="subgraph" data-id="DataPlane" data-label="Enterprise Data Plane">
+  <rect x="111.04199999999997" y="502.30000000000007" width="1322.6819999999998" height="113.80000000000001" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="111.04199999999997" y="502.30000000000007" width="1322.6819999999998" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="123.04199999999997" y="516.3000000000001" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">Enterprise Data Plane</text>
+</g>
+<g class="subgraph" data-id="Observability" data-label="Observability &amp; DevOps">
+  <rect x="845.6454999999999" y="334.5" width="374.79599999999994" height="113.80000000000001" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="845.6454999999999" y="334.5" width="374.79599999999994" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="857.6454999999999" y="348.5" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">Observability &amp; DevOps</text>
+</g>
+<polyline class="edge" data-from="User" data-to="CDN" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="742.41535,76.9 742.41535,124.9" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="CDN" data-to="App" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="742.41535,178.70000000000002 742.4153499999998,226.70000000000002" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="App" data-to="Auth" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="742.4153499999998,280.5 742.4153499999998,328 142.55349999999999,328 142.55349999999999,375.5" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="App" data-to="Agent" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="742.4153499999998,280.5 742.4153499999998,328 390.71399999999994,328 390.71399999999994,375.5" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="Agent" data-to="Redis" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="390.71399999999994,429.3 390.71399999999994,487.80000000000007 252.86849999999998,487.80000000000007 252.86849999999998,546.3000000000001" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="Agent" data-to="Neo4j" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="390.71399999999994,429.3 390.71399999999994,487.80000000000007 568.0894999999999,487.80000000000007 568.0894999999999,546.3000000000001" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="Agent" data-to="Postgres" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="390.71399999999994,429.3 390.71399999999994,487.80000000000007 931.8459999999999,487.80000000000007 931.8459999999999,546.3000000000001" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="App" data-to="S3" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="742.4153499999998,280.5 742.4153499999998,328 1275.966,328 1275.966,546.3000000000001" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="App" data-to="Tracing" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="742.4153499999998,280.5 742.4153499999998,328 1033.0434999999998,328 1033.0434999999998,375.5" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<g class="node" data-id="User" data-label="Client (Browser / Mobile)" data-shape="rectangle">
+  <rect x="650.6748499999999" y="40" width="183.48099999999997" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="742.4153499999999" y="58.45" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Client (Browser / Mobile)</text>
+</g>
+<g class="node" data-id="CDN" data-label="Cloudflare / NGINX Reverse Proxy
+(SSL Termination, Rate Limiting, DDoS Protection)" data-shape="rectangle">
+  <rect x="578.0568499999999" y="124.9" width="328.71699999999987" height="53.800000000000004" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="742.4153499999999" y="151.8" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="742.4153499999999" dy="-3.9000000000000012">Cloudflare / NGINX Reverse Proxy</tspan><tspan x="742.4153499999999" dy="16.900000000000002">(SSL Termination, Rate Limiting, DDoS Protection)</tspan></text>
+</g>
+<g class="node" data-id="App" data-label="Production API Gateway (Flask / Gunicorn)
+Strict Input Validation &amp; Auth Middleware" data-shape="rectangle">
+  <rect x="597.6933499999998" y="226.70000000000002" width="289.44399999999996" height="53.800000000000004" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="742.4153499999998" y="253.60000000000002" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="742.4153499999998" dy="-3.9000000000000012">Production API Gateway (Flask / Gunicorn)</tspan><tspan x="742.4153499999998" dy="16.900000000000002">Strict Input Validation &amp; Auth Middleware</tspan></text>
+</g>
+<g class="node" data-id="Auth" data-label="Auth Service
+(JWT / OAuth2 / RBAC)" data-shape="rectangle">
+  <rect x="56" y="375.5" width="173.10699999999997" height="53.800000000000004" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="142.55349999999999" y="402.4" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="142.55349999999999" dy="-3.9000000000000012">Auth Service</tspan><tspan x="142.55349999999999" dy="16.900000000000002">(JWT / OAuth2 / RBAC)</tspan></text>
+</g>
+<g class="node" data-id="Agent" data-label="Agentic RAG Router
+(Intent Routing &amp; Semantic Embeddings)" data-shape="rectangle">
+  <rect x="257.10699999999997" y="375.5" width="267.21399999999994" height="53.800000000000004" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="390.71399999999994" y="402.4" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="390.71399999999994" dy="-3.9000000000000012">Agentic RAG Router</tspan><tspan x="390.71399999999994" dy="16.900000000000002">(Intent Routing &amp; Semantic Embeddings)</tspan></text>
+</g>
+<g class="node" data-id="Redis" data-label="Redis Cache
+(Session Store &amp; Fast Query Cache)" data-shape="rectangle">
+  <rect x="127.04199999999997" y="546.3000000000001" width="251.653" height="53.800000000000004" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="252.86849999999998" y="573.2" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="252.86849999999998" dy="-3.9000000000000012">Redis Cache</tspan><tspan x="252.86849999999998" dy="16.900000000000002">(Session Store &amp; Fast Query Cache)</tspan></text>
+</g>
+<g class="node" data-id="Neo4j" data-label="Neo4j Graph Database
+(Campus Knowledge Graph &amp; Cypher Traversal)" data-shape="rectangle">
+  <rect x="406.695" y="546.3000000000001" width="322.78899999999993" height="53.800000000000004" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="568.0894999999999" y="573.2" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="568.0894999999999" dy="-3.9000000000000012">Neo4j Graph Database</tspan><tspan x="568.0894999999999" dy="16.900000000000002">(Campus Knowledge Graph &amp; Cypher Traversal)</tspan></text>
+</g>
+<g class="node" data-id="Postgres" data-label="PostgreSQL Database
+(Users, Analytics, Dynamic Notices, Material Catalog)" data-shape="rectangle">
+  <rect x="757.4839999999999" y="546.3000000000001" width="348.7239999999999" height="53.800000000000004" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="931.8459999999999" y="573.2" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="931.8459999999999" dy="-3.9000000000000012">PostgreSQL Database</tspan><tspan x="931.8459999999999" dy="16.900000000000002">(Users, Analytics, Dynamic Notices, Material Catalog)</tspan></text>
+</g>
+<g class="node" data-id="S3" data-label="Object Storage (S3 / R2)
+(Secured Lecture Notes &amp; Material PDFs)" data-shape="rectangle">
+  <rect x="1134.2079999999999" y="546.3000000000001" width="283.51599999999996" height="53.800000000000004" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="1275.966" y="573.2" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="1275.966" dy="-3.9000000000000012">Object Storage (S3 / R2)</tspan><tspan x="1275.966" dy="16.900000000000002">(Secured Lecture Notes &amp; Material PDFs)</tspan></text>
+</g>
+<g class="node" data-id="Tracing" data-label="Langfuse / OpenTelemetry
+(Query Latency, Token Tracking, Error Monitoring)" data-shape="rectangle">
+  <rect x="861.6454999999999" y="375.5" width="342.79599999999994" height="53.800000000000004" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="1033.0434999999998" y="402.4" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="1033.0434999999998" dy="-3.9000000000000012">Langfuse / OpenTelemetry</tspan><tspan x="1033.0434999999998" dy="16.900000000000002">(Query Latency, Token Tracking, Error Monitoring)</tspan></text>
+</g>
+</svg>

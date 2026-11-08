@@ -281,6 +281,36 @@
         box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4);
         background: linear-gradient(135deg, #0369a1, #1d4ed8);
     }
+    .mat-askbot-btn {
+        background: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(79, 70, 229, 0.2));
+        color: #c084fc;
+        border: 1px solid rgba(168, 85, 247, 0.35);
+        padding: 6px 11px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.2s ease;
+    }
+    .mat-askbot-btn:hover {
+        background: linear-gradient(135deg, #7c3aed, #4f46e5);
+        color: #ffffff;
+        border-color: transparent;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(124, 58, 237, 0.35);
+    }
+    [data-theme="light"] .mat-askbot-btn {
+        background: #f5f3ff;
+        color: #7c3aed;
+        border-color: #ddd6fe;
+    }
+    [data-theme="light"] .mat-askbot-btn:hover {
+        background: #7c3aed;
+        color: #ffffff;
+    }
     /* PDF Document Reader Modal */
     .pdf-modal-container {
         background: var(--card-bg);
@@ -352,6 +382,14 @@
     }
     .btn-preview-action.download-btn:hover {
         background: #1d4ed8;
+    }
+    .btn-preview-action.askbot-btn {
+        background: linear-gradient(135deg, #7c3aed, #4f46e5);
+        color: white;
+    }
+    .btn-preview-action.askbot-btn:hover {
+        background: linear-gradient(135deg, #6d28d9, #4338ca);
+        box-shadow: 0 3px 8px rgba(124, 58, 237, 0.4);
     }
     .btn-preview-action.open-btn {
         background: rgba(59, 130, 246, 0.15);
@@ -642,6 +680,9 @@
                 </div>
             </div>
             <div class="pdf-modal-actions">
+                <button type="button" class="btn-preview-action askbot-btn" onclick="askBotFromPdfModal()" title="Ask AI about key concepts, questions, and syllabus for this note">
+                    <i class="fas fa-robot"></i> <span>Ask Bot</span>
+                </button>
                 <a id="pdfPreviewDownload" href="#" target="_blank" download class="btn-preview-action download-btn" title="Download PDF to device">
                     <i class="fas fa-download"></i> <span>Download</span>
                 </a>
@@ -726,7 +767,10 @@
                 </div>
                 <div class="mat-meta">
                     <span><i class="far fa-calendar-alt"></i> ${m.date || 'Recent'}</span>
-                    <div style="display:flex;gap:6px;align-items:center;">
+                    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                        <button type="button" class="mat-askbot-btn" onclick="askBotAboutSubject('${escapeHtml(m.subject)}')" title="Ask AI Assistant about ${escapeHtml(m.subject)}">
+                            <i class="fas fa-robot"></i> Ask Bot
+                        </button>
                         <button type="button" class="mat-view-btn" onclick="viewMaterialById(${m.id})" title="Preview and read notes directly on the web">
                             <i class="fas fa-eye"></i> View Notes
                         </button>
@@ -779,19 +823,43 @@
         renderMaterials(filtered);
     }
 
-    function quickAskBot(question) {
-        const input = document.getElementById('userInput');
-        if (input) {
-            input.value = question;
-            const sendBtn = document.getElementById('sendBtn');
-            if (sendBtn) sendBtn.click();
-            // Open chat panel if closed
-            const chatToggle = document.getElementById('chatToggle');
-            const chatPanel = document.getElementById('chatPanel');
-            if (chatPanel && !chatPanel.classList.contains('active') && chatToggle) {
-                chatToggle.click();
-            }
+    function askBotAboutSubject(subject) {
+        if (!subject) return;
+        const prompt = `Tell me about ${subject}`;
+        quickAskBot(prompt);
+    }
+
+    function askBotFromPdfModal() {
+        const subEl = document.getElementById('pdfPreviewSub');
+        const titleEl = document.getElementById('pdfPreviewTitle');
+        let subj = 'this subject';
+        if (subEl && subEl.textContent) {
+            subj = subEl.textContent.split('•')[0].trim();
+        } else if (titleEl) {
+            subj = titleEl.textContent.trim();
         }
+        closePdfPreview();
+        quickAskBot(`Tell me about ${subj}`);
+    }
+
+    function quickAskBot(question) {
+        const chatPanel = document.getElementById('chatPanel');
+        const chatToggle = document.getElementById('chatToggle');
+        
+        // Open chat panel if closed
+        if (chatPanel && !chatPanel.classList.contains('active') && chatToggle) {
+            chatToggle.click();
+        }
+
+        setTimeout(() => {
+            const input = document.getElementById('userInput');
+            const sendBtn = document.getElementById('sendBtn');
+            if (input && sendBtn) {
+                input.value = question;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                sendBtn.click();
+            }
+        }, 300);
     }
 
     function openUploadModal() {
