@@ -434,7 +434,7 @@ class Neo4jService:
                             "to": m_id,
                             "label": rel,
                             "arrows": "to",
-                            "font": {"size": 10, "color": "#94a3b8"}
+                            "font": {"size": 9, "align": "middle"}
                         })
                         edge_id += 1
 
@@ -461,14 +461,14 @@ class Neo4jService:
                 is_hub = n_type in ["College", "Department", "Building", "Course"]
                 if is_hub:
                     display_label = name
-                    font_cfg = {"size": 13, "color": "#ffffff", "face": "Inter, sans-serif", "strokeWidth": 3, "strokeColor": "#0b1120"}
+                    font_cfg = {"size": 13, "face": "Inter, sans-serif"}
                 elif n_type in ["Faculty", "Recruiter"]:
                     display_label = name if len(name) <= 18 else name[:16] + ".."
-                    font_cfg = {"size": 11, "color": "#e2e8f0", "face": "Inter, sans-serif", "strokeWidth": 2, "strokeColor": "#0b1120"}
+                    font_cfg = {"size": 11, "face": "Inter, sans-serif"}
                 else:
                     # Subjects, rooms, labs: clean concise labels to prevent overlap
                     display_label = name if len(name) <= 14 else name[:12] + ".."
-                    font_cfg = {"size": 9, "color": "#94a3b8", "face": "Inter, sans-serif", "strokeWidth": 2, "strokeColor": "#0b1120"}
+                    font_cfg = {"size": 9, "face": "Inter, sans-serif"}
 
                 # Build clean, elegant tooltip
                 ndata = data.get("data", {})
@@ -506,7 +506,7 @@ class Neo4jService:
                     "to": str(v),
                     "label": rel,
                     "arrows": "to",
-                    "font": {"size": 9, "color": "#64748b", "strokeWidth": 2, "strokeColor": "#0b1120"}
+                    "font": {"size": 9, "align": "middle"}
                 })
                 edge_id += 1
 

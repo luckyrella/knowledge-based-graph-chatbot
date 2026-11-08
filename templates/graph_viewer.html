@@ -459,6 +459,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Helper: Filter a connected subgraph based on view mode
     function filterSubgraph(mode) {
+        function sanitizeEdges(rawEdges) {
+            return rawEdges.map(e => {
+                const isRadialCollege = (e.from === 'college' || e.to === 'college') && 
+                    ['has_facility', 'has_club', 'has_scholarship', 'has_event', 'has_building', 'has_management', 'offers_course', 'affiliated_to'].includes(e.label);
+                return {
+                    ...e,
+                    label: isRadialCollege ? '' : e.label,
+                    title: e.label,
+                    arrows: 'to'
+                };
+            });
+        }
+
         if (mode === 'ALL') {
             // Guarantee zero orphan nodes: every node must have at least one link
             const connectedSet = new Set();
@@ -471,12 +484,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         from: 'college',
                         to: n.id,
                         label: 'affiliated_to',
-                        arrows: 'to',
-                        font: { size: 9, color: '#64748b' }
+                        arrows: 'to'
                     });
                 }
             });
-            return { nodes: allNodes, edges: patchedEdges };
+            return { nodes: allNodes, edges: sanitizeEdges(patchedEdges) };
         }
 
         if (mode === 'CORE') {
@@ -485,7 +497,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const subNodes = allNodes.filter(n => allowedGroups.has(n.group));
             const subNodeIds = new Set(subNodes.map(n => n.id));
             const subEdges = allEdges.filter(e => subNodeIds.has(e.from) && subNodeIds.has(e.to));
-            return { nodes: subNodes, edges: subEdges };
+            return { nodes: subNodes, edges: sanitizeEdges(subEdges) };
         }
 
         if (mode === 'INFRA') {
@@ -494,7 +506,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const subNodes = allNodes.filter(n => allowedGroups.has(n.group));
             const subNodeIds = new Set(subNodes.map(n => n.id));
             const subEdges = allEdges.filter(e => subNodeIds.has(e.from) && subNodeIds.has(e.to));
-            return { nodes: subNodes, edges: subEdges };
+            return { nodes: subNodes, edges: sanitizeEdges(subEdges) };
         }
 
         // Department-specific cluster (e.g. CSE, AIML, DS, CS, ECE, CIVIL, MECH, FE)
@@ -529,7 +541,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const subNodes = allNodes.filter(n => relevantNodeIds.has(n.id));
         const subEdges = allEdges.filter(e => relevantNodeIds.has(e.from) && relevantNodeIds.has(e.to));
-        return { nodes: subNodes, edges: subEdges };
+        return { nodes: subNodes, edges: sanitizeEdges(subEdges) };
     }
 
     function initNetwork(mode) {
@@ -537,22 +549,46 @@ document.addEventListener('DOMContentLoaded', function() {
         nodesDataSet = new vis.DataSet(sub.nodes);
         edgesDataSet = new vis.DataSet(sub.edges);
 
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light' || localStorage.getItem('sphn-theme') === 'light';
+        const nodeFontColor = isLight ? '#0f172a' : '#f8fafc';
+        const nodeStrokeColor = isLight ? '#ffffff' : '#0b1120';
+        const edgeColor = isLight ? 'rgba(100, 116, 139, 0.45)' : 'rgba(148, 163, 184, 0.35)';
+        const edgeHighlight = isLight ? '#0284c7' : '#38bdf8';
+        const edgeFontColor = isLight ? '#1e293b' : '#cbd5e1';
+        const edgeBgColor = isLight ? 'rgba(255, 255, 255, 0.94)' : 'rgba(15, 23, 42, 0.9)';
+        const edgeStrokeColor = isLight ? '#ffffff' : '#0b1120';
+
         const options = {
             nodes: {
                 shape: 'dot',
                 borderWidth: 2,
+                font: {
+                    color: nodeFontColor,
+                    strokeWidth: 3,
+                    strokeColor: nodeStrokeColor,
+                    face: 'Inter, sans-serif'
+                },
                 shadow: {
                     enabled: true,
-                    color: 'rgba(0,0,0,0.6)',
+                    color: isLight ? 'rgba(0,0,0,0.08)' : 'rgba(0,0,0,0.6)',
                     size: 8
                 }
             },
             edges: {
                 width: 1.2,
                 color: {
-                    color: 'rgba(148, 163, 184, 0.35)',
-                    highlight: '#38bdf8',
-                    hover: '#38bdf8'
+                    color: edgeColor,
+                    highlight: edgeHighlight,
+                    hover: edgeHighlight
+                },
+                font: {
+                    size: 8,
+                    color: edgeFontColor,
+                    strokeWidth: 2,
+                    strokeColor: edgeStrokeColor,
+                    background: edgeBgColor,
+                    align: 'middle',
+                    face: 'Inter, sans-serif'
                 },
                 smooth: {
                     type: 'continuous',
@@ -611,13 +647,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        updateThemeColors(isLight);
+
         setTimeout(() => {
             network.fit({ animation: { duration: 600 } });
-            // Check initial theme state
-            const isLight = document.documentElement.getAttribute('data-theme') === 'light' || localStorage.getItem('sphn-theme') === 'light';
-            if (isLight) {
-                updateThemeColors(true);
-            }
+            const currLight = document.documentElement.getAttribute('data-theme') === 'light' || localStorage.getItem('sphn-theme') === 'light';
+            updateThemeColors(currLight);
         }, 300);
     }
 
@@ -630,6 +665,9 @@ document.addEventListener('DOMContentLoaded', function() {
         edgesDataSet.clear();
         nodesDataSet.add(sub.nodes);
         edgesDataSet.add(sub.edges);
+
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light' || localStorage.getItem('sphn-theme') === 'light';
+        updateThemeColors(isLight);
 
         // Update physics spacing based on node count
         const isDense = sub.nodes.length > 80;
@@ -755,32 +793,71 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateThemeColors(isLight) {
         if (!network || !nodesDataSet) return;
 
-        const edgeColor = isLight ? 'rgba(71, 85, 105, 0.45)' : 'rgba(148, 163, 184, 0.35)';
+        const nodeFontColor = isLight ? '#0f172a' : '#f8fafc';
+        const nodeStrokeColor = isLight ? '#ffffff' : '#0b1120';
+        const edgeColor = isLight ? 'rgba(100, 116, 139, 0.45)' : 'rgba(148, 163, 184, 0.35)';
         const edgeHighlight = isLight ? '#0284c7' : '#38bdf8';
+        const edgeFontColor = isLight ? '#1e293b' : '#cbd5e1';
+        const edgeBgColor = isLight ? 'rgba(255, 255, 255, 0.94)' : 'rgba(15, 23, 42, 0.9)';
+        const edgeStrokeColor = isLight ? '#ffffff' : '#0b1120';
+
         network.setOptions({
+            nodes: {
+                font: {
+                    color: nodeFontColor,
+                    strokeColor: nodeStrokeColor,
+                    strokeWidth: 3
+                },
+                shadow: {
+                    color: isLight ? 'rgba(0,0,0,0.08)' : 'rgba(0,0,0,0.6)'
+                }
+            },
             edges: {
                 color: {
                     color: edgeColor,
                     highlight: edgeHighlight,
                     hover: edgeHighlight
+                },
+                font: {
+                    color: edgeFontColor,
+                    strokeColor: edgeStrokeColor,
+                    strokeWidth: 2,
+                    background: edgeBgColor
                 }
             }
         });
 
-        const strokeColor = isLight ? '#ffffff' : '#0b1120';
-        const fontColor = isLight ? '#0f172a' : '#ffffff';
         const updateNodes = [];
         nodesDataSet.forEach(n => {
             updateNodes.push({
                 id: n.id,
                 font: {
-                    color: fontColor,
-                    strokeColor: strokeColor,
+                    ...(n.font || {}),
+                    color: nodeFontColor,
+                    strokeColor: nodeStrokeColor,
                     strokeWidth: 3
                 }
             });
         });
         nodesDataSet.update(updateNodes);
+
+        if (edgesDataSet) {
+            const updateEdges = [];
+            edgesDataSet.forEach(e => {
+                updateEdges.push({
+                    id: e.id,
+                    font: {
+                        color: edgeFontColor,
+                        strokeColor: edgeStrokeColor,
+                        strokeWidth: 2,
+                        background: edgeBgColor,
+                        size: 8,
+                        align: 'middle'
+                    }
+                });
+            });
+            edgesDataSet.update(updateEdges);
+        }
     }
 
     // Observer to listen for dark/light toggle changes on html element
