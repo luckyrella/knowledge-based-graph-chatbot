@@ -119,34 +119,21 @@
     cursor: grabbing;
 }
 
-/* Floating Subgraph Quick-Switcher */
-.kg-scope-bar {
-    position: absolute;
-    top: 130px;
-    left: 20px;
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    z-index: 15;
-    max-width: 750px;
-}
-.kg-scope-pill {
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #cbd5e1;
-    padding: 4px 10px;
-    border-radius: 9999px;
-    font-size: 0.74rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.kg-scope-pill:hover, .kg-scope-pill.active {
-    background: #0284c7;
-    border-color: #38bdf8;
-    color: #fff;
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+/* Vis.js Custom Sleek Tooltip */
+.vis-tooltip {
+    background: rgba(15, 23, 42, 0.94) !important;
+    backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px !important;
+    color: #f1f5f9 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.78rem !important;
+    padding: 6px 12px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+    pointer-events: none !important;
+    max-width: 300px !important;
+    line-height: 1.4 !important;
+    z-index: 1000 !important;
 }
 
 /* Floating Legend */
@@ -319,18 +306,11 @@
     color: #0f172a;
 }
 
-[data-theme="light"] .kg-scope-pill {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid #cbd5e1;
-    color: #475569;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-[data-theme="light"] .kg-scope-pill:hover,
-[data-theme="light"] .kg-scope-pill.active {
-    background: #0284c7;
-    border-color: #0284c7;
-    color: #ffffff;
-    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+[data-theme="light"] .vis-tooltip {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
 }
 
 [data-theme="light"] .kg-legend {
@@ -395,19 +375,6 @@
         </div>
     </div>
 
-    <!-- Quick Scope Pills -->
-    <div class="kg-scope-bar">
-        <span class="kg-scope-pill active" data-view="CORE">⭐ Campus Overview</span>
-        <span class="kg-scope-pill" data-view="CSE">CSE</span>
-        <span class="kg-scope-pill" data-view="AIML">AI & ML</span>
-        <span class="kg-scope-pill" data-view="DS">Data Science</span>
-        <span class="kg-scope-pill" data-view="CS">Cyber Security</span>
-        <span class="kg-scope-pill" data-view="ECE">ECE</span>
-        <span class="kg-scope-pill" data-view="FE">Freshman Engg (H&S)</span>
-        <span class="kg-scope-pill" data-view="INFRA">Buildings & Infrastructure</span>
-        <span class="kg-scope-pill" data-view="ALL">All Nodes</span>
-    </div>
-
     <!-- Network Canvas -->
     <div id="networkCanvas"></div>
 
@@ -470,7 +437,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const viewSelect = document.getElementById('viewModeSelect');
     const btnPhysics = document.getElementById('btnPhysics');
     const btnResetView = document.getElementById('btnResetView');
-    const scopePills = document.querySelectorAll('.kg-scope-pill');
 
     // Fetch live graph from API
     fetch('/api/kg/graph-data?limit=500')
@@ -656,15 +622,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function switchView(mode) {
-        // Update select and pills UI
+        // Update select UI
         if (viewSelect) viewSelect.value = mode;
-        scopePills.forEach(p => {
-            if (p.getAttribute('data-view') === mode) {
-                p.classList.add('active');
-            } else {
-                p.classList.remove('active');
-            }
-        });
 
         const sub = filterSubgraph(mode);
         nodesDataSet.clear();
@@ -750,11 +709,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // View selector change
     viewSelect.addEventListener('change', e => switchView(e.target.value));
-
-    // Scope pills click
-    scopePills.forEach(pill => {
-        pill.addEventListener('click', () => switchView(pill.getAttribute('data-view')));
-    });
 
     // Search bar
     nodeSearch.addEventListener('input', function(e) {

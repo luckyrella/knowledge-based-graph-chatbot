@@ -407,23 +407,25 @@ class Neo4jService:
                         if n_id not in seen_nodes:
                             seen_nodes.add(n_id)
                             colors = NODE_COLOR_MAP.get(n_type, {"background": "#64748b", "border": "#475569", "highlight": "#94a3b8"})
+                            n_name = n.get("name", n_id)
                             nodes.append({
                                 "id": n_id,
-                                "label": n.get("name", n_id),
+                                "label": n_name,
                                 "group": n_type,
                                 "color": colors,
-                                "title": f"<b>{n_type}</b>: {n.get('name')}<br>{json.dumps(dict(n), indent=2)}"
+                                "title": f"<b>{n_name}</b> <span style='opacity:0.8;'>({n_type})</span><br><span style='color:#38bdf8;font-size:10px;'>Click node for full details</span>"
                             })
 
                         if m_id not in seen_nodes:
                             seen_nodes.add(m_id)
                             colors = NODE_COLOR_MAP.get(m_type, {"background": "#64748b", "border": "#475569", "highlight": "#94a3b8"})
+                            m_name = m.get("name", m_id)
                             nodes.append({
                                 "id": m_id,
-                                "label": m.get("name", m_id),
+                                "label": m_name,
                                 "group": m_type,
                                 "color": colors,
-                                "title": f"<b>{m_type}</b>: {m.get('name')}<br>{json.dumps(dict(m), indent=2)}"
+                                "title": f"<b>{m_name}</b> <span style='opacity:0.8;'>({m_type})</span><br><span style='color:#38bdf8;font-size:10px;'>Click node for full details</span>"
                             })
 
                         edges.append({
@@ -468,6 +470,23 @@ class Neo4jService:
                     display_label = name if len(name) <= 14 else name[:12] + ".."
                     font_cfg = {"size": 9, "color": "#94a3b8", "face": "Inter, sans-serif", "strokeWidth": 2, "strokeColor": "#0b1120"}
 
+                # Build clean, elegant tooltip
+                ndata = data.get("data", {})
+                extras = []
+                if "hod" in ndata and ndata["hod"]:
+                    extras.append(f"HOD: {ndata['hod']}")
+                elif "designation" in ndata and ndata["designation"]:
+                    extras.append(str(ndata["designation"]))
+                elif "department" in ndata and ndata["department"]:
+                    extras.append(f"Dept: {str(ndata['department']).upper()}")
+                elif "code" in ndata and ndata["code"]:
+                    extras.append(f"Code: {ndata['code']}")
+                elif "intake" in ndata and ndata["intake"]:
+                    extras.append(f"Intake: {ndata['intake']}")
+
+                sub_str = f"<br><span style='color:#94a3b8;font-size:11px;'>{' • '.join(extras)}</span>" if extras else ""
+                clean_tooltip = f"<b>{name}</b> <span style='opacity:0.8;'>({n_type})</span>{sub_str}<br><span style='color:#38bdf8;font-size:10px;'>Click node for full details</span>"
+
                 nodes.append({
                     "id": str(node_id),
                     "label": display_label,
@@ -476,7 +495,7 @@ class Neo4jService:
                     "size": size,
                     "color": colors,
                     "font": font_cfg,
-                    "title": f"<b>{n_type}</b>: {name}<br>{json.dumps(data.get('data', {}), indent=2)}"
+                    "title": clean_tooltip
                 })
 
             for u, v, edata in fallback_nx_graph.edges(data=True):
