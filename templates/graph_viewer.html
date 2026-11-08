@@ -270,6 +270,97 @@
     animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ==========================================================================
+   Light Mode Theme Overrides
+   ========================================================================== */
+[data-theme="light"] .kg-viewer-container {
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+[data-theme="light"] #networkCanvas {
+    background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%) !important;
+}
+
+[data-theme="light"] .kg-toolbar {
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .kg-toolbar-title {
+    color: #0369a1;
+}
+
+[data-theme="light"] .kg-search-input {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+}
+[data-theme="light"] .kg-search-input:focus {
+    border-color: #0284c7;
+    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
+}
+
+[data-theme="light"] .kg-select {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+}
+
+[data-theme="light"] .kg-btn {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+}
+[data-theme="light"] .kg-btn:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+[data-theme="light"] .kg-scope-pill {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+[data-theme="light"] .kg-scope-pill:hover,
+[data-theme="light"] .kg-scope-pill.active {
+    background: #0284c7;
+    border-color: #0284c7;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+}
+
+[data-theme="light"] .kg-legend {
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid #e2e8f0;
+    color: #0f172a;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .kg-legend-title {
+    color: #64748b;
+}
+[data-theme="light"] .kg-legend-item {
+    color: #334155;
+}
+
+[data-theme="light"] .kg-inspector {
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+[data-theme="light"] #inspTitle {
+    color: #0f172a !important;
+}
+[data-theme="light"] .kg-prop-key {
+    color: #64748b;
+}
+[data-theme="light"] .kg-prop-val {
+    color: #0f172a;
+}
 </style>
 {% endblock %}
 
@@ -556,6 +647,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         setTimeout(() => {
             network.fit({ animation: { duration: 600 } });
+            // Check initial theme state
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light' || localStorage.getItem('sphn-theme') === 'light';
+            if (isLight) {
+                updateThemeColors(true);
+            }
         }, 300);
     }
 
@@ -700,6 +796,46 @@ document.addEventListener('DOMContentLoaded', function() {
     btnResetView.addEventListener('click', function() {
         if (network) network.fit({ animation: { duration: 500 } });
     });
+
+    // ── Dynamic Theme Synchronization (Dark / Light) ───────────────────────
+    function updateThemeColors(isLight) {
+        if (!network || !nodesDataSet) return;
+
+        const edgeColor = isLight ? 'rgba(71, 85, 105, 0.45)' : 'rgba(148, 163, 184, 0.35)';
+        const edgeHighlight = isLight ? '#0284c7' : '#38bdf8';
+        network.setOptions({
+            edges: {
+                color: {
+                    color: edgeColor,
+                    highlight: edgeHighlight,
+                    hover: edgeHighlight
+                }
+            }
+        });
+
+        const strokeColor = isLight ? '#ffffff' : '#0b1120';
+        const fontColor = isLight ? '#0f172a' : '#ffffff';
+        const updateNodes = [];
+        nodesDataSet.forEach(n => {
+            updateNodes.push({
+                id: n.id,
+                font: {
+                    color: fontColor,
+                    strokeColor: strokeColor,
+                    strokeWidth: 3
+                }
+            });
+        });
+        nodesDataSet.update(updateNodes);
+    }
+
+    // Observer to listen for dark/light toggle changes on html element
+    const themeObserver = new MutationObserver(function() {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        updateThemeColors(isLight);
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 });
+
 </script>
 {% endblock %}
